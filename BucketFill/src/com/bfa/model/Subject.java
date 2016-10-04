@@ -102,7 +102,7 @@ public class Subject {
             return subjectList;
         }
         catch(Exception e){
-            System.out.println(e+" Occured in get all details");
+            System.out.println(e + " Occured in get all details");
             return null;
         }
     }
@@ -136,7 +136,7 @@ public class Subject {
             return subjectList;
         }
         catch(Exception e){
-            System.out.println(e+" Occured in get details by id");
+            System.out.println(e + " Occured in get details by id");
             return null;
         }
     }
