@@ -19,7 +19,7 @@ public class DBConnection {
         } 
         catch(Exception e)
         {
-            System.out.println("Error in connection class "+e);
+            System.out.println("Error in connection class: "+e);
             return null;
         }
     }
