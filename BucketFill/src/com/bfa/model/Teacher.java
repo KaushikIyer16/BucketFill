@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author mahesh
  */
-public class Teacher {
+public class Teacher implements DBConnection{
     
     private String name = null;
     private int id = 0; 
@@ -72,6 +72,8 @@ public class Teacher {
     public static ArrayList<Teacher> getDetailsById(int id){
         try{
             
+//            Class.forName("com.mysql.jdbc.Driver");
+//            Connection myConnection=DriverManager.getConnection("jdbc:mysql://localhost:8889/bucketfill","root","root");
             Connection myConnection = DBConnection.createConnection();
             
             PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT * FROM Teacher WHERE id = ?");

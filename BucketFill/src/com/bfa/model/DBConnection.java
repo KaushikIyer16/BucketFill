@@ -8,18 +8,21 @@ import java.sql.SQLException;
  *
  * @author mahesh
  */
-public class DBConnection {
+public interface DBConnection {
+    
+    String CONNECTIONSTRING = "jdbc:mysql://localhost:8889/bucketfill", USERNAME =  "root", PASSWORD = "root";
+    
     public static Connection createConnection()
     {
-        Connection myConnection;
+        Connection myConnection = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            myConnection = DriverManager.getConnection("jdbc:mysql://localhost:8889/bucketfill", "root", "root");
+            myConnection = DriverManager.getConnection(CONNECTIONSTRING, USERNAME, PASSWORD);
             return myConnection;
         } 
         catch(Exception e)
         {
-            System.out.println("Error in connection class: "+e);
+            System.out.println("Error in connection class "+e);
             return null;
         }
     }

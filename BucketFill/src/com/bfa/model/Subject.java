@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author mahesh
  */
-public class Subject {
+public class Subject implements DBConnection{
     
     private String name = null, courseCode = null;
     private int theory = 0;
@@ -76,6 +76,9 @@ public class Subject {
     public static ArrayList<Subject> getAllDetails(){
         try{
             
+//            Class.forName("com.mysql.jdbc.Driver");
+//            Connection myConnection=DriverManager.getConnection("jdbc:mysql://localhost:8889/bucketfill","root","root");
+//            
             Connection myConnection = DBConnection.createConnection();
             Statement myStatement = myConnection.createStatement();
             String simpleQuery = "select * from Subject";
@@ -100,13 +103,16 @@ public class Subject {
             return subjectList;
         }
         catch(Exception e){
-            System.out.println(e + " Occured in get all details...");
+            System.out.println(e+" Occured in get all details");
             return null;
         }
     }
     public static ArrayList<Subject> getDetailsByCourseCode(String courseCode){
         try{
             
+//            Class.forName("com.mysql.jdbc.Driver");
+//            Connection myConnection=DriverManager.getConnection("jdbc:mysql://localhost:8889/bucketfill","root","root");
+//            
             Connection myConnection = DBConnection.createConnection();
             
             PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT * FROM Subject WHERE CourseCode = ?");
@@ -133,7 +139,7 @@ public class Subject {
             return subjectList;
         }
         catch(Exception e){
-            System.out.println(e + " Occured in get details by id...");
+            System.out.println(e+" Occured in get details by id");
             return null;
         }
     }
