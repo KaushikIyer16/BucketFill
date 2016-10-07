@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bfa.model;
 
 import java.sql.Connection;
@@ -49,8 +44,7 @@ public class Teacher {
     public static ArrayList<Teacher> getAllDetails(){
         try{
             
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection myConnection=DriverManager.getConnection("jdbc:mysql://localhost:8889/bucketfill","root","root");
+            Connection myConnection = DBConnection.createConnection();
             
             Statement myStatement = myConnection.createStatement();
             String simpleQuery = "select * from Teacher";
@@ -78,8 +72,7 @@ public class Teacher {
     public static ArrayList<Teacher> getDetailsById(int id){
         try{
             
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection myConnection=DriverManager.getConnection("jdbc:mysql://localhost:8889/bucketfill","root","root");
+            Connection myConnection = DBConnection.createConnection();
             
             PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT * FROM Teacher WHERE id = ?");
             myPreStatement.setInt(1, id);
