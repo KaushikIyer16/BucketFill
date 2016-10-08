@@ -44,13 +44,17 @@ public class Section implements DBConnection{
         this.name = name;
     }
     
-    int teacherID, semester;
-    String subject, name;
+    private int teacherID, semester;
+    private String subject, name;
     
+    /**
+     *
+     * @param year
+     * @return semester name 
+     */
     public static ArrayList<Section> getSectionByYear(int year)
     {
         
-    //WARNING this method gives only semester and name of the sections for the given year
         
         Connection myConnection = DBConnection.createConnection();
         ResultSet rs = null;
@@ -67,17 +71,17 @@ public class Section implements DBConnection{
                         break;
                         
                 case 3: myPreStatement.setInt(1, 5);
-                        myPreStatement.setInt(2, 6);;
+                        myPreStatement.setInt(2, 6);
                         rs = myPreStatement.executeQuery();
                         break;
                         
                 case 4: myPreStatement.setInt(1, 7);
-                        myPreStatement.setInt(1, 8);
+                        myPreStatement.setInt(2, 8);
                         rs = myPreStatement.executeQuery();
                         break;
                         
                 default: myPreStatement.setInt(1, 1);
-                         myPreStatement.setInt(1, 2);
+                         myPreStatement.setInt(2, 2);
                          rs = myPreStatement.executeQuery();
             }
             
@@ -99,5 +103,12 @@ public class Section implements DBConnection{
             return null;
         }
     }
+
+    @Override
+    public String toString() {
+       return new String(this.semester+" "+this.name+" "+this.subject+" "+this.teacherID);
+    }
+    
+    
     
 }
