@@ -28,6 +28,7 @@ public class Graph {
     }
     
     public static void main(String args[]){
+        Graph.populateGraphForYear(2);
         Graph.populateGraphForYear(3);
     }
 }
