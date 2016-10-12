@@ -32,6 +32,8 @@ public class Allot {
         Allot test=new Allot();
         test.getAllDetails();
         
+        
+        
     }
     
     
