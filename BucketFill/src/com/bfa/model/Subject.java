@@ -150,46 +150,68 @@ public class Subject implements DBConnection{
         
         Connection myConnection = DBConnection.createConnection();
         ResultSet rs = null;
+        ArrayList<Subject> subjectList = new ArrayList<>();   
         
         try{
             
-            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT * FROM Subject WHERE CourseCode LIKE ? OR ?");
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT * FROM Subject");
+            rs = myPreStatement.executeQuery();
             switch(year)
             {
-                case 2: myPreStatement.setString(1, "%3%");
-                        myPreStatement.setString(2, "%4%");
-                        rs = myPreStatement.executeQuery();
+                case 2: for(int i=0;rs.next();i++)
+                        {
+                            if(Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 3 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 4){
+                                Subject temp = new Subject();
+
+                                temp.courseCode = rs.getString(1);
+                                temp.name = rs.getString(2);
+                                temp.theory = rs.getInt(3);
+                                temp.lab = rs.getBoolean(4);
+                                temp.tutorial = rs.getBoolean(5);
+                                temp.elective = rs.getBoolean(6);
+                                temp.selfStudy = rs.getBoolean(7);
+
+                                subjectList.add(temp);
+                            }
+                            
+                        }
                         break;
-                        
-                case 3: myPreStatement.setString(1, "%5%");
-                        myPreStatement.setString(2, "%6%");
-                        rs = myPreStatement.executeQuery();
+                case 3: for(int i=0;rs.next();i++)
+                        {
+                            if(Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 5 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 6){
+                                Subject temp = new Subject();
+
+                                temp.courseCode = rs.getString(1);
+                                temp.name = rs.getString(2);
+                                temp.theory = rs.getInt(3);
+                                temp.lab = rs.getBoolean(4);
+                                temp.tutorial = rs.getBoolean(5);
+                                temp.elective = rs.getBoolean(6);
+                                temp.selfStudy = rs.getBoolean(7);
+
+                                subjectList.add(temp);
+                            }
+                            
+                        }
                         break;
-                        
-                case 4: myPreStatement.setString(1, "%7%");
-                        myPreStatement.setString(2, "%8%");
-                        rs = myPreStatement.executeQuery();
+                case 4: for(int i=0;rs.next();i++)
+                        {
+                            if(Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 7 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 8){
+                                Subject temp = new Subject();
+
+                                temp.courseCode = rs.getString(1);
+                                temp.name = rs.getString(2);
+                                temp.theory = rs.getInt(3);
+                                temp.lab = rs.getBoolean(4);
+                                temp.tutorial = rs.getBoolean(5);
+                                temp.elective = rs.getBoolean(6);
+                                temp.selfStudy = rs.getBoolean(7);
+
+                                subjectList.add(temp);
+                            }
+                            
+                        }
                         break;
-                        
-                default: myPreStatement.setString(1, "%");
-                         myPreStatement.setString(2, "%");
-                         rs = myPreStatement.executeQuery();
-            }
-            ArrayList<Subject> subjectList = new ArrayList<>(); 
-            
-            for(int i=0;rs.next();i++)
-            {
-                Subject temp = new Subject();
-                
-                temp.courseCode = rs.getString(1);
-                temp.name = rs.getString(2);
-                temp.theory = rs.getInt(3);
-                temp.lab = rs.getBoolean(4);
-                temp.tutorial = rs.getBoolean(5);
-                temp.elective = rs.getBoolean(6);
-                temp.selfStudy = rs.getBoolean(7);
-                
-                subjectList.add(temp);
             }
             myConnection.close();
             return subjectList;
