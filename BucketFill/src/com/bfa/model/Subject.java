@@ -198,5 +198,9 @@ public class Subject implements DBConnection{
             return null;
         }
     }
+    @Override
+    public String toString() {
+       return this.courseCode+" "+this.name+" "+this.theory+" "+this.elective;
+    }
     
 }

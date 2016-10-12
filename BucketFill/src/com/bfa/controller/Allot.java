@@ -21,9 +21,9 @@ public class Allot {
     {
         for(int i=2;i<=4;i++)
         {
-            //getSubjectDetails = Subject.getSubjectByYear(i);
+            getSubjectDetails = Subject.getSubjectByYear(i);
             getSectionDetails = Section.getSectionByYear(i);
-            //System.out.println(getSubjectDetails);
+            System.out.println(getSubjectDetails);
             System.out.println(getSectionDetails);
         }
     }
