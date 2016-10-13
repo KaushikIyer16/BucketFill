@@ -29,7 +29,7 @@ public class Allot {
             System.out.println("Section Name || Semester || Subject || Teacher --> for year : "+i);
             while(sectionIterator.hasNext()){
                 Section tempSection = (Section)sectionIterator.next();
-                System.out.println("      " + tempSection.getName() + "            " + tempSection.getSemester() + "           " + Section.getSubjectNameByTeacherID(tempSection.getTeacherID()) + "       " + Teacher.getNameById(tempSection.getTeacherID()));
+                System.out.println("      " + tempSection.getName() + "            " + tempSection.getSemester() + "           " + Section.getSubjectNameByTeacherID(tempSection.getTeacherID(), tempSection.getSemester()) + "       " + Teacher.getNameById(tempSection.getTeacherID()));
             }
             
             //System.out.println(getSubjectDetails);

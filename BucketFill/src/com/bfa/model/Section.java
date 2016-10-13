@@ -105,7 +105,7 @@ public class Section implements DBConnection{
         }
     }  
     
-    public static String getSubjectNameByTeacherID(int id)
+    public static String getSubjectNameByTeacherID(int id, int semester)
     {
         
         
@@ -114,8 +114,9 @@ public class Section implements DBConnection{
         
         try{
             
-            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT Subject FROM Section WHERE TeacherID = ?");
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT Subject FROM Section WHERE TeacherID = ? AND Semester = ?");
             myPreStatement.setInt(1, id);
+            myPreStatement.setInt(2, semester);
             rs = myPreStatement.executeQuery();
              
             String teacherName = null;
