@@ -6,6 +6,7 @@
 package com.bfa.controller;
 import com.bfa.model.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -15,7 +16,7 @@ public class Allot {
     
     ArrayList<Subject> getSubjectDetails=new ArrayList<>();
     ArrayList<Section> getSectionDetails=new ArrayList<>();
-    
+    Iterator sectionIterator;
     
     void getAllDetails()
     {
@@ -23,17 +24,22 @@ public class Allot {
         {
             getSubjectDetails = Subject.getSubjectByYear(i);
             getSectionDetails = Section.getSectionByYear(i);
-            System.out.println(getSubjectDetails);
-            System.out.println(getSectionDetails);
+            sectionIterator = getSectionDetails.iterator();
+            
+            System.out.println("Section Name || Semester || Subject || Teacher --> for year : "+i);
+            while(sectionIterator.hasNext()){
+                Section tempSection = (Section)sectionIterator.next();
+                System.out.println("      " + tempSection.getName() + "            " + tempSection.getSemester() + "           " + Section.getSubjectNameByTeacherID(tempSection.getTeacherID()) + "       " + Teacher.getNameById(tempSection.getTeacherID()));
+            }
+            
+            //System.out.println(getSubjectDetails);
+            //System.out.println(getSectionDetails);
         }
     }
     public static void main(String args[])
     {
         Allot test=new Allot();
-        test.getAllDetails();
-        
-        
-        
+        test.getAllDetails();   
     }
     
     

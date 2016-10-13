@@ -4,10 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -74,33 +77,53 @@ public class Subject implements DBConnection{
     public void setTheory(int theory) {
         this.theory = theory;
     }
+    public static void copyItemsToList(ResultSet resultSet, ArrayList<Subject> subjectList){
+        try {
+            for(int i=0;resultSet.next();i++)
+            {
+                Subject temp = new Subject();
+                
+                temp.courseCode = resultSet.getString(1);
+                temp.name = resultSet.getString(2);
+                temp.theory = resultSet.getInt(3);
+                temp.lab = resultSet.getBoolean(4);
+                temp.tutorial = resultSet.getBoolean(5);
+                temp.elective = resultSet.getBoolean(6);
+                temp.selfStudy = resultSet.getBoolean(7);
+                
+                subjectList.add(temp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Subject.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    } 
+    
+    public static void copyItemsToList(ResultSet resultSet, Subject temp){
+        try {                
+                temp.courseCode = resultSet.getString(1);
+                temp.name = resultSet.getString(2);
+                temp.theory = resultSet.getInt(3);
+                temp.lab = resultSet.getBoolean(4);
+                temp.tutorial = resultSet.getBoolean(5);
+                temp.elective = resultSet.getBoolean(6);
+                temp.selfStudy = resultSet.getBoolean(7);
+                
+        } catch (SQLException ex) {
+            Logger.getLogger(Subject.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    } 
     
     public static ArrayList<Subject> getAllDetails(){
         try{
-            
-//            Class.forName("com.mysql.jdbc.Driver");
-//            Connection myConnection=DriverManager.getConnection("jdbc:mysql://localhost:8889/bucketfill","root","root");
-//            
+                     
             Connection myConnection = DBConnection.createConnection();
             Statement myStatement = myConnection.createStatement();
             String simpleQuery = "select * from Subject";
             ResultSet rs = myStatement.executeQuery(simpleQuery);            
             ArrayList<Subject> subjectList = new ArrayList<>(); 
             
-            for(int i=0;rs.next();i++)
-            {
-                Subject temp = new Subject();
-                
-                temp.courseCode = rs.getString(1);
-                temp.name = rs.getString(2);
-                temp.theory = rs.getInt(3);
-                temp.lab = rs.getBoolean(4);
-                temp.tutorial = rs.getBoolean(5);
-                temp.elective = rs.getBoolean(6);
-                temp.selfStudy = rs.getBoolean(7);
-                
-                subjectList.add(temp);
-            }
+            copyItemsToList(rs, subjectList);
+            
             myConnection.close();
             return subjectList;
         }
@@ -111,10 +134,7 @@ public class Subject implements DBConnection{
     }
     public static ArrayList<Subject> getDetailsByCourseCode(String courseCode){
         try{
-            
-//            Class.forName("com.mysql.jdbc.Driver");
-//            Connection myConnection=DriverManager.getConnection("jdbc:mysql://localhost:8889/bucketfill","root","root");
-//            
+                       
             Connection myConnection = DBConnection.createConnection();
             
             PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT * FROM Subject WHERE CourseCode = ?");
@@ -123,20 +143,8 @@ public class Subject implements DBConnection{
             ResultSet rs = myPreStatement.executeQuery();
             ArrayList<Subject> subjectList = new ArrayList<>(); 
             
-            for(int i=0;rs.next();i++)
-            {
-                Subject temp = new Subject();
-                
-                temp.courseCode = rs.getString(1);
-                temp.name = rs.getString(2);
-                temp.theory = rs.getInt(3);
-                temp.lab = rs.getBoolean(4);
-                temp.tutorial = rs.getBoolean(5);
-                temp.elective = rs.getBoolean(6);
-                temp.selfStudy = rs.getBoolean(7);
-                
-                subjectList.add(temp);
-            }
+            copyItemsToList(rs, subjectList);
+            
             myConnection.close();
             return subjectList;
         }
@@ -162,15 +170,7 @@ public class Subject implements DBConnection{
                         {
                             if(Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 3 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 4){
                                 Subject temp = new Subject();
-
-                                temp.courseCode = rs.getString(1);
-                                temp.name = rs.getString(2);
-                                temp.theory = rs.getInt(3);
-                                temp.lab = rs.getBoolean(4);
-                                temp.tutorial = rs.getBoolean(5);
-                                temp.elective = rs.getBoolean(6);
-                                temp.selfStudy = rs.getBoolean(7);
-
+                                copyItemsToList(rs, temp);
                                 subjectList.add(temp);
                             }
                             
@@ -180,15 +180,7 @@ public class Subject implements DBConnection{
                         {
                             if(Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 5 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 6){
                                 Subject temp = new Subject();
-
-                                temp.courseCode = rs.getString(1);
-                                temp.name = rs.getString(2);
-                                temp.theory = rs.getInt(3);
-                                temp.lab = rs.getBoolean(4);
-                                temp.tutorial = rs.getBoolean(5);
-                                temp.elective = rs.getBoolean(6);
-                                temp.selfStudy = rs.getBoolean(7);
-
+                                copyItemsToList(rs, temp);
                                 subjectList.add(temp);
                             }
                             
@@ -198,15 +190,7 @@ public class Subject implements DBConnection{
                         {
                             if(Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 7 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 8){
                                 Subject temp = new Subject();
-
-                                temp.courseCode = rs.getString(1);
-                                temp.name = rs.getString(2);
-                                temp.theory = rs.getInt(3);
-                                temp.lab = rs.getBoolean(4);
-                                temp.tutorial = rs.getBoolean(5);
-                                temp.elective = rs.getBoolean(6);
-                                temp.selfStudy = rs.getBoolean(7);
-
+                                copyItemsToList(rs, temp);
                                 subjectList.add(temp);
                             }
                             
@@ -222,11 +206,6 @@ public class Subject implements DBConnection{
             return null;
         }
     }
-    @Override
-    public String toString() {
-       return this.courseCode+" "+this.name+" "+this.theory+" "+this.elective;
-    }
-    
     
     public static ArrayList<Subject> getTheorySubjects(int year){
         ArrayList<Subject> theoryList = Subject.getSubjectByYear(year);

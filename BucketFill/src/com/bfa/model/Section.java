@@ -50,7 +50,7 @@ public class Section implements DBConnection{
     /**
      *
      * @param year
-     * @return semester name 
+     * @return semester name teacher-id
      */
     public static ArrayList<Section> getSectionByYear(int year)
     {
@@ -61,7 +61,7 @@ public class Section implements DBConnection{
         
         try{
             
-            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT DISTINCT Name,Semester FROM Section WHERE Semester = ? OR Semester = ?");
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT DISTINCT Name,Semester,TeacherID FROM Section WHERE Semester = ? OR Semester = ?");
 
             switch(year)
             {
@@ -92,6 +92,7 @@ public class Section implements DBConnection{
                 
                 temp.semester = rs.getInt(2);
                 temp.name = rs.getString(1);
+                temp.teacherID = rs.getInt(3);
             
                 sectionList.add(temp);
             }
@@ -102,13 +103,32 @@ public class Section implements DBConnection{
             System.out.println("Error in section by year "+e);
             return null;
         }
-    }
-
-    @Override
-    public String toString() {
-       return new String(this.semester+" "+this.name+" "+this.subject+" "+this.teacherID);
-    }
+    }  
     
-    
-    
+    public static String getSubjectNameByTeacherID(int id)
+    {
+        
+        
+        Connection myConnection = DBConnection.createConnection();
+        ResultSet rs = null;
+        
+        try{
+            
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT Subject FROM Section WHERE TeacherID = ?");
+            myPreStatement.setInt(1, id);
+            rs = myPreStatement.executeQuery();
+             
+            String teacherName = null;
+            while(rs.next())
+            {
+                teacherName = rs.getString(1);
+            }
+            myConnection.close();
+            return teacherName;
+        }
+        catch(Exception e){
+            System.out.println("Error in section by year "+e);
+            return null;
+        }
+    }  
 }

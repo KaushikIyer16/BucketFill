@@ -72,8 +72,6 @@ public class Teacher implements DBConnection{
     public static ArrayList<Teacher> getDetailsById(int id){
         try{
             
-//            Class.forName("com.mysql.jdbc.Driver");
-//            Connection myConnection=DriverManager.getConnection("jdbc:mysql://localhost:8889/bucketfill","root","root");
             Connection myConnection = DBConnection.createConnection();
             
             PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT * FROM Teacher WHERE id = ?");
@@ -94,6 +92,30 @@ public class Teacher implements DBConnection{
             }
             myConnection.close();
             return teacherList;
+        }
+        catch(Exception e){
+            System.out.println(e+" Occured in get details by id");
+            return null;
+        }
+    }
+    
+    public static String getNameById(int id){
+        try{
+            
+            Connection myConnection = DBConnection.createConnection();
+            
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT Name FROM Teacher WHERE id = ?");
+            myPreStatement.setInt(1, id);
+            
+            ResultSet rs = myPreStatement.executeQuery(); 
+            String teacherName = null;
+                    
+            while(rs.next())
+            {
+                teacherName = rs.getString(1);
+            }
+            myConnection.close();
+            return teacherName;
         }
         catch(Exception e){
             System.out.println(e+" Occured in get details by id");
