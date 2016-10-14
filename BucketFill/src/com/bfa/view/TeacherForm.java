@@ -71,11 +71,7 @@ public class TeacherForm extends Application {
         final ComboBox subBox = new ComboBox();
         subBox.getItems().addAll(
             "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6"  
+            "2"
         );
         subBox.setValue("0");
         grid.add(subBox,0,8);
