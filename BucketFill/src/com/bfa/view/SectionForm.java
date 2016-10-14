@@ -9,8 +9,11 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -28,6 +31,7 @@ public class SectionForm extends Application
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SECTION FORM");
+        primaryStage.setMaximized(true);
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -61,6 +65,19 @@ public class SectionForm extends Application
         primaryStage.setScene(scene);
         primaryStage.show();
         
+        TableView tableOne = new TableView();
+        tableOne.setEditable(true);
+        
+        TableColumn firstNameCol = new TableColumn("First Name");
+        TableColumn lastNameCol = new TableColumn("Last Name");
+        TableColumn emailCol = new TableColumn("Email");
+        
+        tableOne.getColumns().addAll(firstNameCol, lastNameCol, emailCol);
+        grid.add(tableOne, 1, 10);
+        
+        Button confirmButton = new Button();
+        confirmButton.setText("Set");
+        grid.add(confirmButton, 1, 15);
     }
      /**
      * @param args the command line arguments
