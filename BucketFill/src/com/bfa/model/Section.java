@@ -61,7 +61,7 @@ public class Section implements DBConnection{
         
         try{
             
-            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT DISTINCT Name,Semester,TeacherID FROM Section WHERE Semester = ? OR Semester = ?");
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT DISTINCT Name,Semester,TeacherID FROM Section WHERE Semester = ? OR Semester = ? ORDER BY Name");
 
             switch(year)
             {
