@@ -98,13 +98,13 @@ public class Graph {
         return subjectList;
     }
     
-    public static void main(String args[]){
-//        Graph.populateGraphForYear(2);
-//        System.out.println("++++++++++++++++++++++++++++");
-//        Graph.populateGraphForYear(3);
-          for (int i = 3; i <= 3; i++) {
-            Graph.populateGraphForYear(i);
-            Graph.printGraph();
-        }
-    }
+//    public static void main(String args[]){
+////        Graph.populateGraphForYear(2);
+////        System.out.println("++++++++++++++++++++++++++++");
+////        Graph.populateGraphForYear(3);
+//          for (int i = 4; i <= 4; i++) {
+//            Graph.populateGraphForYear(i);
+//            Graph.printGraph();
+//        }
+//    }
 }
