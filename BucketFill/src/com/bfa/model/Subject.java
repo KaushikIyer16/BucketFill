@@ -207,22 +207,4 @@ public class Subject implements DBConnection{
         }
     }
     
-    public static ArrayList<Subject> getTheorySubjects(int year){
-        ArrayList<Subject> theoryList = Subject.getSubjectByYear(year);
-        try{
-            Iterator it = theoryList.iterator();
-            while(it.hasNext()){
-                Subject tmp = (Subject)it.next();
-                if(tmp.getTheory()==0){
-                    theoryList.remove(tmp);
-                }
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return theoryList;
-    }
-    
-    
-    
 }
