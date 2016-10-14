@@ -14,12 +14,18 @@ import java.util.Iterator;
  */
 public class Allot {
     private String[] daysOfWeek = {"monday","tuesday","wednesday","thursday","friday","saturday","sunday"};
+
 //    1st index: number of classes, 2nd index: number of days, 3rd index: number of slots
     private TimeTableSlot[][][] TimeTable = new TimeTableSlot[6][6][6];
+    
+    public static int NUMBER_OF_LABS = 4;
+    public static int NUMBER_OF_ROOMS = 4;
+    
     
     ArrayList<Subject> getSubjectDetails=new ArrayList<>();
     ArrayList<Section> getSectionDetails=new ArrayList<>();
     Iterator sectionIterator;
+    
     public static ArrayList<String> rooms = new ArrayList<>();
     
     void getAllDetails()
@@ -28,8 +34,8 @@ public class Allot {
         
         for (int day = 0; day < 6; day++) {
             System.out.println("Day: "+daysOfWeek[day]+"\n\n");
-//            the number of rows signifies the number of time slots in a day and the columns is the number of rooms available
-            boolean [][]occupencyMatrix = new boolean[6][4];
+//            the number of rows signifies the number of time slots in a day and the columns is the number of rooms and labs available
+            boolean [][]occupencyMatrix = new boolean[6][NUMBER_OF_ROOMS+NUMBER_OF_LABS];
             
             for (int year = 2; year <= 4; year++) {
                 getSectionDetails = Section.getSectionByYear(year);
