@@ -14,6 +14,9 @@ import java.util.Iterator;
  */
 public class Allot {
     private String[] daysOfWeek = {"monday","tuesday","wednesday","thursday","friday","saturday","sunday"};
+//    1st index: number of classes, 2nd index: number of days, 3rd index: number of slots
+    private TimeTableSlot[][][] TimeTable = new TimeTableSlot[6][6][6];
+    
     ArrayList<Subject> getSubjectDetails=new ArrayList<>();
     ArrayList<Section> getSectionDetails=new ArrayList<>();
     Iterator sectionIterator;
