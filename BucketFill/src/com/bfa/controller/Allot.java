@@ -13,28 +13,34 @@ import java.util.Iterator;
  * @author Bhargav
  */
 public class Allot {
-    
+    private String[] daysOfWeek = {"monday","tuesday","wednesday","thursday","friday","saturday","sunday"};
     ArrayList<Subject> getSubjectDetails=new ArrayList<>();
     ArrayList<Section> getSectionDetails=new ArrayList<>();
     Iterator sectionIterator;
+    public static ArrayList<String> rooms = new ArrayList<>();
     
     void getAllDetails()
     {
-        for(int i=2;i<=4;i++)
-        {
-            getSubjectDetails = Subject.getSubjectByYear(i);
-            getSectionDetails = Section.getSectionByYear(i);
-            sectionIterator = getSectionDetails.iterator();
+//      the main randomize logic should run for a full week > in a day for a year > in a year for every class
+        
+        for (int day = 0; day < 6; day++) {
+            System.out.println("Day: "+daysOfWeek[day]+"\n\n");
+//            the number of rows signifies the number of time slots in a day and the columns is the number of rooms available
+            boolean [][]occupencyMatrix = new boolean[6][4];
             
-            System.out.println("--> For year : "+i);
-            System.out.println("Section Name || Semester || Subject || Teacher ");
-            while(sectionIterator.hasNext()){
-                Section tempSection = (Section)sectionIterator.next();
-                System.out.println("      " + tempSection.getName() + "            " + tempSection.getSemester() + "           " + Section.getSubjectNameByTeacherID(tempSection.getTeacherID(), tempSection.getSemester()) + "       " + Teacher.getNameById(tempSection.getTeacherID()));
+            for (int year = 2; year <= 4; year++) {
+                getSectionDetails = Section.getSectionByYear(year);
+                sectionIterator = getSectionDetails.iterator();
+
+                System.out.println("--> For year : "+year);
+                System.out.println("Section Name || Semester || Subject || Teacher ");
+                while(sectionIterator.hasNext()){
+
+    //                set the class to the current class and whenever the class changes them referesh the
+                    Section tempSection = (Section)sectionIterator.next();
+                    System.out.println("      " + tempSection.getName() + "            " + tempSection.getSemester() + "           " + Section.getSubjectNameByTeacherID(tempSection.getTeacherID(), tempSection.getSemester()) + "       " + Teacher.getNameById(tempSection.getTeacherID()));
+                }
             }
-            
-            //System.out.println(getSubjectDetails);
-            //System.out.println(getSectionDetails);
         }
     }
     public static void main(String args[])
