@@ -54,7 +54,25 @@ public class Graph {
         }
         
     }
+    
+    
+    public static void printGraphForClassName(String className) {
+        
+        System.out.println(className+":>");
+        ArrayList<Subject>[] sectionGraph = Graph.graph.get(className);
+        for (int i = 0; i < 3; i++) {
+            Iterator it = sectionGraph[i].iterator();
 
+            while (it.hasNext()) {
+                Subject tmp = (Subject) it.next();
+                System.out.println(tmp.getName() + "  " + tmp.getTheory());
+            }
+
+            System.out.println("--------------------------");
+        }
+        
+    }
+    
     public ArrayList<Subject> getTheorySubjects(ArrayList<Subject> subjectList) {
 
         try {
@@ -113,7 +131,7 @@ public class Graph {
                 SectionPriority tmp = (SectionPriority)sectionIterator.next();
                 graph.put(tmp.getYear()+tmp.getSection(), graphObj.populateGraphForYear(tmp.getYear()) );
             }
-            Graph.printGraph();
+//            Graph.printGraph();
             
     }
 }
