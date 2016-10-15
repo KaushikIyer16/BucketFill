@@ -33,7 +33,9 @@ public class Allot {
     public static ArrayList<String> rooms = new ArrayList<>();
 
     private void preProcessing(boolean[][] occupancyMatrix, int dayOfWeek) {
-        //below preprocessing would be to set the total number of sections 
+        //below preprocessing would be to set the total number of sections
+        Section.setTotalNumberOfSections();
+        
         // below preprocessing would be to fill in the ccp time slots
         ArrayList<Slot> slotList = Slot.getSlotsByLabNameAndDayOfWeek("CCP", daysOfWeek[dayOfWeek]);
         Iterator it = slotList.iterator();
@@ -41,13 +43,13 @@ public class Allot {
         while (it.hasNext()) {
 
             Slot slot = (Slot) it.next();
-            System.out.println(slot.getDayOfWeek() + "     " + slot.getStartTime());
+//            System.out.println(slot.getDayOfWeek() + "     " + slot.getStartTime());
 
 //            i need to somehow map the indeces in the occupancy matrix to the rooms/labs right now im assuing it to be the 5th index
             if (slot.getStartTime().compareTo(new Time(8, 0, 0)) >= 0
                     && slot.getStartTime().compareTo(new Time(10, 45, 0)) <= 0) {
 
-                System.out.println("this falls into the first slot");
+//                System.out.println("this falls into the first slot");
 
                 occupancyMatrix[0][5] = true;
                 occupancyMatrix[1][5] = true;
@@ -55,12 +57,12 @@ public class Allot {
             } else if (slot.getStartTime().compareTo(new Time(11, 15, 0)) >= 0
                     && slot.getStartTime().compareTo(new Time(13, 5, 0)) <= 0) {
 
-                System.out.println("this falls into the second slot");
+//                System.out.println("this falls into the second slot");
 
                 occupancyMatrix[2][5] = true;
                 occupancyMatrix[3][5] = true;
             } else {
-                System.out.println("this falls into the third slot");
+//                System.out.println("this falls into the third slot");
 
                 occupancyMatrix[4][5] = true;
                 occupancyMatrix[5][5] = true;
@@ -86,17 +88,15 @@ public class Allot {
 
                 Section tempSection = (Section) sectionIterator.next();
                 if (!tempSection.getName().matches("[0-9]*")) {
+//                    for now the priority is same as the year but we can have a map which can store this
                     sectionSet.add(new SectionPriority(tempSection, year));
                 }
 
             }
         }
-
-        Iterator it = sectionSet.iterator();
-        while (it.hasNext()) {
-            SectionPriority tmp = (SectionPriority) it.next();
-            System.out.println(tmp.getSection() + " " + tmp.getYear() + " " + tmp.getYear());
-        }
+        
+        // below statement initializes the graph for the 
+        Graph.init(sectionSet);
 
         //the main randomize logic should run for a full week > in a day for a year > in a year for every class
         for (int day = 0; day < 6; day++) {
@@ -106,26 +106,17 @@ public class Allot {
 
             // here set the occupied time slots or any form of preprocessor before the randomization
             this.preProcessing(occupancyMatrix, day);
-
-            for (int year = 2; year <= 4; year++) {
-                ArrayList<Section> getSectionDetails = Section.getSectionByYear(year);
-                Iterator sectionIterator = getSectionDetails.iterator();
-
-                System.out.println("--> For year : " + year);
-                System.out.println("Section Name || Semester || Subject || Teacher ");
-                while (sectionIterator.hasNext()) {
-
-                    Section tempSection = (Section) sectionIterator.next();
-
-                    System.out.println("      " + tempSection.getName() + "            "
-                            + tempSection.getSemester() + "           "
-                            + Section.getSubjectNameByTeacherID(tempSection.getTeacherID(),
-                                    tempSection.getSemester()) + "       "
-                            + Teacher.getNameById(tempSection.getTeacherID()));
-
-                }
+            
+            Iterator sectionIterator = sectionSet.iterator();
+            while(sectionIterator.hasNext()){
+//                SectionPriority tmp = (SectionPriority)sectionIterator.next();
+//                System.out.println(tmp.getYear()+"  "+tmp.getSection()+" "+tmp.getPriority());
+                sectionIterator.next();
+//                Graph.init(tmp.getYear());
             }
         }
+        
+        
     }
 
     public static void main(String args[]) {

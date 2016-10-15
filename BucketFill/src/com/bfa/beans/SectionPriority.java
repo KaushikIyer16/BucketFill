@@ -5,9 +5,9 @@
  */
 package com.bfa.beans;
 
-import java.util.Comparator;
+
 import com.bfa.model.Section;
-import java.util.Objects;
+
 
 /**
  *
@@ -46,7 +46,8 @@ public class SectionPriority implements Comparable<SectionPriority> {
     }
 
     public SectionPriority(Section section, int priority) {
-        this.year = section.getSemester();
+        // the first line of the constructor is to convert the semester to the corresponding year
+        this.year =(int)Math.ceil(section.getSemester()/2.0);
         this.section = section.getName();
         this.priority = priority;
     }

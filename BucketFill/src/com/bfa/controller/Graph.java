@@ -5,10 +5,13 @@
  */
 package com.bfa.controller;
 
+import com.bfa.beans.SectionPriority;
 import com.bfa.model.Subject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  *
@@ -16,33 +19,43 @@ import java.util.List;
  */
 public class Graph {
 
-    static ArrayList<Subject> subjectGraph[] = new ArrayList[3];
+    
+    static HashMap<String,ArrayList<Subject>[]> graph = new HashMap<>();
 
-    private static void populateGraphForYear(int year) {
-
+    private ArrayList<Subject>[] populateGraphForYear(int year) {
+        ArrayList<Subject> subjectGraph[] = new ArrayList[3];
+        
         ArrayList<Subject> tmpList = Subject.getSubjectByYear(year);
-        Graph.subjectGraph[0] = Graph.getTheorySubjects(tmpList);
+        subjectGraph[0] = this.getTheorySubjects(tmpList);
         tmpList = Subject.getSubjectByYear(year);
-        Graph.subjectGraph[1] = Graph.getTutorialSubjects(tmpList);
+        subjectGraph[1] = this.getTutorialSubjects(tmpList);
         tmpList = Subject.getSubjectByYear(year);
-        Graph.subjectGraph[2] = Graph.getPracticalsubjects(tmpList);
-
+        subjectGraph[2] = this.getPracticalsubjects(tmpList);
+        
+        return subjectGraph;
     }
 
     private static void printGraph() {
-        for (int i = 0; i < 3; i++) {
-            Iterator it = Graph.subjectGraph[i].iterator();
+        Iterator gIt = graph.keySet().iterator();
+        while(gIt.hasNext()){
+            String className = gIt.next().toString();
+            System.out.println(className+":>");
+            ArrayList<Subject>[] sectionGraph = Graph.graph.get(className);
+            for (int i = 0; i < 3; i++) {
+                Iterator it = sectionGraph[i].iterator();
 
-            while (it.hasNext()) {
-                Subject tmp = (Subject) it.next();
-                System.out.println(tmp.getName() + "  " + tmp.getTheory());
+                while (it.hasNext()) {
+                    Subject tmp = (Subject) it.next();
+                    System.out.println(tmp.getName() + "  " + tmp.getTheory());
+                }
+
+                System.out.println("--------------------------");
             }
-
-            System.out.println("--------------------------");
         }
+        
     }
 
-    public static ArrayList<Subject> getTheorySubjects(ArrayList<Subject> subjectList) {
+    public ArrayList<Subject> getTheorySubjects(ArrayList<Subject> subjectList) {
 
         try {
             Iterator it = subjectList.iterator();
@@ -58,7 +71,7 @@ public class Graph {
         return subjectList;
     }
 
-    public static ArrayList<Subject> getTutorialSubjects(ArrayList<Subject> subjectList) {
+    public ArrayList<Subject> getTutorialSubjects(ArrayList<Subject> subjectList) {
 
         try {
             Iterator it = subjectList.iterator();
@@ -74,7 +87,7 @@ public class Graph {
         return subjectList;
     }
 
-    public static ArrayList<Subject> getPracticalsubjects(ArrayList<Subject> subjectList) {
+    public ArrayList<Subject> getPracticalsubjects(ArrayList<Subject> subjectList) {
 
         try {
             Iterator it = subjectList.iterator();
@@ -90,13 +103,17 @@ public class Graph {
         return subjectList;
     }
 
-//    public static void main(String args[]){
-////        Graph.populateGraphForYear(2);
-////        System.out.println("++++++++++++++++++++++++++++");
-////        Graph.populateGraphForYear(3);
-//          for (int i = 4; i <= 4; i++) {
-//            Graph.populateGraphForYear(i);
-//            Graph.printGraph();
-//        }
-//    }
+    public static void init(TreeSet<SectionPriority> sectionSet){
+
+//            Graph.populateGraphForYear(year);
+
+            Graph graphObj = new Graph();
+            Iterator sectionIterator = sectionSet.iterator();
+            while(sectionIterator.hasNext()){
+                SectionPriority tmp = (SectionPriority)sectionIterator.next();
+                graph.put(tmp.getYear()+tmp.getSection(), graphObj.populateGraphForYear(tmp.getYear()) );
+            }
+            Graph.printGraph();
+            
+    }
 }
