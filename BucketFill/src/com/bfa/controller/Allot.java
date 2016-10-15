@@ -40,12 +40,16 @@ public class Allot {
             
 //            i need to somehow map the indeces in the occupancy matrix to the rooms/labs right now im assuing it to be the 5th index
             
-            if (slot.getStartTime().compareTo(new Time(8,0,0))>=0 && slot.getStartTime().compareTo(new Time(10,45,0))<=0 ) {
+            if (slot.getStartTime().compareTo(new Time(8,0,0))>=0 && 
+                    slot.getStartTime().compareTo(new Time(10,45,0))<=0 ) {
+                
                 System.out.println("this falls into the first slot");
                 
                 occupancyMatrix[0][5] = true;occupancyMatrix[1][5] = true;
                 
-            } else if(slot.getStartTime().compareTo(new Time(11,15,0))>=0 && slot.getStartTime().compareTo(new Time(13, 5, 0))<=0 ){
+            } else if(slot.getStartTime().compareTo(new Time(11,15,0))>=0 && 
+                    slot.getStartTime().compareTo(new Time(13, 5, 0))<=0 ){
+                
                 System.out.println("this falls into the second slot");
                 
                 occupancyMatrix[2][5] = true;occupancyMatrix[3][5] = true;
@@ -56,12 +60,12 @@ public class Allot {
             }
         }
         
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 8; j++) {
-                System.out.print(occupancyMatrix[i][j]+"  ");
-            }
-            System.out.println("");
-        }
+//        for (int i = 0; i < 6; i++) {
+//            for (int j = 0; j < 8; j++) {
+//                System.out.print(occupancyMatrix[i][j]+"  ");
+//            }
+//            System.out.println("");
+//        }
         
     }
     
@@ -87,8 +91,17 @@ public class Allot {
 
                 
                     Section tempSection = (Section)sectionIterator.next();
-                    System.out.println("      " + tempSection.getName() + "            " + tempSection.getSemester() + "           " + Section.getSubjectNameByTeacherID(tempSection.getTeacherID(), tempSection.getSemester()) + "       " + Teacher.getNameById(tempSection.getTeacherID()));
+                    
+                    
+                    System.out.println("      " + tempSection.getName() + "            " + 
+                            tempSection.getSemester() + "           " + 
+                            Section.getSubjectNameByTeacherID(tempSection.getTeacherID(), 
+                            tempSection.getSemester()) + "       " + 
+                            Teacher.getNameById(tempSection.getTeacherID()));
+                
+                
                 }
+                
             }
         }
     }
