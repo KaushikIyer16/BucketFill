@@ -15,10 +15,10 @@ import java.util.List;
  * @author kaushiknsiyer
  */
 public class Graph {
-    
+
     static ArrayList<Subject> subjectGraph[] = new ArrayList[3];
-    
-    private static void populateGraphForYear(int year){
+
+    private static void populateGraphForYear(int year) {
 
         ArrayList<Subject> tmpList = Subject.getSubjectByYear(year);
         Graph.subjectGraph[0] = Graph.getTheorySubjects(tmpList);
@@ -26,70 +26,70 @@ public class Graph {
         Graph.subjectGraph[1] = Graph.getTutorialSubjects(tmpList);
         tmpList = Subject.getSubjectByYear(year);
         Graph.subjectGraph[2] = Graph.getPracticalsubjects(tmpList);
-        
+
     }
-    
-    private static void printGraph(){
+
+    private static void printGraph() {
         for (int i = 0; i < 3; i++) {
             Iterator it = Graph.subjectGraph[i].iterator();
-            
-            while(it.hasNext()){
-                Subject tmp = (Subject)it.next();       
-                System.out.println(tmp.getName()+"  "+tmp.getTheory());
+
+            while (it.hasNext()) {
+                Subject tmp = (Subject) it.next();
+                System.out.println(tmp.getName() + "  " + tmp.getTheory());
             }
-            
+
             System.out.println("--------------------------");
         }
     }
-    
-    public static ArrayList<Subject> getTheorySubjects(ArrayList<Subject> subjectList){
-        
-        try{
+
+    public static ArrayList<Subject> getTheorySubjects(ArrayList<Subject> subjectList) {
+
+        try {
             Iterator it = subjectList.iterator();
-            while(it.hasNext()){
-                Subject tmp = (Subject)it.next();
-                if(tmp.getTheory()==0){
+            while (it.hasNext()) {
+                Subject tmp = (Subject) it.next();
+                if (tmp.getTheory() == 0) {
                     subjectList.remove(tmp);
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return subjectList;
     }
-    
-    public static ArrayList<Subject> getTutorialSubjects(ArrayList<Subject> subjectList){
-        
-        try{
+
+    public static ArrayList<Subject> getTutorialSubjects(ArrayList<Subject> subjectList) {
+
+        try {
             Iterator it = subjectList.iterator();
-            while(it.hasNext()){
-                Subject tmp = (Subject)it.next();
+            while (it.hasNext()) {
+                Subject tmp = (Subject) it.next();
                 if (!tmp.hasTutorial()) {
                     it.remove();
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return subjectList;
     }
-    
-    public static ArrayList<Subject> getPracticalsubjects(ArrayList<Subject> subjectList){
-        
-        try{
+
+    public static ArrayList<Subject> getPracticalsubjects(ArrayList<Subject> subjectList) {
+
+        try {
             Iterator it = subjectList.iterator();
-            while(it.hasNext()){
-                Subject tmp = (Subject)it.next();
-                if(!tmp.hasLab()){
+            while (it.hasNext()) {
+                Subject tmp = (Subject) it.next();
+                if (!tmp.hasLab()) {
                     it.remove();
                 }
             }
-        }catch(Exception e){
-            
+        } catch (Exception e) {
+
         }
         return subjectList;
     }
-    
+
 //    public static void main(String args[]){
 ////        Graph.populateGraphForYear(2);
 ////        System.out.println("++++++++++++++++++++++++++++");

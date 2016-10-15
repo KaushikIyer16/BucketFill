@@ -10,8 +10,9 @@ package com.bfa.controller;
  * @author kaushiknsiyer
  */
 public class TimeTableSlot {
+
     private int hour;
-    private String subject,room,teacher;
+    private String subject, room, teacher;
 
     public TimeTableSlot() {
     }
@@ -23,7 +24,6 @@ public class TimeTableSlot {
         this.teacher = teacher;
     }
 
-    
     public int getHour() {
         return hour;
     }
@@ -55,6 +55,5 @@ public class TimeTableSlot {
     public void setTeacher(String teacher) {
         this.teacher = teacher;
     }
-    
-    
+
 }

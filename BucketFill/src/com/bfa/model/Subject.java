@@ -16,8 +16,8 @@ import java.util.logging.Logger;
  *
  * @author mahesh
  */
-public class Subject implements DBConnection{
-    
+public class Subject implements DBConnection {
+
     private String name = null, courseCode = null;
     private int theory = 0;
     private boolean lab, tutorial, elective, selfStudy;
@@ -77,12 +77,12 @@ public class Subject implements DBConnection{
     public void setTheory(int theory) {
         this.theory = theory;
     }
-    public static void copyItemsToList(ResultSet resultSet, ArrayList<Subject> subjectList){
+
+    public static void copyItemsToList(ResultSet resultSet, ArrayList<Subject> subjectList) {
         try {
-            for(int i=0;resultSet.next();i++)
-            {
+            for (int i = 0; resultSet.next(); i++) {
                 Subject temp = new Subject();
-                
+
                 temp.courseCode = resultSet.getString(1);
                 temp.name = resultSet.getString(2);
                 temp.theory = resultSet.getInt(3);
@@ -90,121 +90,117 @@ public class Subject implements DBConnection{
                 temp.tutorial = resultSet.getBoolean(5);
                 temp.elective = resultSet.getBoolean(6);
                 temp.selfStudy = resultSet.getBoolean(7);
-                
+
                 subjectList.add(temp);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Subject.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
-    
-    public static void copyItemsToList(ResultSet resultSet, Subject temp){
-        try {                
-                temp.courseCode = resultSet.getString(1);
-                temp.name = resultSet.getString(2);
-                temp.theory = resultSet.getInt(3);
-                temp.lab = resultSet.getBoolean(4);
-                temp.tutorial = resultSet.getBoolean(5);
-                temp.elective = resultSet.getBoolean(6);
-                temp.selfStudy = resultSet.getBoolean(7);
-                
+    }
+
+    public static void copyItemsToList(ResultSet resultSet, Subject temp) {
+        try {
+            temp.courseCode = resultSet.getString(1);
+            temp.name = resultSet.getString(2);
+            temp.theory = resultSet.getInt(3);
+            temp.lab = resultSet.getBoolean(4);
+            temp.tutorial = resultSet.getBoolean(5);
+            temp.elective = resultSet.getBoolean(6);
+            temp.selfStudy = resultSet.getBoolean(7);
+
         } catch (SQLException ex) {
             Logger.getLogger(Subject.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
-    
-    public static ArrayList<Subject> getAllDetails(){
-        try{
-                     
+    }
+
+    public static ArrayList<Subject> getAllDetails() {
+        try {
+
             Connection myConnection = DBConnection.createConnection();
             Statement myStatement = myConnection.createStatement();
             String simpleQuery = "select * from Subject";
-            ResultSet rs = myStatement.executeQuery(simpleQuery);            
-            ArrayList<Subject> subjectList = new ArrayList<>(); 
-            
+            ResultSet rs = myStatement.executeQuery(simpleQuery);
+            ArrayList<Subject> subjectList = new ArrayList<>();
+
             copyItemsToList(rs, subjectList);
-            
+
             myConnection.close();
             return subjectList;
-        }
-        catch(Exception e){
-            System.out.println(e+" Occured in get all details");
+        } catch (Exception e) {
+            System.out.println(e + " Occured in get all details");
             return null;
         }
     }
-    public static ArrayList<Subject> getDetailsByCourseCode(String courseCode){
-        try{
-                       
+
+    public static ArrayList<Subject> getDetailsByCourseCode(String courseCode) {
+        try {
+
             Connection myConnection = DBConnection.createConnection();
-            
+
             PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT * FROM Subject WHERE CourseCode = ?");
             myPreStatement.setString(1, courseCode);
-            
+
             ResultSet rs = myPreStatement.executeQuery();
-            ArrayList<Subject> subjectList = new ArrayList<>(); 
-            
+            ArrayList<Subject> subjectList = new ArrayList<>();
+
             copyItemsToList(rs, subjectList);
-            
+
             myConnection.close();
             return subjectList;
-        }
-        catch(Exception e){
-            System.out.println(e+" Occured in get details by id");
+        } catch (Exception e) {
+            System.out.println(e + " Occured in get details by id");
             return null;
         }
     }
-    
-    public static ArrayList<Subject> getSubjectByYear(int year){
-        
+
+    public static ArrayList<Subject> getSubjectByYear(int year) {
+
         Connection myConnection = DBConnection.createConnection();
         ResultSet rs = null;
-        ArrayList<Subject> subjectList = new ArrayList<>();   
-        
-        try{
-            
+        ArrayList<Subject> subjectList = new ArrayList<>();
+
+        try {
+
             PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT * FROM Subject");
             rs = myPreStatement.executeQuery();
-            switch(year)
-            {
-                case 2: for(int i=0;rs.next();i++)
-                        {
-                            if(Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 3 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 4){
-                                Subject temp = new Subject();
-                                copyItemsToList(rs, temp);
-                                subjectList.add(temp);
-                            }
-                            
+            switch (year) {
+                case 2:
+                    for (int i = 0; rs.next(); i++) {
+                        if (Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 3 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 4) {
+                            Subject temp = new Subject();
+                            copyItemsToList(rs, temp);
+                            subjectList.add(temp);
                         }
-                        break;
-                case 3: for(int i=0;rs.next();i++)
-                        {
-                            if(Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 5 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 6){
-                                Subject temp = new Subject();
-                                copyItemsToList(rs, temp);
-                                subjectList.add(temp);
-                            }
-                            
+
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; rs.next(); i++) {
+                        if (Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 5 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 6) {
+                            Subject temp = new Subject();
+                            copyItemsToList(rs, temp);
+                            subjectList.add(temp);
                         }
-                        break;
-                case 4: for(int i=0;rs.next();i++)
-                        {
-                            if(Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 7 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 8){
-                                Subject temp = new Subject();
-                                copyItemsToList(rs, temp);
-                                subjectList.add(temp);
-                            }
-                            
+
+                    }
+                    break;
+                case 4:
+                    for (int i = 0; rs.next(); i++) {
+                        if (Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 7 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 8) {
+                            Subject temp = new Subject();
+                            copyItemsToList(rs, temp);
+                            subjectList.add(temp);
                         }
-                        break;
+
+                    }
+                    break;
             }
             myConnection.close();
             return subjectList;
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Error in getSubjectDetailsByYear");
             return null;
         }
     }
-    
+
 }
