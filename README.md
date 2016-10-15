@@ -1,1 +1,1 @@
-# BucketFill is a time table generator program aimed at easing the cumbersome process of creating a time table manually. The program is being built using Java.
+# BucketFill is aimed to be an intelligent time table generator to give the user a near-perfect time table from the given requirements.
