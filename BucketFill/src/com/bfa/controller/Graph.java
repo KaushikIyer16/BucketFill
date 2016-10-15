@@ -19,16 +19,8 @@ public class Graph {
     static ArrayList<Subject> subjectGraph[] = new ArrayList[3];
     
     private static void populateGraphForYear(int year){
-        ArrayList<Subject> subjectList = Subject.getSubjectByYear(year);
-        ArrayList<Subject> tmpList = subjectList;
-//        List<Subject> theoryList= Subject.getTheorySubjects(year);
-//        
-//        
-//        List<Subject> tutorialList= Subject.getTutorialSubjects(year);
-//        
-//        
-//        List<Subject> practicalList= Subject.getPracticalsubjects(year);
-        
+
+        ArrayList<Subject> tmpList = Subject.getSubjectByYear(year);
         Graph.subjectGraph[0] = Graph.getTheorySubjects(tmpList);
         tmpList = Subject.getSubjectByYear(year);
         Graph.subjectGraph[1] = Graph.getTutorialSubjects(tmpList);
