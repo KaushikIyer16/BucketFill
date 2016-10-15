@@ -18,17 +18,14 @@ public class Allot {
     private String[] daysOfWeek = {"monday","tuesday","wednesday","thursday",
         "friday","saturday","sunday"};
 
-//    1st index: number of classes, 2nd index: number of days, 3rd index: number of slots
-    private TimeTableSlot[][][] TimeTable = new TimeTableSlot[6][6][6];
-    
     public static int NUMBER_OF_LABS = 4;
     public static int NUMBER_OF_ROOMS = 4;
+    public static int NUMBER_OF_HOURS = 6;
     
+    //    1st index: number of classes, 2nd index: number of days, 3rd index: number of slots
+    private TimeTableSlot[][][] TimeTable = new TimeTableSlot[6][6][NUMBER_OF_HOURS];
     
-    ArrayList<Subject> getSubjectDetails=new ArrayList<>();
-    ArrayList<Section> getSectionDetails=new ArrayList<>();
-    Iterator sectionIterator;
-    
+//    the below list should contain the names of the rooms available
     public static ArrayList<String> rooms = new ArrayList<>();
     
     private void preProcessing(boolean [][]occupancyMatrix,int dayOfWeek){
@@ -67,6 +64,7 @@ public class Allot {
         }
         
     }
+    
     private void getAllDetails()
     {
         //the main randomize logic should run for a full week > in a day for a year > in a year for every class
@@ -80,8 +78,8 @@ public class Allot {
             this.preProcessing(occupancyMatrix,day);
             
             for (int year = 2; year <= 4; year++) {
-                getSectionDetails = Section.getSectionByYear(year);
-                sectionIterator = getSectionDetails.iterator();
+                ArrayList<Section> getSectionDetails = Section.getSectionByYear(year);
+                Iterator sectionIterator = getSectionDetails.iterator();
 
                 System.out.println("--> For year : "+year);
                 System.out.println("Section Name || Semester || Subject || Teacher ");
