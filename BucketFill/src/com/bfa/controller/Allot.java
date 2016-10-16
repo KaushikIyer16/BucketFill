@@ -110,9 +110,10 @@ public class Allot {
             Iterator sectionIterator = sectionSet.iterator();
             while(sectionIterator.hasNext()){
                 SectionPriority tmp = (SectionPriority)sectionIterator.next();
-                Graph.printGraphForClassName(tmp.getYear()+tmp.getSection());
+                System.out.println(tmp.getYear()+""+tmp.getSection());
+//                Graph.printGraphForClassName(tmp.getYear()+tmp.getSection());
 //                 now below get the graph for that class and get a room from the occupancy matrix and then fill them in the timetable variable and then remove them from the pool
-
+                Graph.getClassForHour(tmp.getYear(), tmp.getSection(), 1);
             }
         }
         
