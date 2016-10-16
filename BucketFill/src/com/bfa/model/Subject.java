@@ -37,6 +37,22 @@ public class Subject implements DBConnection {
             return false;
     }
 
+    public int getLab() {
+        return lab;
+    }
+
+    public int getTutorial() {
+        return tutorial;
+    }
+
+    public int getElective() {
+        return elective;
+    }
+
+    public int getSelfStudy() {
+        return selfStudy;
+    }
+
     public void setLab(int lab) {
         this.lab = lab;
     }

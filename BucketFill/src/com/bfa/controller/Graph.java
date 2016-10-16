@@ -38,7 +38,7 @@ public class Graph {
     }
     
     @Debug
-    private static void printGraph() {
+    public static void printGraph() {
         Iterator gIt = graph.keySet().iterator();
         while(gIt.hasNext()){
             String className = gIt.next().toString();
@@ -84,12 +84,41 @@ public class Graph {
         return graph[0].isEmpty() && graph[1].isEmpty() && graph[2].isEmpty();
     }
     
+    private static void updateGraph(ArrayList<Subject>[] graph,int n,int currSubject){
+        if (n == 0) {
+            int newTheory = graph[n].get(currSubject).getTheory() -1;
+            if(newTheory == 0){
+                graph[n].remove(currSubject);
+            }else{
+                graph[n].get(currSubject).setTheory(newTheory);
+            }
+            
+        } else if(n == 1){
+            int newTutorial = graph[n].get(currSubject).getTutorial() -1;
+            if (newTutorial == 0) {
+                graph[n].remove(currSubject);
+            } else {
+                graph[n].get(currSubject).setTutorial(newTutorial);
+            }
+            
+        }else{
+            int newPractical = graph[n].get(currSubject).getLab() -1;
+            if (newPractical == 0) {
+                graph[n].remove(currSubject);
+            } else {
+                graph[n].get(currSubject).setLab(newPractical);
+            }
+            
+        }
+    }
+    
     public static void getClassForHour(int year,String section,int hour){
         ArrayList<Subject>[] sectionGraph = Graph.getGraphForSection(year+section);
-        if (hour%2 == 0) {
+        Random random = new Random();
+        if (hour%2 == 1) {
             
         } else {
-            Random random = new Random();
+            
             int n = random.nextInt(3);
             boolean isEmptyGraph = Graph.isEmptyGraph(sectionGraph);
             while (!isEmptyGraph && sectionGraph[n].isEmpty() ) {                
@@ -99,8 +128,9 @@ public class Graph {
                 System.out.println(n);
                 int currSubject = random.nextInt(sectionGraph[n].size());
                 Subject subject = sectionGraph[n].get(currSubject);
-                System.out.println(subject.getName()+" "+subject.getCourseCode());
-                System.out.println("");
+                Graph.updateGraph(sectionGraph, n, currSubject);
+                
+                
             }
         }
     }
