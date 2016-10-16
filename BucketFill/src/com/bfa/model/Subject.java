@@ -20,7 +20,7 @@ public class Subject implements DBConnection {
 
     private String name = null, courseCode = null;
     private int theory = 0;
-    private boolean lab, tutorial, elective, selfStudy;
+    private int lab, tutorial, elective, selfStudy;
 
     public String getCourseCode() {
         return courseCode;
@@ -31,34 +31,46 @@ public class Subject implements DBConnection {
     }
 
     public boolean hasLab() {
-        return lab;
+        if(lab > 0)
+            return true;
+        else
+            return false;
     }
 
-    public void setLab(boolean lab) {
+    public void setLab(int lab) {
         this.lab = lab;
     }
 
     public boolean hasTutorial() {
-        return tutorial;
+        if(tutorial > 0)
+            return true;
+        else
+            return false;
     }
 
-    public void setTutorial(boolean tutorial) {
+    public void setTutorial(int tutorial) {
         this.tutorial = tutorial;
     }
 
     public boolean hasElective() {
-        return elective;
+        if(elective > 0)
+            return true;
+        else
+            return false;
     }
 
-    public void setElective(boolean elective) {
+    public void setElective(int elective) {
         this.elective = elective;
     }
 
     public boolean hasSelfStudy() {
-        return selfStudy;
+        if(selfStudy > 0)
+            return true;
+        else
+            return false;
     }
 
-    public void setSelfStudy(boolean selfStudy) {
+    public void setSelfStudy(int selfStudy) {
         this.selfStudy = selfStudy;
     }
 
@@ -86,10 +98,10 @@ public class Subject implements DBConnection {
                 temp.courseCode = resultSet.getString(1);
                 temp.name = resultSet.getString(2);
                 temp.theory = resultSet.getInt(3);
-                temp.lab = resultSet.getBoolean(4);
-                temp.tutorial = resultSet.getBoolean(5);
-                temp.elective = resultSet.getBoolean(6);
-                temp.selfStudy = resultSet.getBoolean(7);
+                temp.lab = resultSet.getInt(4);
+                temp.tutorial = resultSet.getInt(5);
+                temp.elective = resultSet.getInt(6);
+                temp.selfStudy = resultSet.getInt(7);
 
                 subjectList.add(temp);
             }
@@ -103,10 +115,10 @@ public class Subject implements DBConnection {
             temp.courseCode = resultSet.getString(1);
             temp.name = resultSet.getString(2);
             temp.theory = resultSet.getInt(3);
-            temp.lab = resultSet.getBoolean(4);
-            temp.tutorial = resultSet.getBoolean(5);
-            temp.elective = resultSet.getBoolean(6);
-            temp.selfStudy = resultSet.getBoolean(7);
+            temp.lab = resultSet.getInt(4);
+            temp.tutorial = resultSet.getInt(5);
+            temp.elective = resultSet.getInt(6);
+            temp.selfStudy = resultSet.getInt(7);
 
         } catch (SQLException ex) {
             Logger.getLogger(Subject.class.getName()).log(Level.SEVERE, null, ex);
