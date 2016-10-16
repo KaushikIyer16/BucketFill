@@ -95,7 +95,7 @@ public class Allot {
             }
         }
         
-        // below statement initializes the graph for the 
+        // below statement initializes the graph for the given set of sections
         Graph.init(sectionSet);
 
         //the main randomize logic should run for a full week > in a day for a year > in a year for every class

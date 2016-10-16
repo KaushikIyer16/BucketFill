@@ -5,6 +5,7 @@
  */
 package com.bfa.controller;
 
+import com.bfa.beans.Debug;
 import com.bfa.beans.SectionPriority;
 import com.bfa.model.Subject;
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ public class Graph {
         
         return subjectGraph;
     }
-
+    
+    @Debug
     private static void printGraph() {
         Iterator gIt = graph.keySet().iterator();
         while(gIt.hasNext()){
@@ -55,7 +57,7 @@ public class Graph {
         
     }
     
-    
+    @Debug
     public static void printGraphForClassName(String className) {
         
         System.out.println(className+":>");
