@@ -111,13 +111,28 @@ public class Allot {
             while(sectionIterator.hasNext()){
                 SectionPriority tmp = (SectionPriority)sectionIterator.next();
                 System.out.println(tmp.getYear()+""+tmp.getSection());
-//                Graph.printGraphForClassName(tmp.getYear()+tmp.getSection());
 //                 now below get the graph for that class and get a room from the occupancy matrix and then fill them in the timetable variable and then remove them from the pool
-                Graph.getClassForHour(tmp.getYear(), tmp.getSection(), 2);
+                int hour = 1;
+                while(hour <= 6){
+                    System.out.println("hour: "+hour);
+                    Subject subject = Graph.getClassForHour(tmp.getYear(), tmp.getSection(), hour);
+                    if (subject != null) {
+                        System.out.println(subject.getCourseCode()+"   "+Graph.getLtps());
+                        int retLtps = Graph.getLtps();
+                        if (retLtps == 0) {
+                            hour+=1;
+                        } else {
+                            hour+=2;
+                        }
+                    }else{
+                        break;
+                    }
+                    
+                }
+                
             }
         }
         
-        Graph.printGraph();
     }
 
     public static void main(String args[]) {

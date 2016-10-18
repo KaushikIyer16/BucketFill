@@ -9,6 +9,7 @@ import com.bfa.beans.Debug;
 import com.bfa.beans.SectionPriority;
 import com.bfa.model.Subject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -21,8 +22,17 @@ import java.util.TreeSet;
  */
 public class Graph {
 
+    public static int getLtps() {
+        return ltps;
+    }
+
+    public static void setLtps(int ltps) {
+        Graph.ltps = ltps;
+    }
+
     
     static HashMap<String,ArrayList<Subject>[]> graph = new HashMap<>();
+    private static int ltps = 0;
 
     private ArrayList<Subject>[] populateGraphForYear(int year) {
         ArrayList<Subject> subjectGraph[] = new ArrayList[3];
@@ -112,26 +122,32 @@ public class Graph {
         }
     }
     
-    public static void getClassForHour(int year,String section,int hour){
+    public static Subject getClassForHour(int year,String section,int hour){
         ArrayList<Subject>[] sectionGraph = Graph.getGraphForSection(year+section);
+        boolean isEmptyGraph = Graph.isEmptyGraph(sectionGraph);
         Random random = new Random();
-        if (hour%2 == 1) {
+        if (hour%2 == 0 && !isEmptyGraph) {
+            
+            ltps = 0;
+            int currSubject = random.nextInt(sectionGraph[0].size());
+            Subject subject = sectionGraph[0].get(currSubject);
+            Graph.updateGraph(sectionGraph, 0, currSubject);
+            return subject;
             
         } else {
             
-            int n = random.nextInt(3);
-            boolean isEmptyGraph = Graph.isEmptyGraph(sectionGraph);
-            while (!isEmptyGraph && sectionGraph[n].isEmpty() ) {                
-                n = random.nextInt(3);
+            ltps = random.nextInt(3);
+            while (!isEmptyGraph && sectionGraph[ltps].isEmpty() ) {                
+                ltps = random.nextInt(3);
             }
             if(!isEmptyGraph){
-                System.out.println(n);
-                int currSubject = random.nextInt(sectionGraph[n].size());
-                Subject subject = sectionGraph[n].get(currSubject);
-                Graph.updateGraph(sectionGraph, n, currSubject);
+                int currSubject = random.nextInt(sectionGraph[ltps].size());
+                Subject subject = sectionGraph[ltps].get(currSubject);
+                Graph.updateGraph(sectionGraph, ltps, currSubject);
                 
-                
+                return subject;
             }
+            return null;
         }
     }
     
