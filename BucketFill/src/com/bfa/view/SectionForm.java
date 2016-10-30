@@ -6,26 +6,45 @@
 package com.bfa.view;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
+import javafx.util.converter.DefaultStringConverter;
 
 /**
  *
  * @author mahesh
  */
 public class SectionForm extends Application {
+    
+    TableView<ViewTestClass> tableOne = new TableView<>();
+    final ObservableList<ViewTestClass> data =
+        FXCollections.observableArrayList(
+            new ViewTestClass("A", "Z", "a@example.com","A"),
+            new ViewTestClass("B", "X", "b@example.com","B"),
+            new ViewTestClass("C", "W", "c@example.com","C"),
+            new ViewTestClass("D", "Y", "d@example.com","D"),
+            new ViewTestClass("E", "V", "e@example.com","E")
+        );
+    
+    ObservableList<String> options = FXCollections.observableArrayList("A", "B");
 
     @Override
     public void start(Stage primaryStage) {
@@ -64,14 +83,26 @@ public class SectionForm extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        TableView tableOne = new TableView();
         tableOne.setEditable(true);
+                
 
         TableColumn firstNameCol = new TableColumn("First Name");
+        firstNameCol.setCellValueFactory(new PropertyValueFactory<ViewTestClass,String>("firstName"));
+        
         TableColumn lastNameCol = new TableColumn("Last Name");
+        lastNameCol.setCellValueFactory(new PropertyValueFactory<ViewTestClass,String>("lastName"));
+        
         TableColumn emailCol = new TableColumn("Email");
+        emailCol.setCellValueFactory(new PropertyValueFactory<ViewTestClass,String>("email"));
+        
+        TableColumn optionsCol = new TableColumn("Option Selection");
+        optionsCol.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), options));
+        
+        //firstNameCol.setCellFactory(ComboBoxTableCell.forTableColumn("A", "B", "C"));
 
-        tableOne.getColumns().addAll(firstNameCol, lastNameCol, emailCol);
+        tableOne.setItems(data);
+        tableOne.getColumns().addAll(firstNameCol, lastNameCol, emailCol, optionsCol);
+        
         grid.add(tableOne, 1, 10);
 
         Button confirmButton = new Button();
