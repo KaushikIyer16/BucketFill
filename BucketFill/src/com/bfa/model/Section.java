@@ -182,9 +182,7 @@ public class Section implements DBConnection {
             return 0;
         }
     }
-    public static void insertDetails(String[] subjectList, String[][] sectionMatrix){
-        for(String[] i : sectionMatrix)
-            for(String j : i)
-                System.out.print(j);
+    public static void insertDetails(ArrayList<Subject> subjectList,String [][] teacherMatrix){
+        
     }
 }
