@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Oct 04, 2016 at 01:28 PM
+-- Generation Time: Nov 18, 2016 at 11:23 AM
 -- Server version: 5.5.42
 -- PHP Version: 7.0.0
 
@@ -26,6 +26,30 @@ CREATE TABLE `Lab` (
   `TotalSlots` int(11) DEFAULT NULL,
   `FreeSlots` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Lab`
+--
+
+INSERT INTO `Lab` (`Name`, `DayOfWeek`, `TotalSlots`, `FreeSlots`) VALUES
+('CCP', 'MONDAY', 3, 3),
+('CCP', 'TUESDAY', 3, 3),
+('CCP', 'WEDNESDAY', 3, 3),
+('CCP', 'THURSDAY', 3, 3),
+('CCP', 'FRIDAY', 3, 3),
+('CCP', 'SATURDAY', 2, 2),
+('ISE1', 'MONDAY', 3, 3),
+('ISE1', 'TUESDAY', 3, 3),
+('ISE1', 'WEDNESDAY', 3, 3),
+('ISE1', 'THURSDAY', 3, 3),
+('ISE1', 'FRIDAY', 3, 3),
+('ISE1', 'SATURDAY', 2, 2),
+('ISE2', 'MONDAY', 3, 3),
+('ISE2', 'TUESDAY', 3, 3),
+('ISE2', 'WEDNESDAY', 3, 3),
+('ISE2', 'THURSDAY', 3, 3),
+('ISE2', 'FRIDAY', 3, 3),
+('ISE2', 'SATURDAY', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -90,7 +114,9 @@ INSERT INTO `Section` (`TeacherID`, `Subject`, `Semester`, `Name`) VALUES
 (23, 'CCP', 1, 'E'),
 (24, 'TFCS', 3, 'A'),
 (24, 'CCP', 1, 'G'),
-(25, 'MULTICORE', 1, 'PG');
+(25, 'MULTICORE', 1, 'PG'),
+(26, 'Discrete Mathematics', 3, 'A'),
+(27, 'Discrete Mathematics', 3, 'B');
 
 -- --------------------------------------------------------
 
@@ -115,8 +141,25 @@ CREATE TABLE `Slot` (
   `Name` varchar(10) DEFAULT NULL,
   `ClassName` varchar(10) DEFAULT NULL,
   `Subject` varchar(30) DEFAULT NULL,
-  `StartTime` time DEFAULT NULL
+  `StartTime` time DEFAULT NULL,
+  `DayOfWeek` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Slot`
+--
+
+INSERT INTO `Slot` (`Name`, `ClassName`, `Subject`, `StartTime`, `DayOfWeek`) VALUES
+('CCP', '1A', 'CCP', '08:55:00', 'TUESDAY'),
+('CCP', '1B', 'CCP', '08:55:00', 'SATURDAY'),
+('CCP', '1C', 'CCP', '11:15:00', 'THURSDAY'),
+('CCP', '1D', 'CCP', '11:15:00', 'SATURDAY'),
+('CCP', '1E', 'CCP', '08:55:00', 'WEDNESDAY'),
+('CCP', '1F', 'CCP', '11:15:00', 'MONDAY'),
+('CCP', '1G', 'CCP', '11:15:00', 'TUESDAY'),
+('CCP', '1H', 'CCP', '11:15:00', 'WEDNESDAY'),
+('CCP', '1J', 'CCP', '11:15:00', 'FRIDAY'),
+('CCP', '1K', 'CCP', '14:55:00', 'TUESDAY');
 
 -- --------------------------------------------------------
 
@@ -128,10 +171,10 @@ CREATE TABLE `Subject` (
   `CourseCode` varchar(11) DEFAULT NULL,
   `Name` varchar(30) DEFAULT NULL,
   `Theory` int(11) DEFAULT NULL,
-  `Lab` tinyint(1) DEFAULT NULL,
-  `Tutorial` tinyint(1) DEFAULT NULL,
-  `Elective` tinyint(1) DEFAULT NULL,
-  `SelfStudy` tinyint(1) DEFAULT NULL
+  `Lab` int(11) DEFAULT NULL,
+  `Tutorial` int(11) DEFAULT NULL,
+  `Elective` int(11) DEFAULT NULL,
+  `SelfStudy` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -192,7 +235,54 @@ INSERT INTO `Teacher` (`ID`, `Name`, `Hours`) VALUES
 (22, 'DR. SANDEEP VARMA N', 16),
 (23, 'SWETHA K', 16),
 (24, 'R INDIRA', 16),
-(25, 'DR. B G PRASAD', 8);
+(25, 'DR. B G PRASAD', 8),
+(26, 'ACM', 16),
+(27, 'RS', 16);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `TeacherSection`
+--
+
+CREATE TABLE `TeacherSection` (
+  `TeacherID` int(11) DEFAULT NULL,
+  `CourseCode` varchar(11) DEFAULT NULL,
+  `Section` varchar(5) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `TeacherSubject`
+--
+
+CREATE TABLE `TeacherSubject` (
+  `TeacherID` int(11) DEFAULT NULL,
+  `CourseCode` varchar(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `TeacherSubject`
+--
+
+INSERT INTO `TeacherSubject` (`TeacherID`, `CourseCode`) VALUES
+(5, '16IS5DCDCN'),
+(7, '15IS3DCTFC'),
+(8, '16IS5DEDMG'),
+(9, '16IS5DCWEP'),
+(10, '16IS5DCDCN'),
+(11, '16IS5DCJAV'),
+(12, '16IS5DCJAV'),
+(13, '15IS3DCDSC'),
+(14, '15IS3DCDSC'),
+(15, '16IS5DCWEP'),
+(17, '16IS5DCDBM'),
+(18, '16IS5DCDBM'),
+(19, '16IS5DEAIN'),
+(24, '15IS3DCTFC'),
+(15, '15CI3GCPCP'),
+(9, '15CI3GCPCP');
 
 --
 -- Indexes for dumped tables
@@ -211,6 +301,18 @@ ALTER TABLE `Teacher`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `TeacherSection`
+--
+ALTER TABLE `TeacherSection`
+  ADD KEY `teachersection_tid_fk` (`TeacherID`);
+
+--
+-- Indexes for table `TeacherSubject`
+--
+ALTER TABLE `TeacherSubject`
+  ADD KEY `teachersubject_tid_fk` (`TeacherID`);
+
+--
 -- Constraints for dumped tables
 --
 
@@ -219,3 +321,15 @@ ALTER TABLE `Teacher`
 --
 ALTER TABLE `Section`
   ADD CONSTRAINT `section_teacherid_fk` FOREIGN KEY (`TeacherID`) REFERENCES `Teacher` (`ID`);
+
+--
+-- Constraints for table `TeacherSection`
+--
+ALTER TABLE `TeacherSection`
+  ADD CONSTRAINT `teachersection_tid_fk` FOREIGN KEY (`TeacherID`) REFERENCES `Teacher` (`ID`);
+
+--
+-- Constraints for table `TeacherSubject`
+--
+ALTER TABLE `TeacherSubject`
+  ADD CONSTRAINT `teachersubject_tid_fk` FOREIGN KEY (`TeacherID`) REFERENCES `Teacher` (`ID`);

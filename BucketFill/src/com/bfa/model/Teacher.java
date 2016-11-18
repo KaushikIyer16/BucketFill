@@ -117,4 +117,33 @@ public class Teacher implements DBConnection {
             return null;
         }
     }
+    
+    public static void insertDetails(String[] name, int[] ID, int[] hours, String[][] subjects) {
+        try {
+
+            Connection myConnection = DBConnection.createConnection();
+            PreparedStatement myPreStatement;
+            for(int i = 0; i < name.length; i++){
+                myPreStatement = myConnection.prepareStatement("INSERT INTO Teacher VALUES(?,?,?)");
+                myPreStatement.setInt(1, ID[i]);
+                myPreStatement.setString(2, name[i]);
+                myPreStatement.setInt(3, hours[i]);
+                myPreStatement.execute();
+            }
+            for(int i = 0; i < name.length; i++){
+                myPreStatement = myConnection.prepareStatement("INSERT INTO TeacherSubject VALUES(?,?)");
+                myPreStatement.setInt(1, ID[i]);
+                for(int j=0; j < subjects[i].length;j++){
+                    myPreStatement.setString(2, subjects[i][j]);
+                    myPreStatement.execute();
+                }
+                
+            }
+            
+            myConnection.close();
+        } catch (Exception e) {
+            System.out.println(e + " Occured in insert details");
+        }
+    }
+    
 }
