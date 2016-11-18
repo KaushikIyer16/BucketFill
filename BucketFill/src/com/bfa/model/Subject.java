@@ -230,5 +230,31 @@ public class Subject implements DBConnection {
             return null;
         }
     }
+    public static void insertDetails(String[] courseCode, String[] name, int[] l, int[] t, int[] p, int[] s, boolean[] elective){
+        Connection myConnection = DBConnection.createConnection();
+        
+        PreparedStatement myPreStatement;
+        try {
+            myPreStatement = myConnection.prepareStatement("INSERT INTO Subject VALUES(?,?,?,?,?,?,?)");
+            for(int i = 0;i < name.length; i++){
+                
+                myPreStatement.setString(1, courseCode[i]);
+                myPreStatement.setString(2, name[i]);
+                myPreStatement.setInt(3, l[i]);
+                myPreStatement.setInt(4, t[i]);
+                myPreStatement.setInt(5, p[i]);
+                myPreStatement.setInt(6, s[i]);
+                myPreStatement.setBoolean(7, elective[i]);
+                
+                if(!myPreStatement.execute())
+                    System.out.println("Problem in prepared stmt in insertDetails in Subject.java");
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Subject.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
+    }
 
 }

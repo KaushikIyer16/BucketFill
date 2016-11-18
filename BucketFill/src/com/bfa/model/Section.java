@@ -182,4 +182,7 @@ public class Section implements DBConnection {
             return 0;
         }
     }
+    public static void insertDetails(){
+        
+    }
 }

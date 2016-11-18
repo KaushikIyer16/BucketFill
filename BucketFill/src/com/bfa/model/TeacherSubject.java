@@ -58,4 +58,31 @@ public class TeacherSubject implements DBConnection {
             return null;
         }
     }
+    public static ArrayList<String> getTeacherBySubject(String subject) {
+        try {
+            String subjectName = "";
+            Connection myConnection = DBConnection.createConnection();
+
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT CourseCode FROM Subject WHERE Name LIKE ?");
+            myPreStatement.setString(1, subject); 
+            ResultSet rs = myPreStatement.executeQuery();
+            for (int i = 0; rs.next(); i++) {
+                subjectName = rs.getString(1);
+            }
+            myPreStatement = myConnection.prepareStatement("SELECT Name FROM Teacher WHERE ID IN(SELECT TeacherID FROM TeacherSubject WHERE CourseCode LIKE ?)");
+            myPreStatement.setString(1, subjectName);
+            rs = myPreStatement.executeQuery();
+            
+            ArrayList<String> teacherList = new ArrayList<>();
+            for (int i = 0; rs.next(); i++) {
+                teacherList.add(rs.getString(1));
+            }
+                
+            myConnection.close();
+            return teacherList;
+        } catch (Exception e) {
+            System.out.println(e + " Occured in get all details");
+            return null;
+        }
+    }
 }
