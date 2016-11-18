@@ -165,16 +165,20 @@ public class SectionForm extends Application {
                  for(int h = 0;h< Integer.parseInt((String)noOfSections.getText());h++){
                      //System.out.println(Integer.parseInt((String)noOfSections.getText()));
                      matrix[m][h] = teachBox[m][h].getValue().toString();
+                     System.out.print(matrix[m][h]);
                     }
+                         System.out.println();
                  }
-                     
+               Section.insertDetails(arrList,matrix,3);      
             }
-                 int year = 3;//Please send year along with the other details
-                 Section.insertDetails(arrList,matrix,year);
             }
              
         });
         }});
+        
+       
+            
+
        
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);

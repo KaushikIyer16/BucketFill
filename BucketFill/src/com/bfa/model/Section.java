@@ -182,6 +182,7 @@ public class Section implements DBConnection {
             return 0;
         }
     }
+
     public static void insertDetails(ArrayList<Subject> subjectList ,String[][] sectionMatrix, int year){
         
         Connection myConnection = DBConnection.createConnection();

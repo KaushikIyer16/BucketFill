@@ -5,6 +5,7 @@
  */
 package com.bfa.view;
 
+import com.bfa.model.Subject;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -32,6 +33,9 @@ public class SubjectForm extends Application {
     
     TextField l[],t[],p[],s[], courseCode[],subjName[];
     ComboBox elect[];
+    int l1[], t1[], p1[], ss[];
+    boolean electiveSubject[];
+    String cc[], sn[];
                 
     //ArrayList<String> courseCode = new ArrayList<>();
     //ArrayList<String> subjName = new ArrayList<>();
@@ -96,6 +100,14 @@ public class SubjectForm extends Application {
                 t = new TextField[number];
                 p = new TextField[number];
                 s = new TextField[number];
+                l1= new int[number];
+                t1= new int[number];
+                p1= new int[number];
+                ss= new int[number];
+                electiveSubject= new boolean[number];
+                cc= new String[number];
+                sn= new String[number];
+                
                 elect = new ComboBox[number];
                 courseCode = new TextField[number];
                 subjName = new TextField[number];
@@ -135,37 +147,22 @@ public class SubjectForm extends Application {
                             System.out.println("Booyah!");
                             return;
                         }
+                        
                         System.out.println(courseCode[i].getText());
-                            
+                     l1[i]=Integer.parseInt(l[i].getText());
+                     t1[i]=Integer.parseInt(t[i].getText());
+                     p1[i]=Integer.parseInt(p[i].getText());
+                     ss[i]=Integer.parseInt(s[i].getText());
+                     electiveSubject[i]=Boolean.parseBoolean(elect[i].getValue().toString());
+                     cc[i]=l[i].getText();
+                     sn[i]=l[i].getText();
                     }    
                     
-               
+               Subject.insertDetails(cc, sn, l1, t1, p1, ss, electiveSubject);
                 }}); 
         
        
-            //String temp = arrList.get(i);
-            
-        
-        //TextField noofSub = new TextField();
-        //grid.add(noofSub, 0, 8);
-        //String s1=noofSub.getText();
-        //System.out.println(s1);
-        //int nos=Integer.parseInt(s1);
-       
-        /*btn1.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                //btn1.setVisible(false);
-                for (int i = 1; i <= Integer.parseInt((String) subBox.getValue()); i++) {
-                    Label subno = new Label("SUBJECT " + i + ":");
-                    grid.add(subno, 0, i + 8);
-                    TextField subname = new TextField();
-                    grid.add(subname, 1, i + 8);
-
-                }
-            }
-        });*/
+           
 
        }}); 
         final Text actiontarget = new Text();
