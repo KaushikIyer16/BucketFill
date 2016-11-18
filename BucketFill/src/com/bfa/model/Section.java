@@ -182,7 +182,7 @@ public class Section implements DBConnection {
             return 0;
         }
     }
-    public static void insertDetails(){
+    public static void insertDetails(ArrayList<Subject> subjectList,String [][] teacherMatrix){
         
     }
 }

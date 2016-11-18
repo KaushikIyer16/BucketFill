@@ -33,7 +33,10 @@ public class InfrastructureForm extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("INFRASTRUCTURE FORM");
         GridPane grid = new GridPane();
+        GridPane gp = new GridPane();
+        gp.setAlignment(Pos.CENTER_LEFT);
         grid.setAlignment(Pos.TOP_CENTER);
+        gp.add(new Label("enter all the fields"),0,22);
         grid.setHgap(10);
         grid.setVgap(15);
         grid.setPadding(new Insets(25, 25, 25, 25));
@@ -62,9 +65,10 @@ public class InfrastructureForm extends Application {
             @Override
             public void handle(ActionEvent event) {
                 //btn1.setVisible(false);
-                if(numberOfLabs.getText().length()==0||numberOfClasses.getText().length()==0||!Character.isDigit(numberOfLabs.getText().charAt(0))||!Character.isDigit(numberOfClasses.getText().charAt(0))){
+                if(isValid(numberOfLabs.getText())||isValid(numberOfLabs.getText())){
                     numberOfLabs.setText("");
                     numberOfClasses.setText("");
+                    grid.add(new Label("enter valid values. (0-20)"),0,22);
                     return;
                 }
                 int noOfLabs = Integer.parseInt(numberOfLabs.getText().toString());
@@ -129,6 +133,12 @@ public class InfrastructureForm extends Application {
         //scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+    public boolean isValid(String  str){
+        boolean b = false;
+        if(str.length()==0||!Character.isDigit(str.charAt(0))||!Character.isDigit(str.charAt(0))||Integer.parseInt(str)>20)
+            b=true; 
+        return b;
     }
     public static void main(String[] args) {
         launch(args);
