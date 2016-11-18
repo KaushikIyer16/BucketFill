@@ -248,15 +248,12 @@ public class Subject implements DBConnection {
                     myPreStatement.setBoolean(7, true);
                 else
                     myPreStatement.setBoolean(7, false);
-                if(!myPreStatement.execute())
-                    System.out.println("Problem in prepared stmt in insertDetails in Subject.java");
-                
+                myPreStatement.execute();                
             }
         } catch (SQLException ex) {
             Logger.getLogger(Subject.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-
     }
 
 }
