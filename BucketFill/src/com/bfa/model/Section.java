@@ -191,7 +191,7 @@ public class Section implements DBConnection {
         try {
             
             PreparedStatement myPreStatement = myConnection.prepareStatement("INSERT INTO Section VALUES((SELECT ID from Teacher where Name like ?),?,?,?)");
-            
+            //Important: check for elective befor insert
             for(int i=0; i< subjectList.size(); i++){
                 char section = 'A';
                 String tempSubject = subjectList.get(i).getName();
