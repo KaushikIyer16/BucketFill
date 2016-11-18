@@ -49,16 +49,16 @@ public class Lab implements DBConnection{
     }
     
     
-    public static void insertDetails(ArrayList<Lab> labName){
+    public static void insertDetails(ArrayList<String> labName){
         String[] days = {"MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"};
         Connection myConnection = DBConnection.createConnection();
         
         PreparedStatement myPreStatement;
         try {
             myPreStatement = myConnection.prepareStatement("INSERT INTO Lab VALUES(?,?,?,?)");
-            for(Lab l : labName){
-                myPreStatement.setString(1, l.getName());
-                for(int i=0; i<7; i++){
+            for(String l : labName){
+                myPreStatement.setString(1, l);
+                for(int i=0; i<6; i++){
                     myPreStatement.setString(2, days[i]);
                     myPreStatement.setInt(3, 3);
                     myPreStatement.setInt(4, 3);
