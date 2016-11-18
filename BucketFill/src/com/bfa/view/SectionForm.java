@@ -107,7 +107,7 @@ public class SectionForm extends Application {
                 }
                 System.out.println(i);
                  
-                 arrList =  Subject.getSubjectByYear(2);
+                 arrList =  Subject.getSubjectByYear(3);
                  for(Subject itr: arrList){
                      System.out.println(itr.getName());
                  }
@@ -165,16 +165,18 @@ public class SectionForm extends Application {
                  for(int h = 0;h< Integer.parseInt((String)noOfSections.getText());h++){
                      //System.out.println(Integer.parseInt((String)noOfSections.getText()));
                      matrix[m][h] = teachBox[m][h].getValue().toString();
+                     System.out.print(matrix[m][h]);
                     }
+                         System.out.println();
                  }
-                     
+               Section.insertDetails(arrList,matrix);      
             }
             }
              
         });
         }});
         
-       Section.insertDetails(arrList,matrix);
+       
             
 
        
