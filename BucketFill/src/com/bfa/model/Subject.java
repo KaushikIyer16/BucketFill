@@ -230,7 +230,7 @@ public class Subject implements DBConnection {
             return null;
         }
     }
-    public static void insertDetails(String[] courseCode, String[] name, int[] l, int[] t, int[] p, int[] s, boolean[] elective){
+    public static void insertDetails(String[] courseCode, String[] name, int[] l, int[] t, int[] p, int[] s, String[] elective){
         Connection myConnection = DBConnection.createConnection();
         
         PreparedStatement myPreStatement;
@@ -244,8 +244,10 @@ public class Subject implements DBConnection {
                 myPreStatement.setInt(4, t[i]);
                 myPreStatement.setInt(5, p[i]);
                 myPreStatement.setInt(6, s[i]);
-                myPreStatement.setBoolean(7, elective[i]);
-                
+                if(elective[i].equalsIgnoreCase("YES"))
+                    myPreStatement.setBoolean(7, true);
+                else
+                    myPreStatement.setBoolean(7, false);
                 if(!myPreStatement.execute())
                     System.out.println("Problem in prepared stmt in insertDetails in Subject.java");
                 

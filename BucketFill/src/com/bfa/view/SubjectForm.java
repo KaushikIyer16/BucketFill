@@ -34,7 +34,7 @@ public class SubjectForm extends Application {
     TextField l[],t[],p[],s[], courseCode[],subjName[];
     ComboBox elect[];
     int l1[], t1[], p1[], ss[];
-    boolean electiveSubject[];
+    String electiveSubject[];
     String cc[], sn[];
                 
     //ArrayList<String> courseCode = new ArrayList<>();
@@ -104,7 +104,7 @@ public class SubjectForm extends Application {
                 t1= new int[number];
                 p1= new int[number];
                 ss= new int[number];
-                electiveSubject= new boolean[number];
+                electiveSubject= new String[number];
                 cc= new String[number];
                 sn= new String[number];
                 
@@ -153,9 +153,9 @@ public class SubjectForm extends Application {
                      t1[i]=Integer.parseInt(t[i].getText());
                      p1[i]=Integer.parseInt(p[i].getText());
                      ss[i]=Integer.parseInt(s[i].getText());
-                     electiveSubject[i]=Boolean.parseBoolean(elect[i].getValue().toString());
-                     cc[i]=l[i].getText();
-                     sn[i]=l[i].getText();
+                     electiveSubject[i]=elect[i].getValue().toString();
+                     cc[i]=courseCode[i].getText().toUpperCase();
+                     sn[i]=subjName[i].getText();
                     }    
                     
                Subject.insertDetails(cc, sn, l1, t1, p1, ss, electiveSubject);
