@@ -5,9 +5,16 @@
  */
 package com.bfa.view;
 
+import com.bfa.model.Subject;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -25,6 +32,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import javafx.util.converter.DefaultStringConverter;
 
@@ -34,80 +42,105 @@ import javafx.util.converter.DefaultStringConverter;
  */
 public class SectionForm extends Application {
     
-    TableView<ViewTestClass> tableOne = new TableView<>();
-    final ObservableList<ViewTestClass> data =
-        FXCollections.observableArrayList(
-            new ViewTestClass("A", "Z", "a@example.com","A"),
-            new ViewTestClass("B", "X", "b@example.com","B"),
-            new ViewTestClass("C", "W", "c@example.com","C"),
-            new ViewTestClass("D", "Y", "d@example.com","D"),
-            new ViewTestClass("E", "V", "e@example.com","E")
-        );
-    
-    ObservableList<String> options = FXCollections.observableArrayList("A", "B");
-
+    int i;
+    //TableView<ViewTestClass> table2 = new TableView<>();
+    ComboBox[][] teachBox;
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SECTION FORM");
-        primaryStage.setMaximized(true);
         GridPane grid = new GridPane();
+        grid.setStyle("-fx-background-color: white");
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(15);
         grid.setPadding(new Insets(25, 25, 25, 25));
-        Text scenetitle = new Text("ENTER DETAILS FOR SECTIONS");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        grid.add(scenetitle, 0, 0, 2, 1);
+        Text scenetitle = new Text("YEAR 2");
+        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
+        grid.add(scenetitle, 0, 0, 4, 1);
 
-        Label yearOfStudy = new Label("YEAR:");
-        grid.add(yearOfStudy, 0, 1);
+        Label teacherName = new Label("ENTER THE NUMBER OF SECTIONS:");
+        grid.add(teacherName, 0, 3);
 
-        final ComboBox desBox = new ComboBox();
-        desBox.getItems().addAll(
-                "2",
-                "3",
-                "4"
-        );
-        desBox.setValue("");
-        grid.add(desBox, 1, 1);
+        TextField noOfSections = new TextField();
+        noOfSections.setPrefWidth(80);
+        grid.add(noOfSections, 1, 3);
+        Button setButton = new Button();
+        setButton.setText("CONFIRM");
+        grid.add(setButton,2,3);
+        Label subjectNames = new Label("SUBJECTS");
+        setButton.setOnAction(new EventHandler<ActionEvent>() {
 
-        Label numberOfSections = new Label("NUMBER OF SECTIONS:");
-        grid.add(numberOfSections, 3, 1);
+            @Override
+            public void handle(ActionEvent event) {
+                //btn1.setVisible(false);
+                grid.add(subjectNames,0,5);
+                char c = 'A';
+                for (i = 1; i <= Integer.parseInt((String)noOfSections.getText()); i++) {
+                    /*Label subno = new Label("SUBJECT " + i + ":");
+                    grid.add(subno, 0, i + 5);
+                    TextField subName1 = new TextField();
+                    grid.add(subName1, 1, i + 5);
+                    TextField subName2 = new TextField();
+                    grid.add(subName2, 2, i + 5);*/
+                    Label sectionNames = new Label("SECTION "+String.valueOf(c));
+                    sectionNames.setPrefWidth(80);
+                    grid.add(sectionNames,i,5);
+                    c++;
+                }
+                System.out.println(i);
+                 ArrayList<Subject> arrList = new ArrayList<>();
+                 arrList =  Subject.getSubjectByYear(2);
+                //arrList.add("JAVA");
+                //arrList.add("DATA MINING");
+                //arrList.add("DBMS");
+                //arrList.add("WEB PROGRAMMING");
+                //arrList.add("DCN");
+                teachBox = new ComboBox[arrList.size()][Integer.parseInt((String)noOfSections.getText())];
+                 char b='A',e='B';
+                for(int j=0;j<arrList.size();j++){
+                    Label getSubject = new Label(arrList.get(j).getName());
+                    
+                    grid.add(getSubject, 0, 7+j);
+                    for(int k=1;k<i;k++){
+                        teachBox[j][k-1] = new ComboBox();
+                        teachBox[j][k-1].getItems().addAll(String.valueOf(b),String.valueOf(e));
+                        teachBox[j][k-1].setValue("");
+                        grid.add(teachBox[j][k-1], k, 7+j);
+                    }
+                    b++;
+                    e++;
+                }
+        }});
+        
+       
+            
 
-        TextField sectionField = new TextField();
-        grid.add(sectionField, 4, 1);
+        Button btn = new Button("SUBMIT");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.CENTER);
+        hbBtn.getChildren().add(btn);
+        grid.add(hbBtn, 5, 15);
+        btn.setOnAction(new EventHandler<ActionEvent>() {
 
+            @Override
+            public void handle(ActionEvent event) {
+       
+               
+                 if(teachBox[0][0].getValue().toString().equalsIgnoreCase("0"))
+                 {
+                     System.out.println("Not entered properly");
+                 }
+                
+               
+            }
+             
+        });
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
         Scene scene = new Scene(grid, 300, 275);
+        //scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        tableOne.setEditable(true);
-                
-
-        TableColumn firstNameCol = new TableColumn("First Name");
-        firstNameCol.setCellValueFactory(new PropertyValueFactory<ViewTestClass,String>("firstName"));
-        
-        TableColumn lastNameCol = new TableColumn("Last Name");
-        lastNameCol.setCellValueFactory(new PropertyValueFactory<ViewTestClass,String>("lastName"));
-        
-        TableColumn emailCol = new TableColumn("Email");
-        emailCol.setCellValueFactory(new PropertyValueFactory<ViewTestClass,String>("email"));
-        
-        TableColumn optionsCol = new TableColumn("Option Selection");
-        optionsCol.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), options));
-        
-        //firstNameCol.setCellFactory(ComboBoxTableCell.forTableColumn("A", "B", "C"));
-
-        tableOne.setItems(data);
-        tableOne.getColumns().addAll(firstNameCol, lastNameCol, emailCol, optionsCol);
-        
-        grid.add(tableOne, 1, 10);
-
-        Button confirmButton = new Button();
-        confirmButton.setText("Set");
-        grid.add(confirmButton, 1, 15);
     }
 
     /**
