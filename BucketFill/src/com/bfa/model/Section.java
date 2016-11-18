@@ -182,7 +182,36 @@ public class Section implements DBConnection {
             return 0;
         }
     }
-    public static void insertDetails(ArrayList<Subject> subjectList,String [][] teacherMatrix){
+    public static void insertDetails(ArrayList<Subject> subjectList ,String[][] sectionMatrix, int year){
         
+        Connection myConnection = DBConnection.createConnection();
+        ResultSet rs = null;
+
+        try {
+            
+            PreparedStatement myPreStatement = myConnection.prepareStatement("INSERT INTO Section VALUES((SELECT ID from Teacher where Name like ?),?,?,?)");
+            
+            for(int i=0; i< subjectList.size(); i++){
+                char section = 'A';
+                String tempSubject = subjectList.get(i).getName();
+                int tempTeacherID = 0;
+                for(int j = 0; j<sectionMatrix[i].length; j++){
+                    myPreStatement.setString(1, sectionMatrix[i][j]);
+                    myPreStatement.setString(2, tempSubject);
+                    if(year == 2)
+                        myPreStatement.setInt(3, 3);
+                    else if(year == 3)
+                        myPreStatement.setInt(3, 5);
+                    else
+                        myPreStatement.setInt(3, 7);
+                    myPreStatement.setString(4, String.valueOf(section++));
+                    myPreStatement.execute();
+                }
+            }
+            
+            myConnection.close();
+        } catch (Exception e) {
+            System.out.println("Error in insert detail in section " + e);
+        }
     }
 }

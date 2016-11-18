@@ -5,8 +5,11 @@
  */
 package com.bfa.view;
 
+import com.bfa.model.Section;
 import com.bfa.model.Subject;
+import com.bfa.model.TeacherSubject;
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Application;
@@ -45,6 +48,9 @@ public class SectionForm extends Application {
     int i;
     //TableView<ViewTestClass> table2 = new TableView<>();
     ComboBox[][] teachBox;
+    String[][] matrix;
+    int subjectSize;
+    ArrayList<Subject> arrList = new ArrayList<>();
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SECTION FORM");
@@ -68,11 +74,23 @@ public class SectionForm extends Application {
         setButton.setText("CONFIRM");
         grid.add(setButton,2,3);
         Label subjectNames = new Label("SUBJECTS");
+        subjectNames.setFont(Font.font("Tahoma",FontWeight.BOLD,25));
         setButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                //btn1.setVisible(false);
+                
+                Label lbl = new Label("enter valid values. (Digits only)");
+                int tim = 0;
+                if(tim==1)
+                        lbl.setVisible(false);
+                if(isValid(noOfSections.getText())){
+                    noOfSections.setText("");
+                    grid.add(lbl,0,22);
+                    lbl.setVisible(true);
+                    tim =1;
+                    return;
+                }
                 grid.add(subjectNames,0,5);
                 char c = 'A';
                 for (i = 1; i <= Integer.parseInt((String)noOfSections.getText()); i++) {
@@ -88,34 +106,36 @@ public class SectionForm extends Application {
                     c++;
                 }
                 System.out.println(i);
-                 ArrayList<Subject> arrList = new ArrayList<>();
-                 arrList =  Subject.getSubjectByYear(2);
+                 
+                 arrList =  Subject.getSubjectByYear(3);
+                 for(Subject itr: arrList){
+                     System.out.println(itr.getName());
+                 }
                 //arrList.add("JAVA");
                 //arrList.add("DATA MINING");
                 //arrList.add("DBMS");
                 //arrList.add("WEB PROGRAMMING");
                 //arrList.add("DCN");
-                teachBox = new ComboBox[arrList.size()][Integer.parseInt((String)noOfSections.getText())];
-                 char b='A',e='B';
+               teachBox = new ComboBox[arrList.size()][Integer.parseInt((String)noOfSections.getText())];
+               matrix = new String[arrList.size()][Integer.parseInt((String)noOfSections.getText())];
+                 subjectSize = arrList.size();
                 for(int j=0;j<arrList.size();j++){
                     Label getSubject = new Label(arrList.get(j).getName());
-                    
+                    ArrayList <String> teacherSubject = TeacherSubject.getTeacherBySubject(arrList.get(j).getName());
+                    getSubject.setMinWidth(150);
                     grid.add(getSubject, 0, 7+j);
+                    
                     for(int k=1;k<i;k++){
                         teachBox[j][k-1] = new ComboBox();
-                        teachBox[j][k-1].getItems().addAll(String.valueOf(b),String.valueOf(e));
+                        for(int ct = 0;ct<teacherSubject.size();ct++)
+                            teachBox[j][k-1].getItems().add(teacherSubject.get(ct));
                         teachBox[j][k-1].setValue("");
+                        teachBox[j][k-1].setPrefWidth(100);
                         grid.add(teachBox[j][k-1], k, 7+j);
                     }
-                    b++;
-                    e++;
+                    
                 }
-        }});
-        
-       
-            
-
-        Button btn = new Button("SUBMIT");
+                 Button btn = new Button("SUBMIT");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.CENTER);
         hbBtn.getChildren().add(btn);
@@ -124,17 +144,38 @@ public class SectionForm extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-       
+                boolean flag=false;
+                 for(int m=0;m<subjectSize;m++){
+                     
+                 
+                 for(int h = 0;h< Integer.parseInt((String)noOfSections.getText());h++){
+                     //System.out.println(Integer.parseInt((String)noOfSections.getText()));
+                    
+                 if(teachBox[m][h].getValue().toString().equalsIgnoreCase(""))
+                     flag=true;
+                     }
                
-                 if(teachBox[0][0].getValue().toString().equalsIgnoreCase("0"))
-                 {
-                     System.out.println("Not entered properly");
+            }
+                 if(flag)
+                     return;
+                 else{
+                     for(int m=0;m<subjectSize;m++){
+                     
+                 
+                 for(int h = 0;h< Integer.parseInt((String)noOfSections.getText());h++){
+                     //System.out.println(Integer.parseInt((String)noOfSections.getText()));
+                     matrix[m][h] = teachBox[m][h].getValue().toString();
+                    }
                  }
-                
-               
+                     
+            }
+                 int year = 3;//Please send year along with the other details
+                 Section.insertDetails(arrList,matrix,year);
             }
              
         });
+        }});
+       
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
         Scene scene = new Scene(grid, 300, 275);
@@ -142,7 +183,13 @@ public class SectionForm extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
+    public boolean isValid(String  str){
+        boolean b = false;
+        if(str.length()==0||!Character.isDigit(str.charAt(0))||!Character.isDigit(str.charAt(0))||Integer.parseInt(str)>20)
+            b=true; 
+        return b;
+    }
+    
     /**
      * @param args the command line arguments
      */
