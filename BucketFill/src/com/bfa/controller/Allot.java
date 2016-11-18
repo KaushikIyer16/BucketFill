@@ -22,8 +22,8 @@ public class Allot {
         "friday", "saturday", "sunday"};
     private TreeSet<SectionPriority> sectionSet = new TreeSet<>();
 
-    public static int NUMBER_OF_LABS = 4;
-    public static int NUMBER_OF_ROOMS = 4;
+    public static int NUMBER_OF_LABS;
+    public static int NUMBER_OF_ROOMS;
     public static int NUMBER_OF_HOURS = 6;
 
     //    1st index: number of classes, 2nd index: number of days, 3rd index: number of slots

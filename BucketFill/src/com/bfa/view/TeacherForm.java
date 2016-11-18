@@ -73,7 +73,7 @@ public class TeacherForm extends Application {
                 "1",
                 "2"
         );
-        subBox.setValue("0");
+            subBox.setValue("0");
         grid.add(subBox, 0, 8);
         Button btn1 = new Button();
         btn1.setText("Confirm");
@@ -87,7 +87,7 @@ public class TeacherForm extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                btn1.setVisible(false);
+                //btn1.setVisible(false);
                 for (int i = 1; i <= Integer.parseInt((String) subBox.getValue()); i++) {
                     Label subno = new Label("SUBJECT " + i + ":");
                     grid.add(subno, 0, i + 8);
@@ -107,6 +107,7 @@ public class TeacherForm extends Application {
 
             @Override
             public void handle(ActionEvent event) {
+       
                 boolean flag1 = true;
                 boolean flag2 = true;
                 boolean flag3 = true;
@@ -146,7 +147,7 @@ public class TeacherForm extends Application {
                 //if(flag1&&flag2&&flag3&&flag4&&flag5)
                 //do the necessary connection
             }
-
+             
         });
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
