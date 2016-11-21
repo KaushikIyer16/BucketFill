@@ -5,6 +5,7 @@
  */
 package com.bfa.view;
 
+import com.bfa.model.Teacher;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Application;
@@ -33,6 +34,10 @@ import javafx.stage.Stage;
  */
 public class TeacherForm extends Application {
 
+    String name,designation;
+    String[] subjects = new String[2];
+    int hours,ID,noOfSubjects;
+    TextField subname,subname1,subname2;
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("TEACHER FORM");
@@ -88,13 +93,24 @@ public class TeacherForm extends Application {
             @Override
             public void handle(ActionEvent event) {
                 //btn1.setVisible(false);
-                for (int i = 1; i <= Integer.parseInt((String) subBox.getValue()); i++) {
-                    Label subno = new Label("SUBJECT " + i + ":");
-                    grid.add(subno, 0, i + 8);
-                    TextField subname = new TextField();
-                    grid.add(subname, 1, i + 8);
-
+                noOfSubjects = Integer.parseInt((String) subBox.getValue());
+                if(noOfSubjects == 1){
+                    Label subno = new Label("SUBJECT :");
+                    grid.add(subno, 0, 9);
+                    subname = new TextField();
+                    grid.add(subname, 1, 9);
                 }
+                else{
+                     Label subno1 = new Label("SUBJECT 1 :");
+                    grid.add(subno1, 0, 9);
+                    subname1 = new TextField();
+                    grid.add(subname1, 1, 9);
+                     Label subno2 = new Label("SUBJECT 2 :");
+                    grid.add(subno2, 0, 10);
+                    subname2 = new TextField();
+                    grid.add(subname2, 1, 10);
+                }
+               
             }
         });
 
@@ -108,6 +124,23 @@ public class TeacherForm extends Application {
             @Override
             public void handle(ActionEvent event) {
        
+                name = nameField.getText();
+                ID = Integer.parseInt(idField.getText());
+                designation = desBox.getValue().toString();
+                if(designation.equals("ASSISTANT PROFESSOR"))
+                    hours = 16;
+                else if(designation.equals("ASSOCIATE PROFESSOR"))
+                    hours = 12;
+                else
+                    hours = 8;
+                    
+                if(noOfSubjects == 1)
+                    subjects[0] = subname.getText();
+                else{
+                    subjects[0] = subname1.getText();
+                    subjects[1] = subname2.getText();
+                }
+                    
                 boolean flag1 = true;
                 boolean flag2 = true;
                 boolean flag3 = true;
@@ -135,24 +168,15 @@ public class TeacherForm extends Application {
                     flag4 = false;
 
                 }
-                /*for(int i=1;i<=Integer.parseInt((String) subBox.getValue());i++)
-                {
-                     Label subno= new Label("SUBJECT "+i+":");
-            grid.add(subno,0,i+8);
-            TextField subname=new TextField();
-            grid.add(subname,1,i+8);
-           
-                }*/
-
-                //if(flag1&&flag2&&flag3&&flag4&&flag5)
-                //do the necessary connection
-            }
+             Teacher.insertDetails(name, ID, hours, subjects);
              
-        });
+             primaryStage.close();   
+            }});
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
         Scene scene = new Scene(grid, 300, 275);
         primaryStage.setScene(scene);
+        
         primaryStage.show();
     }
 

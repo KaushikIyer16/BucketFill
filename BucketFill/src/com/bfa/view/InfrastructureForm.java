@@ -6,6 +6,8 @@
 package com.bfa.view;
 
 import com.bfa.controller.Allot;
+import com.bfa.model.Lab;
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,6 +31,7 @@ public class InfrastructureForm extends Application {
     int i;
     TextField labName[];
         TextField className[];
+        ArrayList<String> labNames = new ArrayList<>();
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("INFRASTRUCTURE FORM");
@@ -116,12 +119,12 @@ public class InfrastructureForm extends Application {
                     if(className[j].getText().equals("")){
                         grid.add(new Label("enter all the fields"),0,22);
                         return;
-                    }
-                        
+                    }      
                 }
-                
-                
-                
+                for(int m =0;m<noOfLabs;m++)
+                    labNames.add(labName[m].getText());
+                 
+                Lab.insertDetails(labNames);
                 }});
             
             
