@@ -118,27 +118,27 @@ public class Teacher implements DBConnection {
         }
     }
     
-    public static void insertDetails(String[] name, int[] ID, int[] hours, String[][] subjects) {
+    public static void insertDetails(String name, int ID, int hours, String[] subjects) {
         try {
 
             Connection myConnection = DBConnection.createConnection();
             PreparedStatement myPreStatement;
-            for(int i = 0; i < name.length; i++){
+            //for(int i = 0; i < name.length; i++){
                 myPreStatement = myConnection.prepareStatement("INSERT INTO Teacher VALUES(?,?,?)");
-                myPreStatement.setInt(1, ID[i]);
-                myPreStatement.setString(2, name[i]);
-                myPreStatement.setInt(3, hours[i]);
+                myPreStatement.setInt(1, ID);
+                myPreStatement.setString(2, name);
+                myPreStatement.setInt(3, hours);
                 myPreStatement.execute();
-            }
-            for(int i = 0; i < name.length; i++){
+            //}
+            //for(int i = 0; i < name.length; i++){
                 myPreStatement = myConnection.prepareStatement("INSERT INTO TeacherSubject VALUES(?,?)");
-                myPreStatement.setInt(1, ID[i]);
-                for(int j=0; j < subjects[i].length;j++){
-                    myPreStatement.setString(2, subjects[i][j]);
+                myPreStatement.setInt(1, ID);
+                for(int j=0; j < subjects.length;j++){
+                    myPreStatement.setString(2, subjects[j]);
                     myPreStatement.execute();
                 }
                 
-            }
+            //}
             
             myConnection.close();
         } catch (Exception e) {
