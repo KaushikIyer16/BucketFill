@@ -176,13 +176,14 @@ public class TeacherForm extends Application {
             }});
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
-        Screen screen = Screen.getPrimary();
+        /*Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         primaryStage.setX(bounds.getMinX());
         primaryStage.setY(bounds.getMinY());
         primaryStage.setWidth(bounds.getWidth());
-        primaryStage.setHeight(bounds.getHeight());
+        primaryStage.setHeight(bounds.getHeight());*/
         Scene scene = new Scene(grid);
+        primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -7,6 +7,8 @@ package com.bfa.view;
 
 import com.bfa.model.Subject;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -159,6 +161,7 @@ public class SubjectForm extends Application {
                     }    
                     
                Subject.insertDetails(cc, sn, l1, t1, p1, ss, electiveSubject);
+               
                 }}); 
         
        
@@ -167,9 +170,10 @@ public class SubjectForm extends Application {
        }}); 
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
-        Scene scene = new Scene(grid, 300, 275);
+        Scene scene = new Scene(grid);
         //scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(scene);
+        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
         
