@@ -125,6 +125,9 @@ public class InfrastructureForm extends Application {
                     labNames.add(labName[m].getText());
                  
                 Lab.insertDetails(labNames);
+                //TeacherForm tf = new TeacherForm();
+                //tf.start(primaryStage);
+                //primaryStage.close();
                 }});
             
             

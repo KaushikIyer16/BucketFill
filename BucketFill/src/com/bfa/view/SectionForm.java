@@ -169,7 +169,9 @@ public class SectionForm extends Application {
                     }
                          System.out.println();
                  }
-               Section.insertDetails(arrList,matrix,3);      
+               Section.insertDetails(arrList,matrix,3); 
+               //SectionForm sf = new SectionForm();
+               //sf.start(primaryStage);
             }
             }
              

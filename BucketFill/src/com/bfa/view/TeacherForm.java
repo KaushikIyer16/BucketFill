@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -26,6 +27,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -174,16 +176,21 @@ public class TeacherForm extends Application {
             }});
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
-        Scene scene = new Scene(grid, 300, 275);
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+        primaryStage.setX(bounds.getMinX());
+        primaryStage.setY(bounds.getMinY());
+        primaryStage.setWidth(bounds.getWidth());
+        primaryStage.setHeight(bounds.getHeight());
+        Scene scene = new Scene(grid);
         primaryStage.setScene(scene);
-        
         primaryStage.show();
     }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+   public static void main(String[] args) {
         launch(args);
     }
 
