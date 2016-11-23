@@ -224,6 +224,10 @@ public class Subject implements DBConnection {
                     break;
             }
             myConnection.close();
+            System.out.println("This is in the subject class\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            for(Subject subject: subjectList){
+                System.out.println(subject.getName()+" "+subject.getCourseCode());
+            }
             return subjectList;
         } catch (Exception e) {
             System.out.println("Error in getSubjectDetailsByYear");
