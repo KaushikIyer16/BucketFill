@@ -105,7 +105,7 @@ public class Section implements DBConnection {
     }
 
     public static String getSubjectNameByTeacherID(int id, int semester) {
-
+        /*Deprecated-->Please use the method in TeacherSubject.java*/
         Connection myConnection = DBConnection.createConnection();
         ResultSet rs = null;
 
