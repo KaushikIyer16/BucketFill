@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Nov 18, 2016 at 11:23 AM
+-- Generation Time: Nov 23, 2016 at 05:30 PM
 -- Server version: 5.5.42
 -- PHP Version: 7.0.0
 
@@ -251,6 +251,35 @@ CREATE TABLE `TeacherSection` (
   `Section` varchar(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `TeacherSection`
+--
+
+INSERT INTO `TeacherSection` (`TeacherID`, `CourseCode`, `Section`) VALUES
+(5, '16IS5DCDCN', '5A'),
+(7, '15IS3DCTFC', '3B'),
+(8, '16IS5DEDMG', '5A'),
+(9, '16IS5DCWEP', '5A'),
+(10, '16IS5DCDCN', '5B'),
+(11, '16IS5DCJAV', '5A'),
+(12, '16IS5DCJAV', '5B'),
+(13, '15IS3DCDSC', '3A'),
+(14, '15IS3DCDSC', '3B'),
+(15, '16IS5DCWEP', '5B'),
+(17, '16IS5DCDBM', '5A'),
+(18, '16IS5DCDBM', '5B'),
+(19, '16IS5DEAIN', '5A'),
+(24, '15IS3DCTFC', '3A'),
+(15, '15CI3GCPCP', '3A'),
+(9, '15CI3GCPCP', '3B'),
+(20, '14CS1ICCCP', '1C'),
+(18, '15IS3DCCOE', '3A'),
+(19, '15IS3DCCOE', '3B'),
+(21, '14CS1ICCCP', '1E'),
+(22, '14CS1ICCCP', '1D'),
+(26, '15MA3CCDMS', '3A'),
+(27, '15MA3CCDMS', '3B');
+
 -- --------------------------------------------------------
 
 --
@@ -282,7 +311,14 @@ INSERT INTO `TeacherSubject` (`TeacherID`, `CourseCode`) VALUES
 (19, '16IS5DEAIN'),
 (24, '15IS3DCTFC'),
 (15, '15CI3GCPCP'),
-(9, '15CI3GCPCP');
+(9, '15CI3GCPCP'),
+(20, '14CS1ICCCP'),
+(18, '15IS3DCCOE'),
+(19, '15IS3DCCOE'),
+(21, '14CS1ICCCP'),
+(22, '14CS1ICCCP'),
+(26, '15MA3CCDMS'),
+(27, '15MA3CCDMS');
 
 --
 -- Indexes for dumped tables

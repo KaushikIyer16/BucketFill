@@ -106,4 +106,28 @@ public class TeacherSubject implements DBConnection {
             return null;
         }
     }
+    
+    public static void insertDetails(int teacherID, String subjectName) {
+        try {
+            String courseCode = "";
+            Connection myConnection = DBConnection.createConnection();
+
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT CourseCode FROM Subject WHERE Name LIKE ?)");
+            myPreStatement.setString(1, subjectName); 
+            ResultSet rs = myPreStatement.executeQuery();
+            
+            for (int i = 0; rs.next(); i++) {
+                courseCode = rs.getString(1);
+            }
+            
+            myPreStatement = myConnection.prepareStatement("INSERT INTO TeacherSubject VALUES (?,?)");
+            myPreStatement.setInt(1, teacherID);
+            myPreStatement.setString(2, courseCode);
+            myPreStatement.executeQuery();
+            
+            myConnection.close();
+        } catch (Exception e) {
+            System.out.println(e + " Occured in get all details");
+        }
+    }
 }
