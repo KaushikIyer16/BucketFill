@@ -6,6 +6,8 @@
 package com.bfa.view;
 
 import com.bfa.model.Teacher;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Application;
@@ -151,9 +153,23 @@ public class TeacherForm extends Application {
                 Pattern p = Pattern.compile("[^a-z ]", Pattern.CASE_INSENSITIVE);
                 Matcher m = p.matcher(nameField.getText().toString());
                 boolean b = m.find();
-
+                Label label = new Label("ENTER A VALID NAME"); 
                 if (b) {
                     flag1 = false;
+                    grid.add(label,0,17);
+                    Timer timer = new Timer();
+                 TimerTask delayedThreadStartTask = new TimerTask() {
+                @Override
+                public void run() {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            label.setVisible(false);     
+                        }
+                        }).start();
+                    }
+                };
+                timer.schedule(delayedThreadStartTask,4000); 
                     nameField.setText("");
                 }
                 p = Pattern.compile("[^0-9 ]", Pattern.CASE_INSENSITIVE);
@@ -171,9 +187,10 @@ public class TeacherForm extends Application {
 
                 }
              Teacher.insertDetails(name, ID, hours, subjects);
-             
-             primaryStage.close();   
+             //primaryStage.close();
+                
             }});
+        
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
         /*Screen screen = Screen.getPrimary();

@@ -5,6 +5,7 @@
  */
 package com.bfa.controller;
 import com.bfa.beans.TeacherOccupation;
+import com.bfa.model.Teacher;
 import java.awt.BorderLayout;
 import java.util.*;
 
@@ -14,16 +15,31 @@ import java.util.*;
  */
 public class Occupancy {
     
-    public static int NUMBER_OF_TEACHERS = 10, NUMBER_OF_DAYS = 6, NUMBER_OF_HOURS = 9;
-    
-    public static void main(String[] args) {
-             boolean[][][] teacherOccupancy = new boolean[NUMBER_OF_TEACHERS][NUMBER_OF_DAYS][NUMBER_OF_HOURS];
-        List<String> teacherId= new ArrayList<String>();   
-        List<TeacherOccupation> teacherObj= new ArrayList<TeacherOccupation>();
-        TeacherOccupation obj = new TeacherOccupation();
-        SetterClass obj1=new SetterClass();
-        teacherObj=obj1.detailsSetter(teacherObj);
-        for(int i=0;i<teacherObj.size();i++)
+        static int NUMBER_OF_TEACHERS , NUMBER_OF_DAYS = 6, NUMBER_OF_HOURS = 6;
+        static boolean[][][] teacherOccupancy;
+        static ArrayList<Teacher> teacherDetails= new ArrayList<Teacher>();
+        static ArrayList<String> teacherNames= new ArrayList<String>();
+        public static void setDetails(){     
+        
+        teacherDetails = Teacher.getAllDetails();
+        Occupancy.NUMBER_OF_TEACHERS = teacherDetails.size();
+        teacherOccupancy = new boolean[NUMBER_OF_TEACHERS][NUMBER_OF_DAYS][NUMBER_OF_HOURS];
+        for(int i =0;i<teacherDetails.size();i++){
+            teacherNames.add(teacherDetails.get(i).getName());
+        }
+        for(int i=0;i<NUMBER_OF_TEACHERS;i++){
+            for(int j =0 ;j<NUMBER_OF_DAYS;j++){
+                for(int k =0 ;k<NUMBER_OF_DAYS;k++){
+                    teacherOccupancy[i][j][k]=false;
+                }
+            }
+        }
+        
+        //List<TeacherOccupation> teacherObj= new ArrayList<TeacherOccupation>();
+        //TeacherOccupation obj = new TeacherOccupation();
+        //SetterClass obj1=new SetterClass();
+        //teacherObj=obj1.detailsSetter(teacherObj);
+       /* for(int i=0;i<teacherObj.size();i++)
         {
                    obj=teacherObj.get(i);
 		   int day=obj.get_dayOfTheWeek();
@@ -34,10 +50,18 @@ public class Occupancy {
 	
            
         }
-        	   System.out.println(teacherId);
+        	   System.out.println(teacherId);*/
         	  // System.out.println(teacherOccupancy[1][3][3]);
                   //Input any proper value to get output
     }
+    public static boolean[][] getOccupancyMatrix(String name){
+        return teacherOccupancy[teacherNames.indexOf(name)];
+    }
+    public static void setOccupancyMatrix(String name, boolean[][] occupancy){
+        teacherOccupancy[teacherNames.indexOf(name)]=occupancy; 
+    }
+   
+        
 }
              /* teacherName.add("nalini");
               teacherName.add("shwetha");

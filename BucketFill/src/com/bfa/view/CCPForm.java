@@ -5,6 +5,7 @@
  */
 package com.bfa.view;
 
+import com.bfa.controller.Occupancy;
 import com.bfa.model.TeacherSubject;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -34,12 +35,14 @@ public class CCPForm extends Application {
 
     ArrayList<String> ccpTeachers = new ArrayList<>();
     CheckBox [][]slots;
+    boolean [][] buffer;
     boolean[][][] occupancy;
     String teacherName;
     public CCPForm() {
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Occupancy.setDetails();
         primaryStage.setTitle("SECTION FORM");
         GridPane grid = new GridPane();
         grid.setStyle("-fx-background-color: white");
@@ -81,6 +84,8 @@ public class CCPForm extends Application {
                 @Override
                 public void handle(ActionEvent event){
                     teacherName = teacherList.getValue().toString();
+                    
+                    buffer =Occupancy.getOccupancyMatrix(teacherName);
                     Label []time =new Label[6];
                     time[0] = new Label("8:55 - 9:50");
                     time[1]= new Label("9:50 - 10:45");
@@ -108,6 +113,8 @@ public class CCPForm extends Application {
                           slots[i][j] = new CheckBox();
                           slots[i][j].setPrefWidth(100);
                           slots[i][j].setAlignment(Pos.CENTER_RIGHT);
+                          if(buffer[i][j])
+                              slots[i][j].setSelected(true);
                           grid.add(slots[i][j],i+1,8+j);
                       }
                   }  
@@ -117,7 +124,6 @@ public class CCPForm extends Application {
                   Label label = new Label("YOU HAVE ENTERED THE SUBMIT BUTTON");
                   grid.add(label,i,11+j);
                     Timer timer = new Timer();
-
                  TimerTask delayedThreadStartTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -138,20 +144,20 @@ public class CCPForm extends Application {
                         for(int i =0;i<6;i++){
                             for(int j=0;j<6;j++){
                                 if(slots[i][j].isSelected())
-                                    occupancy[ccpTeachers.indexOf(teacherName)][j][i] = true;
+                                    buffer[j][i] = true;
                                 else
-                                    occupancy[ccpTeachers.indexOf(teacherName)][j][i] = false;
+                                    buffer[j][i] = false;
                             }
                         }
                         for(int i =0;i<6;i++){
                             for(int j=0;j<6;j++){
                                 
-                                    System.out.print(occupancy[ccpTeachers.indexOf(teacherName)][i][j]+"   ");
+                                    System.out.print(buffer[i][j]+"   ");
                                 
                             }
                             System.out.println();
                         }
-                        
+                        Occupancy.setOccupancyMatrix(teacherName,buffer);
                         
                         
                     }});
