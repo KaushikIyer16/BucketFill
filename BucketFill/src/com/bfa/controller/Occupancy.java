@@ -59,6 +59,16 @@ public class Occupancy {
     }
     public static void setOccupancyMatrix(String name, boolean[][] occupancy){
         teacherOccupancy[teacherNames.indexOf(name)]=occupancy; 
+        /*for(int i=0;i<NUMBER_OF_TEACHERS;i++){
+            System.out.println(teacherNames.get(i));
+            for(int j =0 ;j<NUMBER_OF_DAYS;j++){
+                for(int k =0 ;k<NUMBER_OF_DAYS;k++){
+                    System.out.print(teacherOccupancy[i][j][k]+"   ");
+                }
+                System.out.println();
+            }
+            System.out.println();
+        }*/  
     }
    
         

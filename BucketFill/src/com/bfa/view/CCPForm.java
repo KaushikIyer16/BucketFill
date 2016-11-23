@@ -115,7 +115,8 @@ public class CCPForm extends Application {
                           slots[i][j].setAlignment(Pos.CENTER_RIGHT);
                           if(buffer[i][j])
                               slots[i][j].setSelected(true);
-                          grid.add(slots[i][j],i+1,8+j);
+                          
+                          grid.add(slots[i][j],j+1,8+i);
                       }
                   }  
                     
@@ -144,9 +145,9 @@ public class CCPForm extends Application {
                         for(int i =0;i<6;i++){
                             for(int j=0;j<6;j++){
                                 if(slots[i][j].isSelected())
-                                    buffer[j][i] = true;
+                                    buffer[i][j] = true;
                                 else
-                                    buffer[j][i] = false;
+                                    buffer[i][j] = false;
                             }
                         }
                         for(int i =0;i<6;i++){
