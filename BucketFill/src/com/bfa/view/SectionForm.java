@@ -10,6 +10,7 @@ import com.bfa.model.Subject;
 import com.bfa.model.TeacherSubject;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Application;
@@ -45,6 +46,7 @@ import javafx.util.converter.DefaultStringConverter;
  */
 public class SectionForm extends Application {
     
+    int p = 2;
     int i;
     //TableView<ViewTestClass> table2 = new TableView<>();
     ComboBox[][] teachBox;
@@ -60,7 +62,7 @@ public class SectionForm extends Application {
         grid.setHgap(10);
         grid.setVgap(15);
         grid.setPadding(new Insets(25, 25, 25, 25));
-        Text scenetitle = new Text("YEAR 2");
+        Text scenetitle = new Text("YEAR "+p);
         scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
         grid.add(scenetitle, 0, 0, 4, 1);
 
@@ -79,19 +81,28 @@ public class SectionForm extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                
-                Label lbl = new Label("enter valid values. (Digits only)");
-                int tim = 0;
-                if(tim==1)
-                        lbl.setVisible(false);
                 if(isValid(noOfSections.getText())){
-                    noOfSections.setText("");
-                    grid.add(lbl,0,22);
-                    lbl.setVisible(true);
-                    tim =1;
-                    return;
+                     Label label = new Label("enter valid values. (Digits only)");
+                     grid.add(label,0,20);
+                     Timer timer = new Timer();
+                     TimerTask delayedThreadStartTask = new TimerTask() {
+                     @Override
+                     public void run() {
+                     new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            label.setVisible(false);     
+                        }
+                        }).start();
+                    }
+                };
+                timer.schedule(delayedThreadStartTask,6000);     
                 }
+                else{
+                    
+                setButton.setVisible(false);
                 grid.add(subjectNames,0,5);
+                
                 char c = 'A';
                 for (i = 1; i <= Integer.parseInt((String)noOfSections.getText()); i++) {
                     /*Label subno = new Label("SUBJECT " + i + ":");
@@ -107,7 +118,7 @@ public class SectionForm extends Application {
                 }
                 System.out.println(i);
                  
-                 arrList =  Subject.getSubjectByYear(3);
+                 arrList =  Subject.getSubjectByYear(p);
                  for(Subject itr: arrList){
                      System.out.println(itr.getName());
                  }
@@ -129,7 +140,7 @@ public class SectionForm extends Application {
                         teachBox[j][k-1] = new ComboBox();
                         for(int ct = 0;ct<teacherSubject.size();ct++)
                             teachBox[j][k-1].getItems().add(teacherSubject.get(ct));
-                        teachBox[j][k-1].setValue("");
+                        teachBox[j][k-1].setValue("  ");
                         teachBox[j][k-1].setPrefWidth(100);
                         grid.add(teachBox[j][k-1], k, 7+j);
                     }
@@ -151,13 +162,30 @@ public class SectionForm extends Application {
                  for(int h = 0;h< Integer.parseInt((String)noOfSections.getText());h++){
                      //System.out.println(Integer.parseInt((String)noOfSections.getText()));
                     
-                 if(teachBox[m][h].getValue().toString().equalsIgnoreCase(""))
+                 if(teachBox[m][h].getValue().toString().equalsIgnoreCase("  "))
                      flag=true;
+                     break;
                      }
                
             }
-                 if(flag)
-                     return;
+                 if(flag){
+                     Label label = new Label("SELECT TEACHERS FOR THE SUBJECTS");
+                     grid.add(label,0,20);
+                     Timer timer = new Timer();
+                     TimerTask delayedThreadStartTask = new TimerTask() {
+                     @Override
+                     public void run() {
+                     new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            label.setVisible(false);     
+                        }
+                        }).start();
+                    }
+                };
+                timer.schedule(delayedThreadStartTask,6000);     
+                 }
+                     
                  else{
                      for(int m=0;m<subjectSize;m++){
                      
@@ -169,13 +197,31 @@ public class SectionForm extends Application {
                     }
                          System.out.println();
                  }
-               Section.insertDetails(arrList,matrix,3); 
-               //SectionForm sf = new SectionForm();
-               //sf.start(primaryStage);
+               //Section.insertDetails(arrList,matrix,3); 
+               Label label = new Label("FORM SUBMISSION DONE.");
+                     grid.add(label,0,20);
+                     Timer timer = new Timer();
+                     TimerTask delayedThreadStartTask = new TimerTask() {
+                     @Override
+                     public void run() {
+                     new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            label.setVisible(false);     
+                        }
+                        }).start();
+                    }
+                };
+                timer.schedule(delayedThreadStartTask,6000);  
+               p++;
+               if(p<5)
+                start(primaryStage);
+               
             }
             }
              
         });
+       }
         }});
         
        

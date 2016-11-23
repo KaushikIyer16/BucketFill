@@ -58,11 +58,12 @@ public class InfrastructureForm extends Application {
 
         TextField numberOfLabs = new TextField();
         grid.add(numberOfLabs, 1, 5);
-        
+        Label inf1 = new Label("enter all the fields");
+        Label inf2 = new Label("enter all the fields");
         Button infSubmit = new Button();
         infSubmit.setText("CONFIRM");
         grid.add(infSubmit, 0, 8);
-        
+        Label nL = new Label("enter valid values. (0-20)");
         infSubmit.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -71,9 +72,11 @@ public class InfrastructureForm extends Application {
                 if(isValid(numberOfLabs.getText())||isValid(numberOfLabs.getText())){
                     numberOfLabs.setText("");
                     numberOfClasses.setText("");
-                    grid.add(new Label("enter valid values. (0-20)"),0,22);
+                    grid.add(nL,0,22);
                     return;
                 }
+                infSubmit.setVisible(false);
+                nL.setVisible(false);
                 int noOfLabs = Integer.parseInt(numberOfLabs.getText().toString());
                 int noOfClassrooms = Integer.parseInt(numberOfClasses.getText().toString());
                 Allot.NUMBER_OF_ROOMS = noOfClassrooms;
@@ -91,43 +94,48 @@ public class InfrastructureForm extends Application {
                    
                 }
                 i+=10;
+                int sum=0;
                 System.out.println(i);
-                grid.add(labs, 0, i++);
+                grid.add(labs, 3, 10);
                  for (int j = 1; j <= noOfLabs; j++) {
                     Label labNo = new Label("LAB " + j + ":");
-                    grid.add(labNo, 0, i);
+                    grid.add(labNo, 2, 10+j);
                     labName[j-1] = new TextField();
-                    grid.add(labName[j-1], 1, i++);
-
+                    grid.add(labName[j-1], 3, 10+j);
+                    sum=10+j;    
                 }
                 Button submitButton = new Button();
                 submitButton.setText("SUBMIT");
-                grid.add(submitButton, 1, i);
+                grid.add(submitButton, 1, sum+2);
                 submitButton.setOnAction(new EventHandler<ActionEvent> (){
                 
                 @Override
                 public void handle(ActionEvent event){
-                 boolean flag1=false;
-                 boolean flag2=false;
+                 boolean flag1=true;
+                 boolean flag2=true;
                 for(int j = 0;j<noOfLabs;j++){
                     if(labName[j].getText().equals("")){
-                        grid.add(new Label("enter all the fields"),0,22);
-                        return;
+                        grid.add(inf1,0,22);
+                        flag1=false;
                     }
                 }
                 for(int j = 0;j<noOfClassrooms;j++){
                     if(className[j].getText().equals("")){
-                        grid.add(new Label("enter all the fields"),0,22);
-                        return;
+                        grid.add(inf2,0,22);
+                        flag2=false;
                     }      
                 }
+                if(flag1&&flag2){
+                    inf1.setVisible(false);
+                    inf2.setVisible(false);
                 for(int m =0;m<noOfLabs;m++)
                     labNames.add(labName[m].getText());
                  
-                Lab.insertDetails(labNames);
+                //Lab.insertDetails(labNames);
                 //TeacherForm tf = new TeacherForm();
                 //tf.start(primaryStage);
                 //primaryStage.close();
+                }
                 }});
             
             

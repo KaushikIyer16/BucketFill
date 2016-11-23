@@ -40,7 +40,7 @@ public class TeacherForm extends Application {
 
     String name,designation;
     String[] subjects = new String[2];
-    int hours,ID,noOfSubjects;
+    int hours,ID,noOfSubjects,g1;
     TextField subname,subname1,subname2;
     @Override
     public void start(Stage primaryStage) {
@@ -123,40 +123,20 @@ public class TeacherForm extends Application {
         hbBtn.setAlignment(Pos.CENTER);
         hbBtn.getChildren().add(btn);
         grid.add(hbBtn, 0, 15);
+        g1=16;
         btn.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-       
+                boolean t1=true,t2=true,t3=true,t4=true,t5=true;
                 name = nameField.getText();
-                ID = Integer.parseInt(idField.getText());
-                designation = desBox.getValue().toString();
-                if(designation.equals("ASSISTANT PROFESSOR"))
-                    hours = 16;
-                else if(designation.equals("ASSOCIATE PROFESSOR"))
-                    hours = 12;
-                else
-                    hours = 8;
-                    
-                if(noOfSubjects == 1)
-                    subjects[0] = subname.getText();
-                else{
-                    subjects[0] = subname1.getText();
-                    subjects[1] = subname2.getText();
-                }
-                    
-                boolean flag1 = true;
-                boolean flag2 = true;
-                boolean flag3 = true;
-                boolean flag4 = true;
-                boolean flag5 = true;
-                Pattern p = Pattern.compile("[^a-z ]", Pattern.CASE_INSENSITIVE);
-                Matcher m = p.matcher(nameField.getText().toString());
-                boolean b = m.find();
-                Label label = new Label("ENTER A VALID NAME"); 
-                if (b) {
-                    flag1 = false;
-                    grid.add(label,0,17);
+                
+                
+                Label label = new Label("ENTER A VALID NAME");
+                Label label2 = new Label("SELECT A DESIGNATION");
+                Label label1 = new Label("ENTER A VALID TEACHER ID");
+                 if (isValidName(name)||name.equals("")) {
+                    grid.add(label,0,++g1);
                     Timer timer = new Timer();
                  TimerTask delayedThreadStartTask = new TimerTask() {
                 @Override
@@ -170,25 +150,149 @@ public class TeacherForm extends Application {
                     }
                 };
                 timer.schedule(delayedThreadStartTask,4000); 
-                    nameField.setText("");
+                    
+                    t1=false;
                 }
-                p = Pattern.compile("[^0-9 ]", Pattern.CASE_INSENSITIVE);
-                m = p.matcher(idField.getText().toString());
-                b = m.find();
-                if (b) {
-                    flag2 = false;
-                    idField.setText("");
-                }
-                if (desBox.getValue().toString().equalsIgnoreCase("NONE")) {
-                    flag3 = false;
-                }
-                if (subBox.getValue().toString().equalsIgnoreCase("0")) {
-                    flag4 = false;
-
-                }
-             Teacher.insertDetails(name, ID, hours, subjects);
-             //primaryStage.close();
                 
+                
+                if (isValidID(idField.getText())||idField.getText().equals("")) {
+                   grid.add(label1,0,++g1);
+                    Timer timer = new Timer();
+                 TimerTask delayedThreadStartTask = new TimerTask() {
+                @Override
+                public void run() {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            label1.setVisible(false);     
+                        }
+                        }).start();
+                    }
+                };
+                timer.schedule(delayedThreadStartTask,4000); 
+                 
+                   t2=false; 
+                }
+                designation = desBox.getValue().toString();
+                if(designation.equals("NONE")){
+                    grid.add(label2,0,++g1);
+                    Timer timer = new Timer();
+                 TimerTask delayedThreadStartTask = new TimerTask() {
+                @Override
+                public void run() {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            label2.setVisible(false);     
+                        }
+                        }).start();
+                    }
+                };
+                timer.schedule(delayedThreadStartTask,4000); 
+                t3=false;
+                }
+                else{
+                if(designation.equals("ASSISTANT PROFESSOR"))
+                    hours = 16;
+                else if(designation.equals("ASSOCIATE PROFESSOR"))
+                    hours = 12;
+                else
+                    hours = 8;
+                }
+                Label nv = new Label("SELECT A VALID NUMBER");
+                if(subBox.getValue().toString().equals("0")){
+                    grid.add(nv,0,++g1);
+                    Timer timer = new Timer();
+                 TimerTask delayedThreadStartTask = new TimerTask() {
+                @Override
+                public void run() {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            nv.setVisible(false);     
+                        }
+                        }).start();
+                    }
+                };
+                timer.schedule(delayedThreadStartTask,4000); 
+                t4=false;
+                }
+                else{
+                    noOfSubjects = Integer.parseInt(subBox.getValue().toString());
+                if(noOfSubjects == 1){
+                    subjects[0] = subname.getText();
+                    if(isValidName(subjects[0])||subjects[0].equals("")){
+                        Label notV = new Label("ENTER A VALID SUBJECT NAME");
+                         grid.add(notV,0,++g1);
+                         Timer timer = new Timer();
+                 TimerTask delayedThreadStartTask = new TimerTask() {
+                @Override
+                public void run() {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notV.setVisible(false);     
+                        }
+                        }).start();
+                    }
+                };
+                timer.schedule(delayedThreadStartTask,4000); 
+                t5=false;
+                    }
+                }
+                    
+                else{
+                    
+                    subjects[0] = subname1.getText();
+                    subjects[1] = subname2.getText();
+                     if(isValidName(subjects[0])||isValidName(subjects[1])||subjects[0].equals("")||subjects[1].equals("")){
+                        Label notV = new Label("ENTER A VALID SUBJECT NAME");
+                         grid.add(notV,0,++g1);
+                         Timer timer = new Timer();
+                 TimerTask delayedThreadStartTask = new TimerTask() {
+                @Override
+                public void run() {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notV.setVisible(false);     
+                        }
+                        }).start();
+                    }
+                };
+                timer.schedule(delayedThreadStartTask,4000); 
+                t5=false;
+                    }
+                    
+                }
+                }
+                
+                if(t1&&t2&&t3&&t4&&t5){
+                    ID = Integer.parseInt(idField.getText());
+                    System.out.println(" Booyah!!!");
+             
+                    Button next = new Button("NEXT TEACHER");
+                    Button done = new Button("NEXT FORM");
+                    grid.add(next,0,20);
+                    grid.add(done,1,20);
+                     next.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                    //primaryStage.close();
+                    //Teacher.insertDetails(name, ID, hours, subjects);    
+                    start(primaryStage); 
+                    }});
+                     done.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent event) {
+                    primaryStage.close();
+                    //Teacher.insertDetails(name, ID, hours, subjects);    
+                    //start(primaryStage); 
+                    }});
+                     
+                }
             }});
         
         final Text actiontarget = new Text();
@@ -204,6 +308,19 @@ public class TeacherForm extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    
+    public boolean isValidName(String n){
+        Pattern p1 = Pattern.compile("[^a-z ]", Pattern.CASE_INSENSITIVE);
+        Matcher m = p1.matcher(n);
+        boolean b = m.find();
+        return b;
+    } 
+    public boolean isValidID(String n){
+       Pattern p2 = Pattern.compile("[^0-9 ]", Pattern.CASE_INSENSITIVE);
+                Matcher m2 = p2.matcher(n);
+                boolean b2 = m2.find();
+        return b2;
+    } 
 
     /**
      * @param args the command line arguments

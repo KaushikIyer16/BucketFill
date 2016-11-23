@@ -36,7 +36,7 @@ public class CCPForm extends Application {
     ArrayList<String> ccpTeachers = new ArrayList<>();
     CheckBox [][]slots;
     boolean [][] buffer;
-    boolean[][][] occupancy;
+    boolean[] teach;
     String teacherName;
     public CCPForm() {
     }
@@ -56,12 +56,14 @@ public class CCPForm extends Application {
         Label tList = new Label("SELECT TEACHERS FROM THE LIST:");
         grid.add(tList,0,3);
         ccpTeachers = TeacherSubject.getCcpTeachers();
+        teach = new boolean[ccpTeachers.size()];
         ComboBox teacherList = new ComboBox();
+        teacherList.setValue("SELECT");
         teacherList.setPrefWidth(100);
         for(int i =0; i<ccpTeachers.size(); i++){
             teacherList.getItems().add(ccpTeachers.get(i));
         }
-        occupancy = new boolean[ccpTeachers.size()][6][6];
+        
         grid.add(teacherList, 1, 3);
         Label nothing = new Label("");
         nothing.setPrefWidth(100);
@@ -84,7 +86,26 @@ public class CCPForm extends Application {
                 @Override
                 public void handle(ActionEvent event){
                     teacherName = teacherList.getValue().toString();
+                    if(teacherName.equals("SELECT"))                    
+                    {
+                     Label label = new Label("SELECT A TEACHER NAME");
+                     grid.add(label,0,20);
+                     Timer timer = new Timer();
+                     TimerTask delayedThreadStartTask = new TimerTask() {
+                     @Override
+                     public void run() {
+                     new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            label.setVisible(false);     
+                        }
+                        }).start();
+                    }
+                };
+                timer.schedule(delayedThreadStartTask,6000);             
+            }
                     
+                    else{ 
                     buffer =Occupancy.getOccupancyMatrix(teacherName);
                     Label []time =new Label[6];
                     time[0] = new Label("8:55 - 9:50");
@@ -122,26 +143,38 @@ public class CCPForm extends Application {
                     
                   Button submitButton = new Button("SUBMIT");
                   grid.add(submitButton,i,10+j);
-                  Label label = new Label("YOU HAVE ENTERED THE SUBMIT BUTTON");
-                  grid.add(label,i,11+j);
-                    Timer timer = new Timer();
-                 TimerTask delayedThreadStartTask = new TimerTask() {
-                @Override
-                public void run() {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            label.setVisible(false);     
-                        }
-                        }).start();
-                    }
-                };
-                timer.schedule(delayedThreadStartTask,1000);                  
+                          
                 submitButton.setOnAction(new EventHandler<ActionEvent> (){
                 
                     @Override
                     public void handle(ActionEvent event){
-                        
+                        int flag=0;
+                        for(int i=0;i<6;i++){
+                            for(int j=0;j<6;j++){
+                                if(slots[i][j].isSelected())
+                                    flag++;
+                            }
+                        }
+                        if(flag==0)
+                        {
+                            Label label = new Label("CHECK ATLEAST ONE OF THE BOXES");
+                             grid.add(label,0,20);
+                            Timer timer = new Timer();
+                             TimerTask delayedThreadStartTask = new TimerTask() {
+                            @Override
+                            public void run() {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                 label.setVisible(false);     
+                             }
+                             }).start();
+                            }
+                        };
+                        timer.schedule(delayedThreadStartTask,6000);     
+                        }
+                        else{
+                        teach[ccpTeachers.indexOf(teacherName)] = true;    
                         for(int i =0;i<6;i++){
                             for(int j=0;j<6;j++){
                                 if(slots[i][j].isSelected())
@@ -150,20 +183,20 @@ public class CCPForm extends Application {
                                     buffer[i][j] = false;
                             }
                         }
-                        for(int i =0;i<6;i++){
-                            for(int j=0;j<6;j++){
-                                
-                                    System.out.print(buffer[i][j]+"   ");
-                                
-                            }
-                            System.out.println();
-                        }
+                       
                         Occupancy.setOccupancyMatrix(teacherName,buffer);
-                        
+                        int check=0;
+                        for(int i =0;i<ccpTeachers.size();i++){
+                            if(teach[i])
+                                check++;
+                        }
+                        if(check==ccpTeachers.size())
+                                System.out.println("HELLO WORLD");
+                        } 
                         
                     }});
                 
-                
+                    }
                 
                 }});
         

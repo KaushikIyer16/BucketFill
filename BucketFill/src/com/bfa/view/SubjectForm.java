@@ -7,8 +7,12 @@ package com.bfa.view;
 
 import com.bfa.model.Subject;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,7 +39,8 @@ public class SubjectForm extends Application {
     
     TextField l[],t[],p[],s[], courseCode[],subjName[];
     ComboBox elect[];
-    int l1[], t1[], p1[], ss[];
+    int l1[], t1[], p1[], ss[],g1=0;
+    boolean flag1=true,flag2=true,flag3=true,flag4=true,flag5=true,flag6=true;
     String electiveSubject[];
     String cc[], sn[];
                 
@@ -72,10 +77,24 @@ public class SubjectForm extends Application {
                 String []args = null;
                 System.out.println(noOfSubjects.getText());
                 if(noOfSubjects.getText().length()==0||!Character.isDigit(noOfSubjects.getText().charAt(0))){
-                    noOfSubjects.setText("");
-                    return;
+                    Label label = new Label("ENTER A VALID NUMBER");
+                     grid.add(label,0,20);
+                     Timer timer = new Timer();
+                     TimerTask delayedThreadStartTask = new TimerTask() {
+                     @Override
+                     public void run() {
+                     new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            label.setVisible(false);     
+                        }
+                        }).start();
+                    }
+                };
+                timer.schedule(delayedThreadStartTask,6000);  
                 }
-                    
+                else{ 
+                setButton.setVisible(false);
                 grid.add(subjectNames,0,5);
                 Label cCode = new Label("COURSE CODE");
                 cCode.setPrefWidth(140);
@@ -129,6 +148,7 @@ public class SubjectForm extends Application {
                     subjName[i].setPrefWidth(120);
                     elect[i] = new ComboBox();
                     elect[i].getItems().addAll("YES", "NO");
+                    elect[i].setValue("   ");
                     grid.add(courseCode[i],1,i+7);
                     grid.add(subjName[i],2,i+7);
                     grid.add(l[i],3,i+7);
@@ -140,16 +160,91 @@ public class SubjectForm extends Application {
                 Button submitButton = new Button();
                 submitButton.setText("SUBMIT");
                 grid.add(submitButton, 7, i+10);
+                g1=i+11;
                  submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
                     @Override
                     public void handle(ActionEvent event) {
                     for(int i = 0; i<number;i++){
-                        if(courseCode[i].getText().equalsIgnoreCase("")){
-                            System.out.println("Booyah!");
-                            return;
+                        if(subjName[i].getText().equals("")||isValidName(subjName[i].getText())&&flag2){
+                            Label nvn = new Label("ENTER A VALID SUBJECT NAME");
+                             grid.add(nvn,0,++g1);
+                                Timer timer = new Timer();
+                                TimerTask delayedThreadStartTask = new TimerTask() {
+                                 @Override
+                                 public void run() {
+                                new Thread(new Runnable() {
+                                    @Override
+                                 public void run() {
+                                        nvn.setVisible(false);     
+                                    }
+                                    }).start();
+                                }
+                            };
+                            timer.schedule(delayedThreadStartTask,6000);  
+                            flag2 = false;
+                            
                         }
+                        if(courseCode[i].getText().equalsIgnoreCase("")||!isValidCourseCode(courseCode[i].getText())&&flag1){
+                            
+                             Label nvn1 = new Label("ENTER A VALID COURSE CODE");
+                             grid.add(nvn1,0,++g1);
+                            Timer timer = new Timer();
+                            TimerTask delayedThreadStartTask = new TimerTask() {
+                            @Override
+                            public void run() {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        nvn1.setVisible(false);     
+                                    }
+                                    }).start();
+                                }
+                            };
+                            timer.schedule(delayedThreadStartTask,6000);  
+                            flag1 = false;
+                            
+                        }
+                       if(ltpsMatch(i)&&flag3){
+                           Label nvn2 = new Label("ENTER VALID LTPS VALUES");
+                             grid.add(nvn2,0,++g1);
+                            Timer timer = new Timer();
+                            TimerTask delayedThreadStartTask = new TimerTask() {
+                            @Override
+                            public void run() {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        nvn2.setVisible(false);     
+                                    }
+                                    }).start();
+                                }
+                            };
+                            timer.schedule(delayedThreadStartTask,6000);  
+                            flag3 = false;
+                       }
+                       if(elect[i].getValue().toString().equals("   ")&&flag4){
+                           Label nvn3 = new Label("ENTER YES/NO FOR ELECTIVE");
+                             grid.add(nvn3,0,++g1);
+                            Timer timer = new Timer();
+                            TimerTask delayedThreadStartTask = new TimerTask() {
+                            @Override
+                            public void run() {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        nvn3.setVisible(false);     
+                                    }
+                                    }).start();
+                                }
+                            };
+                            timer.schedule(delayedThreadStartTask,6000);  
+                            flag4 = false;
+                       }
                         
+                    }
+                        if(flag1&&flag2&&flag3&&flag4){
+                        for(int i = 0; i<number;i++){    
                         System.out.println(courseCode[i].getText());
                      l1[i]=Integer.parseInt(l[i].getText());
                      t1[i]=Integer.parseInt(t[i].getText());
@@ -160,12 +255,13 @@ public class SubjectForm extends Application {
                      sn[i]=subjName[i].getText();
                     }    
                     
-               Subject.insertDetails(cc, sn, l1, t1, p1, ss, electiveSubject);
-               
+               //Subject.insertDetails(cc, sn, l1, t1, p1, ss, electiveSubject);
+                System.out.println("BOOYAH! IT'S DONE!");
+                    }
                 }}); 
         
-       
-           
+                }
+             
 
        }}); 
         final Text actiontarget = new Text();
@@ -176,6 +272,32 @@ public class SubjectForm extends Application {
         primaryStage.setFullScreen(true);
         primaryStage.show();
     }
+     public boolean isValidCourseCode(String n){
+        Pattern p1 = Pattern.compile("[0-9]{2}[a-z]{2}[0-9][a-z]{5}", Pattern.CASE_INSENSITIVE);
+        Matcher m = p1.matcher(n);
+        boolean b = m.find();
+        return b;
+    } 
+    public boolean isValidName(String n){
+       Pattern p2 = Pattern.compile("[^a-z ]", Pattern.CASE_INSENSITIVE);
+                Matcher m2 = p2.matcher(n);
+                boolean b2 = m2.find();
+        return b2;
+    }
+    public boolean isValidNumber(String n){
+        Pattern p2 = Pattern.compile("[0-9]", Pattern.CASE_INSENSITIVE);
+                Matcher m2 = p2.matcher(n);
+                boolean b2 = m2.find();
+        return b2;
+    }
+    public boolean ltpsMatch(int n){
+        if(l[n].getText().equals("")||t[n].getText().equals("")||p[n].getText().equals("")||s[n].getText().equals(""))
+            return true;
+        if(!isValidNumber(l[n].getText())||!isValidNumber(t[n].getText())||!isValidNumber(p[n].getText())||!isValidNumber(s[n].getText()))
+            return true;
+        return false;
+    }
+
         
 
     /**
