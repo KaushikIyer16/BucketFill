@@ -86,7 +86,7 @@ public class Allot {
 
     private void getAllDetails() {
 
-        for (int year = 2; year <= 4; year++) {
+        for (int year = 2; year < 4; year++) {
 
             ArrayList<Section> getSectionDetails = Section.getSectionByYear(year);
             Iterator sectionIterator = getSectionDetails.iterator();
