@@ -37,12 +37,7 @@ public class Allot {
         //below preprocessing would be to set the total number of sections
         Section.setTotalNumberOfSections();
         
-        // below i will take the teacher time occupancy and populate them into a bean list
         
-        Occupancy.initTeacherOccupancyList();
-        // now i will test it out by printing the ocuupancy list
-        
-        Occupancy.printTeacherOccupnacyList();
         // below preprocessing would be to fill in the ccp time slots
         ArrayList<Slot> slotList = Slot.getSlotsByLabNameAndDayOfWeek("CCP", daysOfWeek[dayOfWeek]);
         Iterator it = slotList.iterator();
@@ -104,41 +99,45 @@ public class Allot {
         
         // below statement initializes the graph for the given set of sections
         Graph.init(sectionSet);
+        
+        // below i will take the teacher time occupancy and populate them into a bean list
+        Occupancy.initTeacherOccupancyList();
 
         //the main randomize logic should run for a full week > in a day for a year > in a year for every class
-//        for (int day = 0; day < 6; day++) {
-//            System.out.println("Day: " + daysOfWeek[day] + "\n\n");
-//            //the number of rows signifies the number of time slots in a day and the columns is the number of rooms and labs available
-//            boolean[][] occupancyMatrix = new boolean[6][NUMBER_OF_ROOMS + NUMBER_OF_LABS];
-//
-//            // here set the occupied time slots or any form of preprocessor before the randomization
-//            this.preProcessing(occupancyMatrix, day);
-//            
-//            Iterator sectionIterator = sectionSet.iterator();
-//            while(sectionIterator.hasNext()){
-//                SectionPriority tmp = (SectionPriority)sectionIterator.next();
-//                System.out.println(tmp.getYear()+""+tmp.getSection());
-////                 now below get the graph for that class and get a room from the occupancy matrix and then fill them in the timetable variable and then remove them from the pool
-//                int hour = 1;
-//                while(hour <= 6){
-//                    System.out.println("hour: "+hour);
-//                    Subject subject = Graph.getClassForHour(tmp.getYear(), tmp.getSection(), hour);
-//                    if (subject != null) {
-//                        System.out.println(subject.getCourseCode()+"   "+Graph.getLtps());
-//                        int retLtps = Graph.getLtps();
-//                        if (retLtps == 0) {
-//                            hour+=1;
-//                        } else {
-//                            hour+=2;
-//                        }
-//                    }else{
-//                        break;
-//                    }
-//                    
-//                }
-//                
-//            }
-//        }
+        for (int day = 0; day < 6; day++) {
+            System.out.println("Day: " + daysOfWeek[day] + "\n\n");
+            //the number of rows signifies the number of time slots in a day and the columns is the number of rooms and labs available
+            boolean[][] occupancyMatrix = new boolean[6][NUMBER_OF_ROOMS + NUMBER_OF_LABS];
+
+            // here set the occupied time slots or any form of preprocessor before the randomization
+            this.preProcessing(occupancyMatrix, day);
+            
+            Iterator sectionIterator = sectionSet.iterator();
+            while(sectionIterator.hasNext()){
+                SectionPriority tmp = (SectionPriority)sectionIterator.next();
+                System.out.println(tmp.getYear()+""+tmp.getSection());
+//                 now below get the graph for that class and get a room from the occupancy matrix and then fill them in the timetable variable and then remove them from the pool
+                int hour = 1;
+                while(hour <= 6){
+                    System.out.println("hour: "+hour);
+                    Subject subject = Graph.getClassForHour(tmp.getYear(), tmp.getSection(), hour);
+                    if (subject != null) {
+                        System.out.println(subject.getCourseCode()+"   "+Graph.getLtps());
+                        int retLtps = Graph.getLtps();
+                        if (retLtps == 0) {
+                            hour+=1;
+                        } else {
+                            hour+=2;
+                        }
+                    }else{
+                        break;
+                    }
+                    
+                }
+                
+            }
+            System.out.println("");
+        }
         
     }
 

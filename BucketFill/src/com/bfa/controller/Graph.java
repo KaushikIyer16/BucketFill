@@ -34,24 +34,18 @@ public class Graph {
     static HashMap<String,ArrayList<Subject>[]> graph = new HashMap<>();
     // this is used to know if the returned value from the getSubjectForHour is a lab or theory or tutorial
     private static int ltps = 0;
+    
+    private static Subject prevSubject;
 
     private ArrayList<Subject>[] populateGraphForYear(int year) {
         ArrayList<Subject> subjectGraph[] = new ArrayList[3];
         
         ArrayList<Subject> tmpList = Subject.getSubjectByYear(year);
-        System.out.println("-------");
-//        try{
-//        for(Subject subject: tmpList){
-//            System.out.println(subject.getCourseCode()+" "+subject.getName());
-//        }
-//        }catch(Exception e){
-//            System.out.println("The error has occured here");
-//        }
-//        subjectGraph[0] = this.getTheorySubjects(tmpList);
-//        tmpList = Subject.getSubjectByYear(year);
-//        subjectGraph[1] = this.getTutorialSubjects(tmpList);
-//        tmpList = Subject.getSubjectByYear(year);
-//        subjectGraph[2] = this.getPracticalsubjects(tmpList);
+        subjectGraph[0] = this.getTheorySubjects(tmpList);
+        tmpList = Subject.getSubjectByYear(year);
+        subjectGraph[1] = this.getTutorialSubjects(tmpList);
+        tmpList = Subject.getSubjectByYear(year);
+        subjectGraph[2] = this.getPracticalsubjects(tmpList);
         
         return subjectGraph;
     }
@@ -134,30 +128,41 @@ public class Graph {
     public static Subject getClassForHour(int year,String section,int hour){
         ArrayList<Subject>[] sectionGraph = Graph.getGraphForSection(year+section);
         boolean isEmptyGraph = Graph.isEmptyGraph(sectionGraph);
+        Subject subject=null;
+        int currSubject; 
         Random random = new Random();
+        
         if (hour%2 == 0 && !isEmptyGraph) {
             
             ltps = 0;
-            int currSubject = random.nextInt(sectionGraph[0].size());
-            Subject subject = sectionGraph[0].get(currSubject);
+            do{
+            currSubject = random.nextInt(sectionGraph[0].size());
+            subject = sectionGraph[0].get(currSubject);
+            }while(subject==prevSubject || ( prevSubject!=null && subject.getName().equals(prevSubject.getName() ) ));
             Graph.updateGraph(sectionGraph, 0, currSubject);
+            prevSubject=subject;
             return subject;
             
-        } else {
-            
-            ltps = random.nextInt(3);
-            while (!isEmptyGraph && sectionGraph[ltps].isEmpty() ) {                
-                ltps = random.nextInt(3);
-            }
+        } else { 
             if(!isEmptyGraph){
-                int currSubject = random.nextInt(sectionGraph[ltps].size());
-                Subject subject = sectionGraph[ltps].get(currSubject);
+                
+                do{
+                    ltps = random.nextInt(3);
+                    while (!isEmptyGraph && sectionGraph[ltps].isEmpty() ) {                
+                        ltps = random.nextInt(3);
+                    }
+                    currSubject = random.nextInt(sectionGraph[ltps].size());
+                    subject = sectionGraph[ltps].get(currSubject);
+                }while(subject==prevSubject || ( prevSubject!=null && subject.getName().equals(prevSubject.getName() ) ));
                 // now i have to get the teacher by the id and the class
                 Graph.updateGraph(sectionGraph, ltps, currSubject);
                 
-                return subject;
+                
+            }else{
+                return null;
             }
-            return null;
+            prevSubject = subject;
+            return subject;
         }
     }
     
@@ -217,10 +222,10 @@ public class Graph {
             Iterator sectionIterator = sectionSet.iterator();
             while(sectionIterator.hasNext()){
                 SectionPriority tmp = (SectionPriority)sectionIterator.next();
-//                graph.put(tmp.getYear()+tmp.getSection(), graphObj.populateGraphForYear(tmp.getYear()) );
+                graph.put(tmp.getYear()+tmp.getSection(), graphObj.populateGraphForYear(tmp.getYear()) );
 
-                   System.out.println(tmp.getClass()+" "+tmp.getSection()+" "+tmp.getYear());
-                   graphObj.populateGraphForYear(tmp.getYear());
+//                   System.out.println(tmp.getClass()+" "+tmp.getSection()+" "+tmp.getYear());
+//                   graphObj.populateGraphForYear(tmp.getYear());
             }
 //            Graph.printGraph();
             

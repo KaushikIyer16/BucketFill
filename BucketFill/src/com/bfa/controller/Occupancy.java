@@ -21,7 +21,7 @@ public class Occupancy {
         static ArrayList<Teacher> teacherDetails= new ArrayList<Teacher>();
         static ArrayList<String> teacherNames= new ArrayList<String>();
         
-        static ArrayList<TeacherOccupancy> teacherOcuupancyDetails = new ArrayList<>();
+        static ArrayList<TeacherOccupancy> teacherOccupancyDetails = new ArrayList<>();
         public static void setDetails(){     
         
         teacherDetails = Teacher.getAllDetails();
@@ -92,8 +92,36 @@ public class Occupancy {
     public static void initTeacherOccupancyList() {
         
         // populating the teacher occupancy list with the bean type to keep related data together
-        for (int i = 0; i < teacherNames.size(); i++) {
-            teacherOcuupancyDetails.add(new TeacherOccupancy(teacherNames.get(i), teacherOccupancy[i]));
+        
+        // remove this line in the final output
+        teacherDetails = Teacher.getAllDetails();
+        Occupancy.NUMBER_OF_TEACHERS = teacherDetails.size();
+        teacherOccupancy = new boolean[NUMBER_OF_TEACHERS][NUMBER_OF_DAYS][NUMBER_OF_HOURS];
+        
+        for(int i=0;i<NUMBER_OF_TEACHERS;i++){
+            for(int j =0 ;j<NUMBER_OF_DAYS;j++){
+                for(int k =0 ;k<NUMBER_OF_DAYS;k++){
+                    teacherOccupancy[i][j][k]=false;
+                }
+            }
+        }
+        
+        
+              teacherOccupancy[20][1][4]=true;
+              teacherOccupancy[20][2][1]=true;
+              teacherOccupancy[20][3][3]=true;
+              
+              teacherOccupancy[19][3][4]=true;
+              teacherOccupancy[19][4][2]=true;
+              teacherOccupancy[19][5][5]=true;
+              
+              teacherOccupancy[21][1][5]=true;
+              teacherOccupancy[21][2][5]=true;
+              teacherOccupancy[21][3][3]=true;
+        
+        
+        for (int i = 0; i < teacherDetails.size(); i++) {
+            teacherOccupancyDetails.add(new TeacherOccupancy(teacherDetails.get(i).getName(), teacherOccupancy[i]));
         }
         
         // i am clearing the redundant list from the memory
@@ -103,8 +131,8 @@ public class Occupancy {
     }
     
     @Debug
-    public static void printTeacherOccupnacyList(){
-        for(TeacherOccupancy teacher : teacherOcuupancyDetails){
+    public static void printTeacherOccupancyList(){
+        for(TeacherOccupancy teacher : teacherOccupancyDetails){
             System.out.println("Teacher Name: "+teacher.getTeacherName());
             
             for(boolean[] row: teacher.getOccupancy() ){
