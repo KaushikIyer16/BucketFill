@@ -44,6 +44,7 @@ public class TeacherForm extends Application {
     TextField subname,subname1,subname2;
     @Override
     public void start(Stage primaryStage) {
+        primaryStage.setFullScreen(true);
         primaryStage.setTitle("TEACHER FORM");
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -287,7 +288,7 @@ public class TeacherForm extends Application {
 
                     @Override
                     public void handle(ActionEvent event) {
-                    SubjectForm sf = new SubjectForm();
+                    SectionForm sf = new SectionForm();
                     sf.start(primaryStage);
                     //Teacher.insertDetails(name, ID, hours, subjects);    
                     //start(primaryStage); 
@@ -304,8 +305,8 @@ public class TeacherForm extends Application {
         primaryStage.setY(bounds.getMinY());
         primaryStage.setWidth(bounds.getWidth());
         primaryStage.setHeight(bounds.getHeight());*/
-        Scene scene = new Scene(grid);
         primaryStage.setFullScreen(true);
+        Scene scene = new Scene(grid);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

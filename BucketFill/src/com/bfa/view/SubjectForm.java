@@ -257,6 +257,8 @@ public class SubjectForm extends Application {
                     
                //Subject.insertDetails(cc, sn, l1, t1, p1, ss, electiveSubject);
                 System.out.println("BOOYAH! IT'S DONE!");
+                TeacherForm tf = new TeacherForm();
+                tf.start(primaryStage);
                     }
                 }}); 
         
