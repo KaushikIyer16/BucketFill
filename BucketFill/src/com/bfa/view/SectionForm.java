@@ -11,6 +11,8 @@ import com.bfa.model.TeacherSubject;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Application;
@@ -197,7 +199,7 @@ public class SectionForm extends Application {
                     }
                          System.out.println();
                  }
-               Section.insertDetails(arrList,matrix,p); 
+               //Section.insertDetails(arrList,matrix,p); 
                Label label = new Label("FORM SUBMISSION DONE.");
                      grid.add(label,0,20);
                      Timer timer = new Timer();
@@ -214,8 +216,17 @@ public class SectionForm extends Application {
                 };
                 timer.schedule(delayedThreadStartTask,6000);  
                p++;
-               if(p<5)
+               if(p<4)
                 start(primaryStage);
+               else{
+                   CCPForm ccp = new CCPForm();
+                         try {
+                             ccp.start(primaryStage);
+                         } catch (Exception ex) {
+                             Logger.getLogger(SectionForm.class.getName()).log(Level.SEVERE, null, ex);
+                         }
+               }
+                   
                
             }
             }
