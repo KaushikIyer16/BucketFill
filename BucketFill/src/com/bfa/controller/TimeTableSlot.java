@@ -17,6 +17,14 @@ public class TimeTableSlot {
     public TimeTableSlot() {
     }
 
+    public TimeTableSlot(int hour, String subject, String teacher) {
+        this.hour = hour;
+        this.subject = subject;
+        this.teacher = teacher;
+    }
+    
+    
+
     public TimeTableSlot(int hour, String subject, String room, String teacher) {
         this.hour = hour;
         this.subject = subject;
