@@ -112,7 +112,7 @@ public class TeacherSubject implements DBConnection {
             String courseCode = "";
             Connection myConnection = DBConnection.createConnection();
 
-            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT CourseCode FROM Subject WHERE Name LIKE ?)");
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT CourseCode FROM Subject WHERE Name LIKE ?");
             myPreStatement.setString(1, subjectName); 
             ResultSet rs = myPreStatement.executeQuery();
             
@@ -123,7 +123,7 @@ public class TeacherSubject implements DBConnection {
             myPreStatement = myConnection.prepareStatement("INSERT INTO TeacherSubject VALUES (?,?)");
             myPreStatement.setInt(1, teacherID);
             myPreStatement.setString(2, courseCode);
-            myPreStatement.executeQuery();
+            myPreStatement.execute();
             
             myConnection.close();
         } catch (Exception e) {

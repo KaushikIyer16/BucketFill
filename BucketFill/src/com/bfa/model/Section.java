@@ -196,9 +196,17 @@ public class Section implements DBConnection {
                 char section = 'A';
                 String tempSubject = subjectList.get(i).getName();
                 int tempTeacherID = 0;
+                
                 for(int j = 0; j<sectionMatrix[i].length; j++){
                     myPreStatement.setString(1, sectionMatrix[i][j]);
                     myPreStatement.setString(2, tempSubject);
+                    PreparedStatement tempStmt = myConnection.prepareStatement("SELECT ID from Teacher where Name like ?");
+                    tempStmt.setString(1, sectionMatrix[i][j]);
+                    rs = tempStmt.executeQuery();
+            
+                    for (int k = 0; rs.next(); k++) {
+                        tempTeacherID = rs.getInt(1);
+                    }
                     if(year == 2)
                         myPreStatement.setInt(3, 3);
                     else if(year == 3)
@@ -207,13 +215,9 @@ public class Section implements DBConnection {
                         myPreStatement.setInt(3, 7);
                     myPreStatement.setString(4, String.valueOf(section++));
                     myPreStatement.execute();
-                }
-                PreparedStatement tempStmt = myConnection.prepareStatement("SELECT ID from Teacher where Name like ?");
-                tempStmt.setString(1, tempSubject);
-                rs = tempStmt.executeQuery();
-            
-                for (int k = 0; rs.next(); k++) {
-                    tempTeacherID = rs.getInt(1);
+                    
+                    String tempSec = ""+year+""+section;               
+                    TeacherSection.insertDetails(tempTeacherID, tempSec, tempSubject);
                 }
                 
                 TeacherSubject.insertDetails(tempTeacherID, tempSubject);

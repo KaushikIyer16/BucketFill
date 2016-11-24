@@ -39,6 +39,29 @@ public class TeacherSection implements DBConnection {
     public void setTeacherID(int teacherID) {
         this.teacherID = teacherID;
     }
-    
+    public static void insertDetails(int tID, String sec, String subjectName){
+        try {
+            String courseCode = "";
+            Connection myConnection = DBConnection.createConnection();
+
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT CourseCode FROM Subject WHERE Name LIKE ?");
+            myPreStatement.setString(1, subjectName); 
+            ResultSet rs = myPreStatement.executeQuery();
+            
+            for (int i = 0; rs.next(); i++) {
+                courseCode = rs.getString(1);
+            }
+            
+            myPreStatement = myConnection.prepareStatement("INSERT INTO TeacherSection VALUES (?,?,?)");
+            myPreStatement.setInt(1, tID);
+            myPreStatement.setString(2, courseCode);
+            myPreStatement.setString(3, sec);
+            myPreStatement.execute();
+            
+            myConnection.close();
+        } catch (Exception e) {
+            System.out.println(e + " Occured in get all details");
+        }
+    }
     
 }
