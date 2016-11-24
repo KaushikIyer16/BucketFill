@@ -146,4 +146,24 @@ public class Teacher implements DBConnection {
         }
     }
     
+    public static String getTeacherBySectionAndSubject(String section,Subject subject){
+        try {
+            Connection myConnection = DBConnection.createConnection();
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT Name FROM Teacher WHERE id = (SELECT DISTINCT TeacherID from TeacherSection where CourseCode = ? AND Section=?)");
+            myPreStatement.setString(1, subject.getCourseCode());
+            myPreStatement.setString(2, section);
+            ResultSet rs = myPreStatement.executeQuery();
+            
+            String teacherName = null;
+            while(rs.next()){
+                teacherName =  rs.getString(1);
+            }
+            
+            myConnection.close();
+            return teacherName;
+        } catch (Exception e) {
+            System.out.println("Exception has occured in getTeacherBySectionAndSubject");
+        }
+        return null;
+    }
 }

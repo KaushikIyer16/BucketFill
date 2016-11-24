@@ -7,7 +7,9 @@ package com.bfa.controller;
 
 import com.bfa.beans.Debug;
 import com.bfa.beans.SectionPriority;
+import com.bfa.beans.TeacherOccupancy;
 import com.bfa.model.Subject;
+import com.bfa.model.Teacher;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,7 +37,9 @@ public class Graph {
     // this is used to know if the returned value from the getSubjectForHour is a lab or theory or tutorial
     private static int ltps = 0;
     
-    private static Subject prevSubject;
+    public static Subject prevSubject;
+    private static String prevSection = "";
+    
 
     private ArrayList<Subject>[] populateGraphForYear(int year) {
         ArrayList<Subject> subjectGraph[] = new ArrayList[3];
@@ -125,43 +129,103 @@ public class Graph {
         }
     }
     
+    private static boolean teacherOccupied(int year, String section, int hour, Subject subject) {
+        String teacherName = Teacher.getTeacherBySectionAndSubject(year+section, subject);
+//        System.out.println("The teacher name is "+teacherName);
+        TeacherOccupancy currOccupancy = Occupancy.teacherOccupancyDetails.get(teacherName);
+        // hour is taken as hour-1 as the hour is from 1-6 and the indeces of the array is from 0-5
+        try{
+            if(currOccupancy.getOccupancy()[Allot.day][hour-1]){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(Exception e){
+            System.out.println(e);
+            return false;
+        }
+        
+    }
+    
     public static Subject getClassForHour(int year,String section,int hour){
         ArrayList<Subject>[] sectionGraph = Graph.getGraphForSection(year+section);
         boolean isEmptyGraph = Graph.isEmptyGraph(sectionGraph);
         Subject subject=null;
-        int currSubject; 
+        int currSubject = 0; 
         Random random = new Random();
         
         if (hour%2 == 0 && !isEmptyGraph) {
             
             ltps = 0;
+            // the count is to make sure that the search process does not go into a spin lock situation
+            int count=0;
             do{
-            currSubject = random.nextInt(sectionGraph[0].size());
-            subject = sectionGraph[0].get(currSubject);
-            }while(subject==prevSubject || ( prevSubject!=null && subject.getName().equals(prevSubject.getName() ) ));
+                if(sectionGraph[0].isEmpty()){
+                    Subject foregoSubject = new Subject();
+                    foregoSubject.setCourseCode("NONE");
+                    return foregoSubject;
+                }
+                try{
+                    currSubject = random.nextInt(sectionGraph[0].size());
+                    }catch(Exception e){
+                        System.out.println("val of curr is"+currSubject+" val of ltps size is "+sectionGraph[ltps].size()+" is it empty "+sectionGraph[ltps].isEmpty());
+                    }
+                subject = sectionGraph[0].get(currSubject);
+                count++;
+                if (count==200) {
+                    Subject foregoSubject = new Subject();
+                    foregoSubject.setCourseCode("NONE");
+                    return foregoSubject;
+                    
+                    
+                }
+                
+            }while( !teacherOccupied(year, section, hour, subject) && (subject==prevSubject && hour!=1 && (year+section).equals(prevSection)|| ( prevSubject!=null && subject.getName().equals(prevSubject.getName() ) )) );
             Graph.updateGraph(sectionGraph, 0, currSubject);
             prevSubject=subject;
+            prevSection = year+section;
             return subject;
             
         } else { 
+            int count = 0;
             if(!isEmptyGraph){
                 
                 do{
                     ltps = random.nextInt(3);
-                    while (!isEmptyGraph && sectionGraph[ltps].isEmpty() ) {                
-                        ltps = random.nextInt(3);
+                    if(ltps==0 && sectionGraph[0].isEmpty()){
+                        Subject foregoSubject = new Subject();
+                        foregoSubject.setCourseCode("NONE");
+                        return foregoSubject;
                     }
-                    currSubject = random.nextInt(sectionGraph[ltps].size());
+                    while (!isEmptyGraph && sectionGraph[ltps].isEmpty() && ltps>0) {                
+                        ltps = random.nextInt(3);
+                    }try{
+                        currSubject = random.nextInt(sectionGraph[ltps].size());
+                        }catch(Exception e){
+                            System.out.println("val of curr is"+currSubject+" val of ltps size is "+sectionGraph[ltps].size()+" is it empty "+sectionGraph[ltps].isEmpty());
+                    }
                     subject = sectionGraph[ltps].get(currSubject);
-                }while(subject==prevSubject || ( prevSubject!=null && subject.getName().equals(prevSubject.getName() ) ));
-                // now i have to get the teacher by the id and the class
+                    count++;
+                        if (count==200) {
+                            Subject foregoSubject = new Subject();
+                            foregoSubject.setCourseCode("NONE");
+                            return foregoSubject;
+                        
+                    }
+                }while( !teacherOccupied(year, section, hour, subject) && (subject==prevSubject && hour!=1 && (year+section).equals(prevSection) || ( prevSubject!=null && subject.getName().equals(prevSubject.getName() ) )) );
+                
                 Graph.updateGraph(sectionGraph, ltps, currSubject);
                 
                 
             }else{
-                return null;
+                Subject foregoSubject = new Subject();
+                foregoSubject.setCourseCode("NONE");
+                return foregoSubject;
             }
             prevSubject = subject;
+            prevSection = year+section;
+            // before returning update the occupancy
+            Occupancy.updateOccupancy(year,section,hour,subject);
             return subject;
         }
     }

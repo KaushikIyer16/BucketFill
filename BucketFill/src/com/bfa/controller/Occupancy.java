@@ -6,6 +6,7 @@
 package com.bfa.controller;
 import com.bfa.beans.Debug;
 import com.bfa.beans.TeacherOccupancy;
+import com.bfa.model.Subject;
 import com.bfa.model.Teacher;
 import java.awt.BorderLayout;
 import java.util.*;
@@ -21,7 +22,7 @@ public class Occupancy {
         static ArrayList<Teacher> teacherDetails= new ArrayList<Teacher>();
         static ArrayList<String> teacherNames= new ArrayList<String>();
         
-        static ArrayList<TeacherOccupancy> teacherOccupancyDetails = new ArrayList<>();
+        static HashMap<String,TeacherOccupancy> teacherOccupancyDetails = new HashMap<>();
         public static void setDetails(){     
         
         teacherDetails = Teacher.getAllDetails();
@@ -121,7 +122,7 @@ public class Occupancy {
         
         
         for (int i = 0; i < teacherDetails.size(); i++) {
-            teacherOccupancyDetails.add(new TeacherOccupancy(teacherDetails.get(i).getName(), teacherOccupancy[i]));
+            teacherOccupancyDetails.put(teacherDetails.get(i).getName(), new TeacherOccupancy(teacherDetails.get(i).getName(), teacherOccupancy[i]));
         }
         
         // i am clearing the redundant list from the memory
@@ -132,15 +133,25 @@ public class Occupancy {
     
     @Debug
     public static void printTeacherOccupancyList(){
-        for(TeacherOccupancy teacher : teacherOccupancyDetails){
-            System.out.println("Teacher Name: "+teacher.getTeacherName());
-            
-            for(boolean[] row: teacher.getOccupancy() ){
-                for(boolean val: row){
-                    System.out.print(val);
-                }
-                System.out.println("");
-            }
+//        for(TeacherOccupancy teacher : teacherOccupancyDetails){
+//            System.out.println("Teacher Name: "+teacher.getTeacherName());
+//            
+//            for(boolean[] row: teacher.getOccupancy() ){
+//                for(boolean val: row){
+//                    System.out.print(val);
+//                }
+//                System.out.println("");
+//            }
+//        }
+    }
+
+    public static void updateOccupancy(int year, String section, int hour, Subject subject) {
+        String teacherName = Teacher.getTeacherBySectionAndSubject(year+section, subject);
+        TeacherOccupancy currOccupancy = Occupancy.teacherOccupancyDetails.get(teacherName);
+        
+        try {
+            currOccupancy.getOccupancy()[Allot.day][hour-1] = true;
+        } catch (Exception e) {
         }
     }
    

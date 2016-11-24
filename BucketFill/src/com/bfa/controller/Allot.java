@@ -26,6 +26,8 @@ public class Allot {
     public static int NUMBER_OF_LABS=3;
     public static int NUMBER_OF_ROOMS=4;
     public static int NUMBER_OF_HOURS = 6;
+    
+    public static int day=0;
 
     //    1st index: number of classes, 2nd index: number of days, 3rd index: number of slots
     private TimeTableSlot[][][] TimeTable = new TimeTableSlot[6][6][NUMBER_OF_HOURS];
@@ -80,6 +82,8 @@ public class Allot {
     }
 
     private void getAllDetails() {
+        // this array list holds all the year-hour combination for elective say if the third hour comes elective for 3rd year then it appears as 33
+        ArrayList<String> electiveHours = new ArrayList<>();
 
         for (int year = 2; year < 4; year++) {
 
@@ -104,8 +108,9 @@ public class Allot {
         Occupancy.initTeacherOccupancyList();
 
         //the main randomize logic should run for a full week > in a day for a year > in a year for every class
-        for (int day = 0; day < 6; day++) {
+        for ( day = 0; day < 6; day++) {
             System.out.println("Day: " + daysOfWeek[day] + "\n\n");
+            Graph.prevSubject = null;
             //the number of rows signifies the number of time slots in a day and the columns is the number of rooms and labs available
             boolean[][] occupancyMatrix = new boolean[6][NUMBER_OF_ROOMS + NUMBER_OF_LABS];
 
@@ -119,22 +124,25 @@ public class Allot {
 //                 now below get the graph for that class and get a room from the occupancy matrix and then fill them in the timetable variable and then remove them from the pool
                 int hour = 1;
                 while(hour <= 6){
-                    System.out.println("hour: "+hour);
+                    
                     Subject subject = Graph.getClassForHour(tmp.getYear(), tmp.getSection(), hour);
                     if (subject != null) {
-                        System.out.println(subject.getCourseCode()+"   "+Graph.getLtps());
+                        
+                        
+                        System.out.print(subject.getCourseCode()+"   "+Graph.getLtps()+" ---- ");
                         int retLtps = Graph.getLtps();
                         if (retLtps == 0) {
                             hour+=1;
                         } else {
                             hour+=2;
                         }
+                        
                     }else{
                         break;
                     }
                     
                 }
-                
+                System.out.println("");
             }
             System.out.println("");
         }
