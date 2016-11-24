@@ -231,6 +231,66 @@ public class Subject implements DBConnection {
             return null;
         }
     }
+    
+    public static int[] getElectiveDetails(int year){
+         Connection myConnection = DBConnection.createConnection();
+        ResultSet rs = null;
+        ArrayList<Subject> subjectList = new ArrayList<>();
+        int[] maxLtps = new int[4];
+        try {
+
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT * FROM Subject WHERE Elective = 1");
+            rs = myPreStatement.executeQuery();
+            switch (year) {
+                case 2:
+                    for (int i = 0; rs.next(); i++) {
+                        if (Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 3 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 4) {
+                            Subject temp = new Subject();
+                            copyItemsToList(rs, temp);
+                            subjectList.add(temp);
+                        }
+
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; rs.next(); i++) {
+                        if (Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 5 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 6) {
+                            Subject temp = new Subject();
+                            copyItemsToList(rs, temp);
+                            subjectList.add(temp);
+                        }
+
+                    }
+                    break;
+                case 4:
+                    for (int i = 0; rs.next(); i++) {
+                        if (Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 7 || Integer.parseInt(Character.toString(rs.getString(1).charAt(4))) == 8) {
+                            Subject temp = new Subject();
+                            copyItemsToList(rs, temp);
+                            subjectList.add(temp);
+                        }
+
+                    }
+                    break;
+            }
+            myConnection.close();
+            for(Subject s : subjectList){
+                if(s.theory > maxLtps[0])
+                    maxLtps[0] = s.theory;
+                if(s.tutorial > maxLtps[1])
+                    maxLtps[1] = s.tutorial;
+                if(s.lab > maxLtps[2])
+                    maxLtps[2] = s.lab;
+                if(s.selfStudy > maxLtps[3])
+                    maxLtps[3] = s.selfStudy;
+            }
+            return maxLtps;
+        } catch (Exception e) {
+            System.out.println("Error in getSubjectDetailsByYear "+e);
+            return null;
+        }
+    }
+    
     public static void insertDetails(String[] courseCode, String[] name, int[] l, int[] t, int[] p, int[] s, String[] elective){
         Connection myConnection = DBConnection.createConnection();
         

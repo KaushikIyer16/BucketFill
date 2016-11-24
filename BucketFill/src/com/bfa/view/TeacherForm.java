@@ -287,7 +287,8 @@ public class TeacherForm extends Application {
 
                     @Override
                     public void handle(ActionEvent event) {
-                    primaryStage.close();
+                    SubjectForm sf = new SubjectForm();
+                    sf.start(primaryStage);
                     //Teacher.insertDetails(name, ID, hours, subjects);    
                     //start(primaryStage); 
                     }});
