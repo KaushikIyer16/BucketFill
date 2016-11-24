@@ -31,6 +31,7 @@ public class InfrastructureForm extends Application {
     int i;
     TextField labName[];
         TextField className[];
+        Label labl ;
         ArrayList<String> labNames = new ArrayList<>();
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -69,7 +70,7 @@ public class InfrastructureForm extends Application {
             @Override
             public void handle(ActionEvent event) {
                 //btn1.setVisible(false);
-                if(isValid(numberOfLabs.getText())||isValid(numberOfLabs.getText())){
+                if(isValid(numberOfLabs.getText())||isValid(numberOfLabs.getText())){ 
                     numberOfLabs.setText("");
                     numberOfClasses.setText("");
                     grid.add(nL,0,22);

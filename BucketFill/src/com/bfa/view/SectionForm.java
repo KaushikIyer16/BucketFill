@@ -46,7 +46,7 @@ import javafx.util.converter.DefaultStringConverter;
  */
 public class SectionForm extends Application {
     
-    int p = 2;
+    int p = 3;
     int i;
     //TableView<ViewTestClass> table2 = new TableView<>();
     ComboBox[][] teachBox;
@@ -197,7 +197,7 @@ public class SectionForm extends Application {
                     }
                          System.out.println();
                  }
-               //Section.insertDetails(arrList,matrix,3); 
+               Section.insertDetails(arrList,matrix,p); 
                Label label = new Label("FORM SUBMISSION DONE.");
                      grid.add(label,0,20);
                      Timer timer = new Timer();
@@ -222,7 +222,7 @@ public class SectionForm extends Application {
              
         });
        }
-        }});
+    }});
         
        
             
