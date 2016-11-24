@@ -5,12 +5,18 @@
  */
 package com.bfa.view;
 
+import com.bfa.beans.TimeTableBean;
 import com.bfa.controller.Occupancy;
+import com.bfa.controller.TimeTableSlot;
+import com.bfa.model.Section;
 import com.bfa.model.TeacherSubject;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -20,7 +26,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -31,38 +36,51 @@ import javafx.stage.Stage;
  *
  * @author Bhargav
  */
-public class CCPForm extends Application {
-
-    ArrayList<String> ccpTeachers = new ArrayList<>();
-    CheckBox [][]slots;
-    boolean [][] buffer;
-    boolean[] teach;
-    String teacherName;
+public class TimeTableDisplay extends Application {
+    int yr=2;
+    String tName;
+    TimeTableSlot[][] finalTimeTable;
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Occupancy.setDetails();
-        primaryStage.setTitle("SECTION FORM");
+        
+   //Occupancy.setDetails();
+        primaryStage.setTitle("TIMETABLE DISPLAY");
         GridPane grid = new GridPane();
         grid.setStyle("-fx-background-color: white");
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(15);
         grid.setPadding(new Insets(25, 25, 25, 25));
-        Text scenetitle = new Text("CCP TEACHERS");
+        Text scenetitle = new Text("YEAR "+yr);
         scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
         grid.add(scenetitle, 0, 0, 4, 1);
-        Label tList = new Label("SELECT TEACHERS FROM THE LIST:");
-        grid.add(tList,0,3);
-        ccpTeachers = TeacherSubject.getCcpTeachers();
-        teach = new boolean[ccpTeachers.size()];
-        ComboBox teacherList = new ComboBox();
-        teacherList.setValue("SELECT");
-        teacherList.setPrefWidth(100);
-        for(int i =0; i<ccpTeachers.size(); i++){
-            teacherList.getItems().add(ccpTeachers.get(i));
-        }
+        Label taList = new Label("SELECT TEACHERS FROM THE LIST:");
+        grid.add(taList,0,3);
+        Label [][][]slots;
         
-        grid.add(teacherList, 1, 3);
+         
+        Button nextYear = new Button("YEAR "+Integer.toString(1+yr));
+        grid.add(nextYear,10,20);
+        nextYear.setVisible(false);
+        
+         ArrayList<String> sectionList = new ArrayList<>();
+         ArrayList<Section> section = new ArrayList<>();
+        section = Section.getSectionByYear(yr);
+        System.out.println(section.size());
+        for(int i =0; i<section.size(); i++){
+            if(!sectionList.contains(section.get(i).getName())&&!Character.isDigit(section.get(i).getName().charAt(0)))
+                sectionList.add(section.get(i).getName());
+        }
+       
+        ComboBox tList = new ComboBox();
+        tList.setValue("SELECT");
+        tList.setPrefWidth(100);
+        for(int i =0; i<sectionList.size(); i++){
+            
+            tList.getItems().add(sectionList.get(i));
+        }
+        slots = new Label[sectionList.size()][6][6];
+        grid.add(tList, 1, 3);
         Label nothing = new Label("");
         nothing.setPrefWidth(100);
         grid.add(nothing,2,3);
@@ -79,14 +97,26 @@ public class CCPForm extends Application {
         nothing3.setPrefWidth(100);
         grid.add(nothing3,6,3);
         int num = 8;
+        for(int gh = 0;gh<sectionList.size();gh++){
+                        
+                            for(int i1=0;i1<6;i1++){
+                                for(int j1=0;j1<6;j1++){
+                                    slots[gh][i1][j1] = new Label(" ");
+                                    grid.add(slots[gh][i1][j1],j1+1,8+i1);
+                                }
+                                    
+                            }
+                        
+                            
+                    }
         confirm.setOnAction(new EventHandler<ActionEvent> (){
                 
                 @Override
                 public void handle(ActionEvent event){
-                    teacherName = teacherList.getValue().toString();
-                    if(teacherName.equals("SELECT"))                    
+                    tName = tList.getValue().toString();
+                    if(tName.equals("SELECT"))                    
                     {
-                     Label label = new Label("SELECT A TEACHER NAME");
+                     Label label = new Label("SELECT A SECTION NAME");
                      grid.add(label,0,20);
                      Timer timer = new Timer();
                      TimerTask delayedThreadStartTask = new TimerTask() {
@@ -104,7 +134,8 @@ public class CCPForm extends Application {
             }
                     
                     else{ 
-                    buffer =Occupancy.getOccupancyMatrix(teacherName);
+                    //buffer =Occupancy.getOccupancyMatrix(teacherName);
+                    finalTimeTable = TimeTableBean.getTimeTableForSection(Integer.toString(yr)+tName);
                     Label []time =new Label[6];
                     time[0] = new Label("8:55 - 9:50");
                     time[1]= new Label("9:50 - 10:45");
@@ -125,79 +156,45 @@ public class CCPForm extends Application {
                     for(int i =0;i<6;i++){
                         grid.add(days[i],0,num+i);
                     }
-                    slots = new CheckBox[6][6];
+                    int sectionChar = tName.charAt(0)-'A';
                     int i=0,j=0;
+                    for(int gh = 0;gh<sectionList.size();gh++){
+                        
+                            for(int i1=0;i1<6;i1++){
+                                for(int j1=0;j1<6;j1++){
+                                    slots[gh][i1][j1].setVisible(false);
+                                }
+                                    
+                            }
+                        
+                            
+                    }
                   for( i =0;i<6;i++){
                       for( j =0;j<6;j++){
-                          slots[i][j] = new CheckBox();
-                          slots[i][j].setPrefWidth(100);
-                          slots[i][j].setAlignment(Pos.CENTER_RIGHT);
-                          if(buffer[i][j])
-                              slots[i][j].setSelected(true);
+                          //slots[i][j] = new Label(finalTimeTable[i][j].getSubject());
                           
-                          grid.add(slots[i][j],j+1,8+i);
+                              slots[sectionChar][i][j].setText(tName);
+                              slots[sectionChar][i][j].setVisible(true);
+                              slots[sectionChar][i][j].setPrefWidth(100);
+                         
                       }
-                  }  
+                  }
+                  if(yr<4)
+                      nextYear.setVisible(true);
+                    } 
                     
-                  Button submitButton = new Button("SUBMIT");
-                  grid.add(submitButton,i,10+j);
-                          
-                submitButton.setOnAction(new EventHandler<ActionEvent> (){
-                
-                    @Override
-                    public void handle(ActionEvent event){
-                        int flag=0;
-                        for(int i=0;i<6;i++){
-                            for(int j=0;j<6;j++){
-                                if(slots[i][j].isSelected())
-                                    flag++;
-                            }
-                        }
-                        if(flag==0)
-                        {
-                            Label label = new Label("CHECK ATLEAST ONE OF THE BOXES");
-                             grid.add(label,0,20);
-                            Timer timer = new Timer();
-                             TimerTask delayedThreadStartTask = new TimerTask() {
-                            @Override
-                            public void run() {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                 label.setVisible(false);     
-                             }
-                             }).start();
-                            }
-                        };
-                        timer.schedule(delayedThreadStartTask,6000);     
-                        }
-                        else{
-                        teach[ccpTeachers.indexOf(teacherName)] = true;    
-                        for(int i =0;i<6;i++){
-                            for(int j=0;j<6;j++){
-                                if(slots[i][j].isSelected())
-                                    buffer[i][j] = true;
-                                else
-                                    buffer[i][j] = false;
-                            }
-                        }
-
-                        Occupancy.setOccupancyMatrix(teacherName,buffer);
-                        int check=0;
-                        for(int i =0;i<ccpTeachers.size();i++){
-                            if(teach[i])
-                                check++;
-                        }
-                        if(check==ccpTeachers.size())
-                                System.out.println("HELLO WORLD");
-                        } 
-                        
-                    }});
-                
-                    }
-                
                 }});
-        
+                 nextYear.setOnAction(new EventHandler<ActionEvent> (){
+                
+                @Override
+                public void handle(ActionEvent event){
+                    yr++;
+                    try {
+                        start(primaryStage);
+                    } catch (Exception ex) {
+                        Logger.getLogger(TimeTableDisplay.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }});
         
         
      
@@ -212,5 +209,7 @@ public class CCPForm extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+
     
 }
