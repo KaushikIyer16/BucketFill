@@ -5,11 +5,14 @@
  */
 package com.bfa.controller;
 
+import com.bfa.beans.ElectiveCombination;
 import com.bfa.beans.SectionPriority;
+import com.bfa.beans.TimeTableBean;
 import com.bfa.model.*;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.TreeSet;
 
 /**
@@ -28,6 +31,8 @@ public class Allot {
     public static int NUMBER_OF_HOURS = 6;
     
     public static int day=0;
+    private int prevDay = -1;
+    private int prevHour = -1;
 
     //    1st index: number of classes, 2nd index: number of days, 3rd index: number of slots
     private TimeTableSlot[][][] TimeTable = new TimeTableSlot[6][6][NUMBER_OF_HOURS];
@@ -83,8 +88,8 @@ public class Allot {
 
     private void getAllDetails() {
         // this array list holds all the year-hour combination for elective say if the third hour comes elective for 3rd year then it appears as 33
-        ArrayList<String> electiveHours = new ArrayList<>();
-
+        ArrayList<ElectiveCombination> electiveHours = new ArrayList<>();
+        Random random = new Random();
         for (int year = 2; year < 4; year++) {
 
             ArrayList<Section> getSectionDetails = Section.getSectionByYear(year);
@@ -106,46 +111,141 @@ public class Allot {
         
         // below i will take the teacher time occupancy and populate them into a bean list
         Occupancy.initTeacherOccupancyList();
-
+        
+        
+        // now i have to set the timings for the elective
+        // first thing will be to setup the TimeTableBean
+        TimeTableBean.initTimeTable(sectionSet);
+        
+        // i will get the ltps of elective's
+        for (int year = 2; year < 4; year++) {
+            int[] electiveLtps = Subject.getElectiveLtps(year);
+            if(electiveLtps[0] == 0){
+                continue;
+            }
+            // this is a list having all the sections for a particular year
+            ArrayList<String> classForYear = new ArrayList<>();
+            Iterator sectionIterator = sectionSet.iterator();
+            while(sectionIterator.hasNext()){
+                SectionPriority temp = (SectionPriority)sectionIterator.next();
+                if (temp.getYear() == year) {
+                    classForYear.add(temp.getYear()+temp.getSection());
+//                    System.out.println(temp.getYear()+temp.getSection());
+                }
+                
+                
+            }
+            
+            //now i will get a random 
+            while(electiveLtps[0]!=0 || electiveLtps[1]!=0 || electiveLtps[2]!=0 || electiveLtps[3]!=0 ){
+                int randLtps;
+                int currDay;
+                do{
+                    randLtps = random.nextInt(4);
+                }while(electiveLtps[randLtps] == 0);
+                
+                do {                    
+                    currDay = random.nextInt(5);
+                } while (currDay==prevDay);
+                    int currHour = random.nextInt(5);
+                // now we have the ltps day and hour we will add this detail to all the sections and reduce it from ltps
+                if (!electiveHours.contains(new ElectiveCombination(currDay, currHour))) {
+                    electiveLtps[randLtps]--;
+                    Iterator classIterator = classForYear.iterator();
+                    while(classIterator.hasNext()){
+                        String className = (String)classIterator.next();
+                        TimeTableSlot currTimeTable[][] = TimeTableBean.getTimeTableForSection(className);
+                        if(randLtps == 1 || randLtps == 2){
+                            currTimeTable[currDay][currHour] = new TimeTableSlot();
+                            currTimeTable[currDay][currHour].setSubject("ELECTIVE");
+                            currTimeTable[currDay][currHour].setIsOccupied(true);
+                            currTimeTable[currDay][currHour+1] = new TimeTableSlot();
+                            currTimeTable[currDay][currHour+1].setSubject("ELECTIVE");
+                            currTimeTable[currDay][currHour+1].setIsOccupied(true);
+                        }else{
+                            currTimeTable[currDay][currHour] = new TimeTableSlot();
+                            currTimeTable[currDay][currHour].setSubject("ELECTIVE");
+                            currTimeTable[currDay][currHour].setIsOccupied(true);
+                        }
+                    }
+                    
+                    electiveHours.add(new ElectiveCombination(currDay, currHour));
+                }
+                
+            }
+            
+        }
+        
+        
         //the main randomize logic should run for a full week > in a day for a year > in a year for every class
         for ( day = 0; day < 6; day++) {
-            System.out.println("Day: " + daysOfWeek[day] + "\n\n");
+//            System.out.println("Day: " + daysOfWeek[day] + "\n\n");
             Graph.prevSubject = null;
             //the number of rows signifies the number of time slots in a day and the columns is the number of rooms and labs available
             boolean[][] occupancyMatrix = new boolean[6][NUMBER_OF_ROOMS + NUMBER_OF_LABS];
-
+            
             // here set the occupied time slots or any form of preprocessor before the randomization
             this.preProcessing(occupancyMatrix, day);
             
             Iterator sectionIterator = sectionSet.iterator();
             while(sectionIterator.hasNext()){
                 SectionPriority tmp = (SectionPriority)sectionIterator.next();
-                System.out.println(tmp.getYear()+""+tmp.getSection());
+//                System.out.println(tmp.getYear()+""+tmp.getSection());
+                
+                // get the time table for that particular section
+                TimeTableSlot[][] currTimeTable = TimeTableBean.getTimeTableForSection(tmp.getYear()+tmp.getSection());
+                
 //                 now below get the graph for that class and get a room from the occupancy matrix and then fill them in the timetable variable and then remove them from the pool
                 int hour = 1;
                 while(hour <= 6){
-                    
-                    Subject subject = Graph.getClassForHour(tmp.getYear(), tmp.getSection(), hour);
-                    if (subject != null) {
+                    if (currTimeTable[day][hour-1] != null && currTimeTable[day][hour-1].isIsOccupied()) {
                         
-                        
-                        System.out.print(subject.getCourseCode()+"   "+Graph.getLtps()+" ---- ");
-                        int retLtps = Graph.getLtps();
-                        if (retLtps == 0) {
-                            hour+=1;
-                        } else {
+                        if(hour<6 && currTimeTable[day][hour] != null &&currTimeTable[day][hour].isIsOccupied() ){
+                            Graph.setLtps(1);
                             hour+=2;
+                        }else{
+                            Graph.setLtps(0);
+                            hour++;
                         }
+//                        System.out.print("ELECTIVE"+"   "+Graph.getLtps()+" ---- ");
                         
-                    }else{
-                        break;
+                        continue;
+                    } else {
+                        Subject subject = Graph.getClassForHour(tmp.getYear(), tmp.getSection(), hour);
+                        if (subject != null) {
+ 
+//                            System.out.print(subject.getCourseCode()+"   "+Graph.getLtps()+" ---- ");
+                            int retLtps = Graph.getLtps();
+                            if (retLtps == 0) {
+                                currTimeTable[day][hour-1] = new TimeTableSlot();
+                                currTimeTable[day][hour-1].setSubject(subject.getCourseCode());
+                                currTimeTable[day][hour-1].setIsOccupied(true);
+                                hour+=1;
+                                
+                            } else {
+                                currTimeTable[day][hour-1] = new TimeTableSlot();
+                                currTimeTable[day][hour-1].setSubject(subject.getCourseCode());
+                                currTimeTable[day][hour-1].setIsOccupied(true);
+                                
+                                currTimeTable[day][hour] = new TimeTableSlot();
+                                currTimeTable[day][hour].setSubject(subject.getCourseCode());
+                                currTimeTable[day][hour].setIsOccupied(true);
+                                hour+=2;
+                            }
+
+                        }else{
+                            break;
+                        }
+
                     }
-                    
+                                        
                 }
-                System.out.println("");
+//                System.out.println("");
             }
-            System.out.println("");
+//            System.out.println("");
         }
+        
+        TimeTableBean.printTimeTables();
         
     }
 

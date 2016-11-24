@@ -147,6 +147,16 @@ public class Graph {
         
     }
     
+    
+//    public static Subject getElectiveForHour(int year,String section,int hour){
+//        ArrayList<Subject>[] sectionGraph = Graph.getGraphForSection(year+section);
+//        boolean isEmptyGraph = Graph.isEmptyGraph(sectionGraph);
+//        Subject subject=null;
+//        int currSubject = 0; 
+//        Random random = new Random();
+//        
+//    }
+    
     public static Subject getClassForHour(int year,String section,int hour){
         ArrayList<Subject>[] sectionGraph = Graph.getGraphForSection(year+section);
         boolean isEmptyGraph = Graph.isEmptyGraph(sectionGraph);
@@ -163,24 +173,30 @@ public class Graph {
                 if(sectionGraph[0].isEmpty()){
                     Subject foregoSubject = new Subject();
                     foregoSubject.setCourseCode("NONE");
+                    ltps=0;
                     return foregoSubject;
                 }
                 try{
                     currSubject = random.nextInt(sectionGraph[0].size());
                     }catch(Exception e){
-                        System.out.println("val of curr is"+currSubject+" val of ltps size is "+sectionGraph[ltps].size()+" is it empty "+sectionGraph[ltps].isEmpty());
+//                        System.out.println("val of curr is"+currSubject+" val of ltps size is "+sectionGraph[ltps].size()+" is it empty "+sectionGraph[ltps].isEmpty());
+                        Subject foregoSubject = new Subject();
+                            foregoSubject.setCourseCode("NONE");
+                            ltps=0;
+                            return foregoSubject;
                     }
                 subject = sectionGraph[0].get(currSubject);
                 count++;
                 if (count==200) {
                     Subject foregoSubject = new Subject();
                     foregoSubject.setCourseCode("NONE");
+                    ltps=0;
                     return foregoSubject;
                     
                     
                 }
                 
-            }while( !teacherOccupied(year, section, hour, subject) && (subject==prevSubject && hour!=1 && (year+section).equals(prevSection)|| ( prevSubject!=null && subject.getName().equals(prevSubject.getName() ) )) );
+            }while(subject.hasElective() || !teacherOccupied(year, section, hour, subject) && (subject==prevSubject && hour!=1 && (year+section).equals(prevSection)|| ( prevSubject!=null && subject.getName().equals(prevSubject.getName() ) )) );
             Graph.updateGraph(sectionGraph, 0, currSubject);
             prevSubject=subject;
             prevSection = year+section;
@@ -195,24 +211,31 @@ public class Graph {
                     if(ltps==0 && sectionGraph[0].isEmpty()){
                         Subject foregoSubject = new Subject();
                         foregoSubject.setCourseCode("NONE");
+                        ltps=0;
                         return foregoSubject;
+                        
                     }
                     while (!isEmptyGraph && sectionGraph[ltps].isEmpty() && ltps>0) {                
                         ltps = random.nextInt(3);
                     }try{
                         currSubject = random.nextInt(sectionGraph[ltps].size());
                         }catch(Exception e){
-                            System.out.println("val of curr is"+currSubject+" val of ltps size is "+sectionGraph[ltps].size()+" is it empty "+sectionGraph[ltps].isEmpty());
+//                            System.out.println("val of curr is"+currSubject+" val of ltps size is "+sectionGraph[ltps].size()+" is it empty "+sectionGraph[ltps].isEmpty());
+                            Subject foregoSubject = new Subject();
+                            foregoSubject.setCourseCode("NONE");
+                            ltps=0;
+                            return foregoSubject;
                     }
                     subject = sectionGraph[ltps].get(currSubject);
                     count++;
                         if (count==200) {
                             Subject foregoSubject = new Subject();
                             foregoSubject.setCourseCode("NONE");
+                            ltps=0;
                             return foregoSubject;
                         
                     }
-                }while( !teacherOccupied(year, section, hour, subject) && (subject==prevSubject && hour!=1 && (year+section).equals(prevSection) || ( prevSubject!=null && subject.getName().equals(prevSubject.getName() ) )) );
+                }while(subject.hasElective() || !teacherOccupied(year, section, hour, subject) && (subject==prevSubject && hour!=1 && (year+section).equals(prevSection) || ( prevSubject!=null && subject.getName().equals(prevSubject.getName() ) )) );
                 
                 Graph.updateGraph(sectionGraph, ltps, currSubject);
                 
@@ -236,7 +259,7 @@ public class Graph {
             Iterator it = subjectList.iterator();
             while (it.hasNext()) {
                 Subject tmp = (Subject) it.next();
-                if (tmp.getTheory() == 0) {
+                if (tmp.getTheory() == 0 ) {
                     subjectList.remove(tmp);
                 }
             }

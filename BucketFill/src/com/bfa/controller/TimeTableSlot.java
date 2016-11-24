@@ -13,7 +13,7 @@ public class TimeTableSlot {
 
     private int hour;
     private String subject, room, teacher;
-
+    private boolean isOccupied;
     public TimeTableSlot() {
     }
 
@@ -21,6 +21,7 @@ public class TimeTableSlot {
         this.hour = hour;
         this.subject = subject;
         this.teacher = teacher;
+        isOccupied = false;
     }
     
     
@@ -30,6 +31,15 @@ public class TimeTableSlot {
         this.subject = subject;
         this.room = room;
         this.teacher = teacher;
+        isOccupied = false;
+    }
+
+    public boolean isIsOccupied() {
+        return isOccupied;
+    }
+
+    public void setIsOccupied(boolean isOccupied) {
+        this.isOccupied = isOccupied;
     }
 
     public int getHour() {
