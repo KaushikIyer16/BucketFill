@@ -183,7 +183,7 @@ public class CCPForm extends Application {
                                     buffer[i][j] = false;
                             }
                         }
-                       
+
                         Occupancy.setOccupancyMatrix(teacherName,buffer);
                         int check=0;
                         for(int i =0;i<ccpTeachers.size();i++){

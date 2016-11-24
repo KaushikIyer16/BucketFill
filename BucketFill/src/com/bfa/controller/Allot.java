@@ -21,9 +21,10 @@ public class Allot {
     private String[] daysOfWeek = {"monday", "tuesday", "wednesday", "thursday",
         "friday", "saturday", "sunday"};
     private TreeSet<SectionPriority> sectionSet = new TreeSet<>();
-
-    public static int NUMBER_OF_LABS;
-    public static int NUMBER_OF_ROOMS;
+    
+    // this has to be removed in the final output
+    public static int NUMBER_OF_LABS=3;
+    public static int NUMBER_OF_ROOMS=4;
     public static int NUMBER_OF_HOURS = 6;
 
     //    1st index: number of classes, 2nd index: number of days, 3rd index: number of slots
@@ -35,6 +36,7 @@ public class Allot {
     private void preProcessing(boolean[][] occupancyMatrix, int dayOfWeek) {
         //below preprocessing would be to set the total number of sections
         Section.setTotalNumberOfSections();
+        
         
         // below preprocessing would be to fill in the ccp time slots
         ArrayList<Slot> slotList = Slot.getSlotsByLabNameAndDayOfWeek("CCP", daysOfWeek[dayOfWeek]);
@@ -79,7 +81,7 @@ public class Allot {
 
     private void getAllDetails() {
 
-        for (int year = 2; year <= 4; year++) {
+        for (int year = 2; year < 4; year++) {
 
             ArrayList<Section> getSectionDetails = Section.getSectionByYear(year);
             Iterator sectionIterator = getSectionDetails.iterator();
@@ -97,6 +99,9 @@ public class Allot {
         
         // below statement initializes the graph for the given set of sections
         Graph.init(sectionSet);
+        
+        // below i will take the teacher time occupancy and populate them into a bean list
+        Occupancy.initTeacherOccupancyList();
 
         //the main randomize logic should run for a full week > in a day for a year > in a year for every class
         for (int day = 0; day < 6; day++) {
@@ -131,6 +136,7 @@ public class Allot {
                 }
                 
             }
+            System.out.println("");
         }
         
     }

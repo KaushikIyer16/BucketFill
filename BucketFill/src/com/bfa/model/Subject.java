@@ -224,9 +224,10 @@ public class Subject implements DBConnection {
                     break;
             }
             myConnection.close();
+            
             return subjectList;
         } catch (Exception e) {
-            System.out.println("Error in getSubjectDetailsByYear");
+            System.out.println("Error in getSubjectDetailsByYear "+e);
             return null;
         }
     }

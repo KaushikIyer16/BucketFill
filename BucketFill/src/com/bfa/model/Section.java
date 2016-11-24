@@ -105,7 +105,7 @@ public class Section implements DBConnection {
     }
 
     public static String getSubjectNameByTeacherID(int id, int semester) {
-
+        /*Deprecated-->Please use the method in TeacherSubject.java*/
         Connection myConnection = DBConnection.createConnection();
         ResultSet rs = null;
 
@@ -208,6 +208,15 @@ public class Section implements DBConnection {
                     myPreStatement.setString(4, String.valueOf(section++));
                     myPreStatement.execute();
                 }
+                PreparedStatement tempStmt = myConnection.prepareStatement("SELECT ID from Teacher where Name like ?");
+                tempStmt.setString(1, tempSubject);
+                rs = tempStmt.executeQuery();
+            
+                for (int k = 0; rs.next(); k++) {
+                    tempTeacherID = rs.getInt(1);
+                }
+                
+                TeacherSubject.insertDetails(tempTeacherID, tempSubject);
             }
             
             myConnection.close();

@@ -10,7 +10,7 @@ import java.sql.SQLException;
  */
 public interface DBConnection {
 
-    String CONNECTIONSTRING = "jdbc:mysql://localhost:3306/bucketfill", USERNAME = "root", PASSWORD = "";
+    String CONNECTIONSTRING = "jdbc:mysql://localhost:8889/bucketfill", USERNAME = "root", PASSWORD = "root";
 
     public static Connection createConnection() {
         Connection myConnection = null;

@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package com.bfa.controller;
-import com.bfa.beans.TeacherOccupation;
+import com.bfa.beans.Debug;
+import com.bfa.beans.TeacherOccupancy;
 import com.bfa.model.Teacher;
 import java.awt.BorderLayout;
 import java.util.*;
@@ -19,6 +20,8 @@ public class Occupancy {
         static boolean[][][] teacherOccupancy;
         static ArrayList<Teacher> teacherDetails= new ArrayList<Teacher>();
         static ArrayList<String> teacherNames= new ArrayList<String>();
+        
+        static ArrayList<TeacherOccupancy> teacherOccupancyDetails = new ArrayList<>();
         public static void setDetails(){     
         
         teacherDetails = Teacher.getAllDetails();
@@ -35,8 +38,22 @@ public class Occupancy {
             }
         }
         
+        
+              teacherOccupancy[20][1][4]=true;
+              teacherOccupancy[20][2][1]=true;
+              teacherOccupancy[20][3][3]=true;
+              
+              teacherOccupancy[19][3][4]=true;
+              teacherOccupancy[19][4][2]=true;
+              teacherOccupancy[19][5][5]=true;
+              
+              teacherOccupancy[21][1][5]=true;
+              teacherOccupancy[21][2][5]=true;
+              teacherOccupancy[21][3][3]=true;
+              
+        
         //List<TeacherOccupation> teacherObj= new ArrayList<TeacherOccupation>();
-        //TeacherOccupation obj = new TeacherOccupation();
+        //TeacherOccupation obj = new TeacherOccupancy();
         //SetterClass obj1=new SetterClass();
         //teacherObj=obj1.detailsSetter(teacherObj);
        /* for(int i=0;i<teacherObj.size();i++)
@@ -55,6 +72,7 @@ public class Occupancy {
                   //Input any proper value to get output
     }
     public static boolean[][] getOccupancyMatrix(String name){
+        System.out.println(teacherNames.indexOf(name));
         return teacherOccupancy[teacherNames.indexOf(name)];
     }
     public static void setOccupancyMatrix(String name, boolean[][] occupancy){
@@ -69,6 +87,61 @@ public class Occupancy {
             }
             System.out.println();
         }*/  
+    }
+
+    public static void initTeacherOccupancyList() {
+        
+        // populating the teacher occupancy list with the bean type to keep related data together
+        
+        // remove this line in the final output
+        teacherDetails = Teacher.getAllDetails();
+        Occupancy.NUMBER_OF_TEACHERS = teacherDetails.size();
+        teacherOccupancy = new boolean[NUMBER_OF_TEACHERS][NUMBER_OF_DAYS][NUMBER_OF_HOURS];
+        
+        for(int i=0;i<NUMBER_OF_TEACHERS;i++){
+            for(int j =0 ;j<NUMBER_OF_DAYS;j++){
+                for(int k =0 ;k<NUMBER_OF_DAYS;k++){
+                    teacherOccupancy[i][j][k]=false;
+                }
+            }
+        }
+        
+        
+              teacherOccupancy[20][1][4]=true;
+              teacherOccupancy[20][2][1]=true;
+              teacherOccupancy[20][3][3]=true;
+              
+              teacherOccupancy[19][3][4]=true;
+              teacherOccupancy[19][4][2]=true;
+              teacherOccupancy[19][5][5]=true;
+              
+              teacherOccupancy[21][1][5]=true;
+              teacherOccupancy[21][2][5]=true;
+              teacherOccupancy[21][3][3]=true;
+        
+        
+        for (int i = 0; i < teacherDetails.size(); i++) {
+            teacherOccupancyDetails.add(new TeacherOccupancy(teacherDetails.get(i).getName(), teacherOccupancy[i]));
+        }
+        
+        // i am clearing the redundant list from the memory
+        teacherNames = null;
+        teacherDetails = null;
+        teacherOccupancy = null;
+    }
+    
+    @Debug
+    public static void printTeacherOccupancyList(){
+        for(TeacherOccupancy teacher : teacherOccupancyDetails){
+            System.out.println("Teacher Name: "+teacher.getTeacherName());
+            
+            for(boolean[] row: teacher.getOccupancy() ){
+                for(boolean val: row){
+                    System.out.print(val);
+                }
+                System.out.println("");
+            }
+        }
     }
    
         
