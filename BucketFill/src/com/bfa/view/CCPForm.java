@@ -203,12 +203,12 @@ public class CCPForm extends Application {
         
         
      
-        primaryStage.setFullScreen(true);
+       
          final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
         Scene scene = new Scene(grid);
-        primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
+        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
     public static void main(String[] args) {
