@@ -232,7 +232,7 @@ public class Subject implements DBConnection {
         }
     }
     
-    public static int[] getElectiveDetails(int year){
+    public static int[] getElectiveLtps(int year){
          Connection myConnection = DBConnection.createConnection();
         ResultSet rs = null;
         ArrayList<Subject> subjectList = new ArrayList<>();
