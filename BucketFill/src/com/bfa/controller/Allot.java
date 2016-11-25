@@ -86,7 +86,7 @@ public class Allot {
 //        }
     }
 
-    private void getAllDetails() {
+    public void getAllDetails() {
         // this array list holds all the year-hour combination for elective say if the third hour comes elective for 3rd year then it appears as 33
         ArrayList<ElectiveCombination> electiveHours = new ArrayList<>();
         Random random = new Random();

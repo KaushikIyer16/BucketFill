@@ -6,6 +6,7 @@
 package com.bfa.view;
 
 import com.bfa.beans.TimeTableBean;
+import com.bfa.controller.Allot;
 import com.bfa.controller.Occupancy;
 import com.bfa.controller.TimeTableSlot;
 import com.bfa.model.Section;
@@ -46,15 +47,18 @@ public class TimeTableDisplay extends Application {
    //Occupancy.setDetails();
         primaryStage.setTitle("TIMETABLE DISPLAY");
         GridPane grid = new GridPane();
-        grid.setStyle("-fx-background-color: white");
+        grid.setStyle("-fx-background-color: #2F63A3");
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(15);
         grid.setPadding(new Insets(25, 25, 25, 25));
+        Text scenetitle1 = new Text("TIMETABLE");
+        scenetitle1.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
         Text scenetitle = new Text("YEAR "+yr);
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
-        grid.add(scenetitle, 0, 0, 4, 1);
-        Label taList = new Label("SELECT TEACHERS FROM THE LIST:");
+        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 30));
+        grid.add(scenetitle1,0,0,4,1);
+        grid.add(scenetitle, 0, 2, 4, 1);
+        Label taList = new Label("SELECT SECTION FROM THE LIST:");
         grid.add(taList,0,3);
         Label [][][]slots;
         
@@ -67,6 +71,8 @@ public class TimeTableDisplay extends Application {
          ArrayList<Section> section = new ArrayList<>();
         section = Section.getSectionByYear(yr);
         System.out.println(section.size());
+        Allot alt = new Allot();
+        alt.getAllDetails();
         for(int i =0; i<section.size(); i++){
             if(!sectionList.contains(section.get(i).getName())&&!Character.isDigit(section.get(i).getName().charAt(0)))
                 sectionList.add(section.get(i).getName());
@@ -133,8 +139,7 @@ public class TimeTableDisplay extends Application {
                 timer.schedule(delayedThreadStartTask,6000);             
             }
                     
-                    else{ 
-                    //buffer =Occupancy.getOccupancyMatrix(teacherName);
+                    else{          
                     finalTimeTable = TimeTableBean.getTimeTableForSection(Integer.toString(yr)+tName);
                     Label []time =new Label[6];
                     time[0] = new Label("8:55 - 9:50");
@@ -173,13 +178,13 @@ public class TimeTableDisplay extends Application {
                       for( j =0;j<6;j++){
                           //slots[i][j] = new Label(finalTimeTable[i][j].getSubject());
                           
-                              slots[sectionChar][i][j].setText(tName);
+                              slots[sectionChar][i][j].setText(finalTimeTable[i][j].getSubject());
                               slots[sectionChar][i][j].setVisible(true);
                               slots[sectionChar][i][j].setPrefWidth(100);
                          
                       }
                   }
-                  if(yr<4)
+                  if(yr<3)
                       nextYear.setVisible(true);
                     } 
                     

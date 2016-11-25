@@ -59,7 +59,7 @@ public class SectionForm extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SECTION FORM");
         GridPane grid = new GridPane();
-        grid.setStyle("-fx-background-color: white");
+        grid.setStyle("-fx-background-color: #2F63A3");
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(15);

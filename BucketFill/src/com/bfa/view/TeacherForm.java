@@ -50,6 +50,7 @@ public class TeacherForm extends Application {
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(15);
+        grid.setStyle("-fx-background-color: #2F63A3");
         grid.setPadding(new Insets(25, 25, 25, 25));
         Text scenetitle = new Text("TEACHER DETAILS");
         scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));

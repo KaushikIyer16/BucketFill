@@ -53,7 +53,7 @@ public class SubjectForm extends Application {
         primaryStage.setTitle("SECTION FORM");
         GridPane grid = new GridPane();
         grid.setId("pane");
-        grid.setStyle("-fx-background-color: white");
+        grid.setStyle("-fx-background-color: #2F63A3");
         grid.setAlignment(Pos.TOP_CENTER);
         grid.setHgap(10);
         grid.setVgap(15);

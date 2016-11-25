@@ -30,14 +30,20 @@ public class WelcomePage extends Application {
     public void start(Stage primaryStage) {
         Button btn = new Button();
         Text bucketFill = new Text("BUCKETFILL");
-        Label nextLine = new Label("            (TIME TABLE GENERATOR)");
+        Label nextLine = new Label("     TIME TABLE GENERATOR");
+        nextLine.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 30));
+        nextLine.setTextFill(Color.web("#ffffff"));
         Label l1 = new Label("");
         Label l2 = new Label("");
         Label l3 = new Label("");
         Label l4 = new Label("");
-        bucketFill.setFont(Font.font("Amble CN", FontWeight.EXTRA_BOLD, 50));
+        bucketFill.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 80));
+        bucketFill.setFill(Color.web("#ffffff"));
         btn.setText("CLICK HERE TO START");
         btn.setMinWidth(bucketFill.prefWidth(-1));
+        btn.setMinHeight(60);
+        btn.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 20));
+        btn.setStyle("-fx-background-color: #ffffff");
         nextLine.setMinWidth(bucketFill.prefWidth(-1));
         btn.setOnAction(new EventHandler<ActionEvent>() {
             
@@ -50,7 +56,7 @@ public class WelcomePage extends Application {
         });
         
         GridPane root = new GridPane();
-        root.setStyle("-fx-background-color: aquamarine");
+        root.setStyle("-fx-background-color: #2F63A3");
         root.setAlignment(Pos.CENTER);
         root.add(bucketFill,0,0);
         root.add(nextLine,0,1);
@@ -62,7 +68,7 @@ public class WelcomePage extends Application {
         Scene scene = new Scene(root,800,800,Color.AQUAMARINE);
         primaryStage.setTitle("BUCKETFILL APPLICATION!");
         primaryStage.setScene(scene);
-        primaryStage.setFullScreen(true);
+        //primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
