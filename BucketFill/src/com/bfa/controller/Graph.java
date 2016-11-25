@@ -135,7 +135,9 @@ public class Graph {
         TeacherOccupancy currOccupancy = Occupancy.teacherOccupancyDetails.get(teacherName);
         // hour is taken as hour-1 as the hour is from 1-6 and the indeces of the array is from 0-5
         try{
-            if(currOccupancy.getOccupancy()[Allot.day][hour-1]){
+            if(ltps==0 && currOccupancy.getOccupancy()[Allot.day][hour-1]){
+                return true;
+            }else if(ltps>0 && currOccupancy.getOccupancy()[Allot.day][hour-1] && currOccupancy.getOccupancy()[Allot.day][hour]){
                 return true;
             }else{
                 return false;

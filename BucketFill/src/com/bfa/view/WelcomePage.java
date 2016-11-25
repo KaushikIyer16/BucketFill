@@ -61,7 +61,7 @@ public class WelcomePage extends Application {
             public void handle(ActionEvent event) {
                 //System.out.println("Hello World!");
                 SubjectForm sf = new SubjectForm();
-                sf.start(primaryStage);
+//                sf.start(primaryStage);
             }
         });
         exist.setOnAction(new EventHandler<ActionEvent>() {
@@ -69,8 +69,8 @@ public class WelcomePage extends Application {
             @Override
             public void handle(ActionEvent event) {
                 //System.out.println("Hello World!");
-                Allot sf = new Allot();
-                sf.getAllDetails();
+                Allot alt = new Allot();
+                alt.getAllDetails();
                 TimeTableDisplay ttd = new TimeTableDisplay();
                 try {
                     ttd.start(primaryStage);

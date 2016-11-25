@@ -130,4 +130,21 @@ public class TeacherSubject implements DBConnection {
             System.out.println(e + " Occured in get all details");
         }
     }
+    
+    public static ArrayList<Integer> getElectiveTeacherIdFromYear(int year){
+        try{
+            Connection myConnection = DBConnection.createConnection();
+
+            PreparedStatement myPreStatement = myConnection.prepareStatement("SELECT TeacherID FROM TeacherSubject where CourseCode in (SELECT CourseCode FROM Subject WHERE Elective>0)"); 
+            ResultSet rs = myPreStatement.executeQuery();
+            ArrayList<Integer> ElectiveTeacherIds = new ArrayList<>();
+            while(rs.next()){
+                ElectiveTeacherIds.add(rs.getInt(1));
+            }
+            return ElectiveTeacherIds;
+        }catch(Exception e){
+            System.out.println("Error occured in getElectiveTeacherIdFromYear");
+            return null;
+        }
+    }
 }

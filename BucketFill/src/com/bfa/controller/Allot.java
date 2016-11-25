@@ -33,6 +33,7 @@ public class Allot {
     public static int day=0;
     private int prevDay = -1;
     private int prevHour = -1;
+    private boolean writtenToExcel = false;
 
     //    1st index: number of classes, 2nd index: number of days, 3rd index: number of slots
     private TimeTableSlot[][][] TimeTable = new TimeTableSlot[6][6][NUMBER_OF_HOURS];
@@ -141,7 +142,7 @@ public class Allot {
                 int randLtps;
                 int currDay;
                 do{
-                    randLtps = random.nextInt(4);
+                    randLtps = random.nextInt(3);
                 }while(electiveLtps[randLtps] == 0);
                 
                 do {                    
@@ -149,7 +150,8 @@ public class Allot {
                 } while (currDay==prevDay);
                     int currHour = random.nextInt(5);
                 // now we have the ltps day and hour we will add this detail to all the sections and reduce it from ltps
-                if (!electiveHours.contains(new ElectiveCombination(currDay, currHour))) {
+                if (!Occupancy.areElectiveTeachersOccupied(year, currDay, currHour, randLtps) && !electiveHours.contains(new ElectiveCombination(currDay, currHour))) {
+                    System.out.println("Value of currDay and currHour is "+currDay+"    =     "+currHour);
                     electiveLtps[randLtps]--;
                     Iterator classIterator = classForYear.iterator();
                     while(classIterator.hasNext()){
@@ -162,10 +164,13 @@ public class Allot {
                             currTimeTable[currDay][currHour+1] = new TimeTableSlot();
                             currTimeTable[currDay][currHour+1].setSubject("ELECTIVE");
                             currTimeTable[currDay][currHour+1].setIsOccupied(true);
+                            
+                            Occupancy.updateOccupancyForElective(year,currDay,currHour,randLtps);
                         }else{
                             currTimeTable[currDay][currHour] = new TimeTableSlot();
                             currTimeTable[currDay][currHour].setSubject("ELECTIVE");
                             currTimeTable[currDay][currHour].setIsOccupied(true);
+                            Occupancy.updateOccupancyForElective(year,currDay,currHour,randLtps);
                         }
                     }
                     
@@ -245,13 +250,18 @@ public class Allot {
 //            System.out.println("");
         }
         
-        TimeTableBean.printTimeTables();
+//        TimeTableBean.printTimeTables();
+        if(!writtenToExcel){
+            ExcelWriter excelWriter = new ExcelWriter();
+            excelWriter.writeTimeTable();
+            writtenToExcel = true;
+        }
         
     }
 
-    public static void main(String args[]) {
-        Allot test = new Allot();
-        test.getAllDetails();
-    }
+//    public static void main(String args[]) {
+//        Allot test = new Allot();
+//        test.getAllDetails();
+//    }
 
 }
