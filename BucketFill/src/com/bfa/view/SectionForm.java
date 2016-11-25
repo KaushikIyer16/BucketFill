@@ -48,7 +48,7 @@ import javafx.util.converter.DefaultStringConverter;
  */
 public class SectionForm extends Application {
     
-    int p = 2;
+    int p = 3;
     int i;
     //TableView<ViewTestClass> table2 = new TableView<>();
     ComboBox[][] teachBox;
@@ -59,26 +59,24 @@ public class SectionForm extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SECTION FORM");
         GridPane grid = new GridPane();
-        grid.setStyle("-fx-background-color: #2F63A3");
+        grid.setStyle("-fx-background-color: white");
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(15);
         grid.setPadding(new Insets(25, 25, 25, 25));
-        Text sceneMainTitle = new Text("SECTION FORM");
         Text scenetitle = new Text("YEAR "+p);
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 40));
-        sceneMainTitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
-        grid.add(scenetitle, 0, 2, 4, 1);
-        grid.add(sceneMainTitle, 0, 0, 4, 1);
+        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
+        grid.add(scenetitle, 0, 0, 4, 1);
+
         Label teacherName = new Label("ENTER THE NUMBER OF SECTIONS:");
-        grid.add(teacherName, 0, 4);
+        grid.add(teacherName, 0, 3);
 
         TextField noOfSections = new TextField();
         noOfSections.setPrefWidth(80);
-        grid.add(noOfSections, 1, 4);
+        grid.add(noOfSections, 1, 3);
         Button setButton = new Button();
         setButton.setText("CONFIRM");
-        grid.add(setButton,2,4);
+        grid.add(setButton,2,3);
         Label subjectNames = new Label("SUBJECTS");
         subjectNames.setFont(Font.font("Tahoma",FontWeight.BOLD,25));
         setButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -105,7 +103,7 @@ public class SectionForm extends Application {
                 else{
                     
                 setButton.setVisible(false);
-                grid.add(subjectNames,0,6);
+                grid.add(subjectNames,0,5);
                 
                 char c = 'A';
                 for (i = 1; i <= Integer.parseInt((String)noOfSections.getText()); i++) {
@@ -117,7 +115,7 @@ public class SectionForm extends Application {
                     grid.add(subName2, 2, i + 5);*/
                     Label sectionNames = new Label("SECTION "+String.valueOf(c));
                     sectionNames.setPrefWidth(80);
-                    grid.add(sectionNames,i,6);
+                    grid.add(sectionNames,i,5);
                     c++;
                 }
                 System.out.println(i);
@@ -126,6 +124,11 @@ public class SectionForm extends Application {
                  for(Subject itr: arrList){
                      System.out.println(itr.getName());
                  }
+                //arrList.add("JAVA");
+                //arrList.add("DATA MINING");
+                //arrList.add("DBMS");
+                //arrList.add("WEB PROGRAMMING");
+                //arrList.add("DCN");
                teachBox = new ComboBox[arrList.size()][Integer.parseInt((String)noOfSections.getText())];
                matrix = new String[arrList.size()][Integer.parseInt((String)noOfSections.getText())];
                  subjectSize = arrList.size();
@@ -133,7 +136,7 @@ public class SectionForm extends Application {
                     Label getSubject = new Label(arrList.get(j).getName());
                     ArrayList <String> teacherSubject = TeacherSubject.getTeacherBySubject(arrList.get(j).getName());
                     getSubject.setMinWidth(150);
-                    grid.add(getSubject, 0, 8+j);
+                    grid.add(getSubject, 0, 7+j);
                     
                     for(int k=1;k<i;k++){
                         teachBox[j][k-1] = new ComboBox();
@@ -141,7 +144,7 @@ public class SectionForm extends Application {
                             teachBox[j][k-1].getItems().add(teacherSubject.get(ct));
                         teachBox[j][k-1].setValue("  ");
                         teachBox[j][k-1].setPrefWidth(100);
-                        grid.add(teachBox[j][k-1], k, 8+j);
+                        grid.add(teachBox[j][k-1], k, 7+j);
                     }
                     
                 }
@@ -149,7 +152,7 @@ public class SectionForm extends Application {
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.CENTER);
         hbBtn.getChildren().add(btn);
-        grid.add(hbBtn, 5, 16);
+        grid.add(hbBtn, 5, 15);
         btn.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -213,7 +216,7 @@ public class SectionForm extends Application {
                 };
                 timer.schedule(delayedThreadStartTask,6000);  
                p++;
-               if(p<5)
+               if(p<4)
                 start(primaryStage);
                else{
                    CCPForm ccp = new CCPForm();
@@ -231,6 +234,11 @@ public class SectionForm extends Application {
         });
        }
     }});
+        
+       
+            
+
+       
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
         Scene scene = new Scene(grid);

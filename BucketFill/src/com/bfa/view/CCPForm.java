@@ -38,6 +38,8 @@ public class CCPForm extends Application {
     boolean [][] buffer;
     boolean[] teach;
     String teacherName;
+    public CCPForm() {
+    }
     @Override
     public void start(Stage primaryStage) throws Exception {
         Occupancy.setDetails();
@@ -201,12 +203,12 @@ public class CCPForm extends Application {
         
         
      
-       
+        primaryStage.setFullScreen(true);
          final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
         Scene scene = new Scene(grid);
-        primaryStage.setScene(scene);
         primaryStage.setFullScreen(true);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
     public static void main(String[] args) {

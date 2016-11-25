@@ -50,10 +50,9 @@ public class TeacherForm extends Application {
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(15);
-        grid.setStyle("-fx-background-color: #2F63A3");
         grid.setPadding(new Insets(25, 25, 25, 25));
-        Text scenetitle = new Text("TEACHER DETAILS");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
+        Text scenetitle = new Text("ENTER DETAILS FOR TEACHER");
+        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
 
         Label teacherName = new Label("TEACHER NAME:");
@@ -87,7 +86,7 @@ public class TeacherForm extends Application {
             subBox.setValue("0");
         grid.add(subBox, 0, 8);
         Button btn1 = new Button();
-        btn1.setText("CONFIRM");
+        btn1.setText("Confirm");
         //TextField noofSub = new TextField();
         //grid.add(noofSub, 0, 8);
         //String s1=noofSub.getText();
@@ -299,10 +298,16 @@ public class TeacherForm extends Application {
             }});
         
         final Text actiontarget = new Text();
-        grid.add(actiontarget, 1, 16);  
+        grid.add(actiontarget, 1, 16);
+        /*Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+        primaryStage.setX(bounds.getMinX());
+        primaryStage.setY(bounds.getMinY());
+        primaryStage.setWidth(bounds.getWidth());
+        primaryStage.setHeight(bounds.getHeight());*/
+        primaryStage.setFullScreen(true);
         Scene scene = new Scene(grid);
         primaryStage.setScene(scene);
-        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
     

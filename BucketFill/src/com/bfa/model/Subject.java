@@ -309,10 +309,7 @@ public class Subject implements DBConnection {
                     myPreStatement.setBoolean(7, true);
                 else
                     myPreStatement.setBoolean(7, false);
-                myPreStatement.execute();
-                if(s[i] == 1){
-                    SelfStudy.insertDetails(courseCode[i], (l[i]+(t[i]*2)+p[i]+s[i]), l[i], p[i]);
-                }
+                myPreStatement.execute();                
             }
         } catch (SQLException ex) {
             Logger.getLogger(Subject.class.getName()).log(Level.SEVERE, null, ex);
