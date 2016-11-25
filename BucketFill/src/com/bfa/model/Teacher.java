@@ -134,7 +134,14 @@ public class Teacher implements DBConnection {
                 myPreStatement = myConnection.prepareStatement("INSERT INTO TeacherSubject VALUES(?,?)");
                 myPreStatement.setInt(1, ID);
                 for(int j=0; j < subjects.length;j++){
-                    myPreStatement.setString(2, subjects[j]);
+                    PreparedStatement tempPreStatement = myConnection.prepareStatement("SELECT CourseCode FROM Subject WHERE Name LIKE ?");
+                    tempPreStatement.setString(1, subjects[j]);
+                    ResultSet tempRS = tempPreStatement.executeQuery();
+                    String tempCC = "";
+                    while (tempRS.next()) {
+                        tempCC = tempRS.getString(1);
+                    }
+                    myPreStatement.setString(2, tempCC);
                     myPreStatement.execute();
                 }
                 
