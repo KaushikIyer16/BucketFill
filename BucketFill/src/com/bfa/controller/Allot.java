@@ -249,8 +249,9 @@ public class Allot {
 //            System.out.println("");
         }
         
-        TimeTableBean.printTimeTables();
-        
+//        TimeTableBean.printTimeTables();
+        ExcelWriter excelWriter = new ExcelWriter();
+        excelWriter.writeTimeTable();
     }
 
     public static void main(String args[]) {
