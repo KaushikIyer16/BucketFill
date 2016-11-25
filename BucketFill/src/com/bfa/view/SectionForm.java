@@ -39,6 +39,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.converter.DefaultStringConverter;
 
@@ -66,11 +67,14 @@ public class SectionForm extends Application {
         grid.setPadding(new Insets(25, 25, 25, 25));
         Text sceneMainTitle = new Text("SECTION FORM");
         Text scenetitle = new Text("YEAR "+p);
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 40));
-        sceneMainTitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
+        scenetitle.setFill(Color.web("#ffffff"));
+        scenetitle.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 40));
+        sceneMainTitle.setFill(Color.web("#ffffff"));
+        sceneMainTitle.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 50));
         grid.add(scenetitle, 0, 2, 4, 1);
         grid.add(sceneMainTitle, 0, 0, 4, 1);
         Label teacherName = new Label("ENTER THE NUMBER OF SECTIONS:");
+        teacherName.setTextFill(Color.web("#ffffff"));
         grid.add(teacherName, 0, 4);
 
         TextField noOfSections = new TextField();
@@ -80,13 +84,15 @@ public class SectionForm extends Application {
         setButton.setText("CONFIRM");
         grid.add(setButton,2,4);
         Label subjectNames = new Label("SUBJECTS");
-        subjectNames.setFont(Font.font("Tahoma",FontWeight.BOLD,25));
+        subjectNames.setTextFill(Color.web("#ffffff"));
+        subjectNames.setFont(Font.font("Quantico",FontWeight.BOLD,25));
         setButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
                 if(isValid(noOfSections.getText())){
-                     Label label = new Label("enter valid values. (Digits only)");
+                     Label label = new Label("Please enter valid values. (Digits only)");
+                     label.setTextFill(Color.web("#ffffff"));
                      grid.add(label,0,20);
                      Timer timer = new Timer();
                      TimerTask delayedThreadStartTask = new TimerTask() {
@@ -117,6 +123,7 @@ public class SectionForm extends Application {
                     grid.add(subName2, 2, i + 5);*/
                     Label sectionNames = new Label("SECTION "+String.valueOf(c));
                     sectionNames.setPrefWidth(80);
+                    sectionNames.setTextFill(Color.web("#ffffff"));
                     grid.add(sectionNames,i,6);
                     c++;
                 }
@@ -133,6 +140,8 @@ public class SectionForm extends Application {
                     Label getSubject = new Label(arrList.get(j).getName());
                     ArrayList <String> teacherSubject = TeacherSubject.getTeacherBySubject(arrList.get(j).getName());
                     getSubject.setMinWidth(150);
+                    getSubject.setTextFill(Color.web("#ffffff"));
+                    getSubject.setFont(Font.font("Quantico",FontWeight.BOLD,15));
                     grid.add(getSubject, 0, 8+j);
                     
                     for(int k=1;k<i;k++){
@@ -169,6 +178,8 @@ public class SectionForm extends Application {
             }
                  if(flag){
                      Label label = new Label("SELECT TEACHERS FOR THE SUBJECTS");
+                     label.setTextFill(Color.web("#ffffff"));
+                     label.setFont(Font.font("Quantico",FontWeight.BOLD,15));
                      grid.add(label,0,20);
                      Timer timer = new Timer();
                      TimerTask delayedThreadStartTask = new TimerTask() {
