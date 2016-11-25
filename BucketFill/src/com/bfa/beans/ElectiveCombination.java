@@ -17,4 +17,16 @@ public class ElectiveCombination {
         this.day = day;
         this.hour = hour;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        ElectiveCombination obj2 = (ElectiveCombination)obj;
+        if(this.day == obj2.day && this.hour == obj2.hour){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    
 }

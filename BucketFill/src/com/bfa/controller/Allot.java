@@ -86,7 +86,7 @@ public class Allot {
 //        }
     }
 
-    private void getAllDetails() {
+    public void getAllDetails() {
         // this array list holds all the year-hour combination for elective say if the third hour comes elective for 3rd year then it appears as 33
         ArrayList<ElectiveCombination> electiveHours = new ArrayList<>();
         Random random = new Random();
@@ -141,7 +141,7 @@ public class Allot {
                 int randLtps;
                 int currDay;
                 do{
-                    randLtps = random.nextInt(4);
+                    randLtps = random.nextInt(3);
                 }while(electiveLtps[randLtps] == 0);
                 
                 do {                    
@@ -149,7 +149,8 @@ public class Allot {
                 } while (currDay==prevDay);
                     int currHour = random.nextInt(5);
                 // now we have the ltps day and hour we will add this detail to all the sections and reduce it from ltps
-                if (!electiveHours.contains(new ElectiveCombination(currDay, currHour))) {
+                if (!Occupancy.areElectiveTeachersOccupied(year, currDay, currHour, randLtps) && !electiveHours.contains(new ElectiveCombination(currDay, currHour))) {
+                    System.out.println("Value of currDay and currHour is "+currDay+"    =     "+currHour);
                     electiveLtps[randLtps]--;
                     Iterator classIterator = classForYear.iterator();
                     while(classIterator.hasNext()){
@@ -162,10 +163,13 @@ public class Allot {
                             currTimeTable[currDay][currHour+1] = new TimeTableSlot();
                             currTimeTable[currDay][currHour+1].setSubject("ELECTIVE");
                             currTimeTable[currDay][currHour+1].setIsOccupied(true);
+                            
+                            Occupancy.updateOccupancyForElective(year,currDay,currHour,randLtps);
                         }else{
                             currTimeTable[currDay][currHour] = new TimeTableSlot();
                             currTimeTable[currDay][currHour].setSubject("ELECTIVE");
                             currTimeTable[currDay][currHour].setIsOccupied(true);
+                            Occupancy.updateOccupancyForElective(year,currDay,currHour,randLtps);
                         }
                     }
                     

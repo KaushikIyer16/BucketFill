@@ -8,6 +8,7 @@ import com.bfa.beans.Debug;
 import com.bfa.beans.TeacherOccupancy;
 import com.bfa.model.Subject;
 import com.bfa.model.Teacher;
+import com.bfa.model.TeacherSubject;
 import java.awt.BorderLayout;
 import java.util.*;
 
@@ -150,9 +151,49 @@ public class Occupancy {
         TeacherOccupancy currOccupancy = Occupancy.teacherOccupancyDetails.get(teacherName);
         
         try {
-            currOccupancy.getOccupancy()[Allot.day][hour-1] = true;
+            if (Graph.getLtps() == 0) {
+                currOccupancy.getOccupancy()[Allot.day][hour-1] = true;
+            }else{
+                currOccupancy.getOccupancy()[Allot.day][hour-1] = true;
+                currOccupancy.getOccupancy()[Allot.day][hour] = true;
+            }
+            
         } catch (Exception e) {
         }
+    }
+    
+    public static void updateOccupancyForElective(int year,int day,int hour,int ltps){
+        ArrayList<Integer> ElectiveTeacherIds = TeacherSubject.getElectiveTeacherIdFromYear(year);
+        
+        for (int i = 0; i< ElectiveTeacherIds.size(); i++) {
+            String teacherName = Teacher.getNameById(ElectiveTeacherIds.get(i));
+            TeacherOccupancy currOccupancy = Occupancy.teacherOccupancyDetails.get(teacherName);
+        
+            try {
+                if (ltps == 0) {
+                    currOccupancy.getOccupancy()[day][hour] = true;
+                }else{
+                    currOccupancy.getOccupancy()[day][hour] = true;
+                    currOccupancy.getOccupancy()[day][hour+1] = true;
+                }
+
+            } catch (Exception e) {
+            }
+        }
+    }
+    
+    public static boolean areElectiveTeachersOccupied(int year,int day,int hour,int ltps){
+        boolean isOccupied = false;
+        ArrayList<Integer> ElectiveTeacherIds = TeacherSubject.getElectiveTeacherIdFromYear(year);
+        
+        for (int i = 0; i< ElectiveTeacherIds.size(); i++) {
+            String teacherName = Teacher.getNameById(ElectiveTeacherIds.get(i));
+            TeacherOccupancy currOccupancy = Occupancy.teacherOccupancyDetails.get(teacherName);
+            
+            isOccupied = isOccupied || currOccupancy.getOccupancy()[day][hour];
+        }
+        
+        return isOccupied;
     }
    
         
