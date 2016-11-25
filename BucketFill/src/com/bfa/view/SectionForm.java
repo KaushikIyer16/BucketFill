@@ -39,6 +39,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.converter.DefaultStringConverter;
 
@@ -80,13 +81,15 @@ public class SectionForm extends Application {
         setButton.setText("CONFIRM");
         grid.add(setButton,2,4);
         Label subjectNames = new Label("SUBJECTS");
-        subjectNames.setFont(Font.font("Tahoma",FontWeight.BOLD,25));
+        subjectNames.setTextFill(Color.web("#ffffff"));
+        subjectNames.setFont(Font.font("Quantico",FontWeight.BOLD,25));
         setButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
                 if(isValid(noOfSections.getText())){
-                     Label label = new Label("enter valid values. (Digits only)");
+                     Label label = new Label("Please enter valid values. (Digits only)");
+                     label.setTextFill(Color.web("#ffffff"));
                      grid.add(label,0,20);
                      Timer timer = new Timer();
                      TimerTask delayedThreadStartTask = new TimerTask() {
@@ -169,6 +172,8 @@ public class SectionForm extends Application {
             }
                  if(flag){
                      Label label = new Label("SELECT TEACHERS FOR THE SUBJECTS");
+                     label.setTextFill(Color.web("#ffffff"));
+                     label.setFont(Font.font("Quantico",FontWeight.BOLD,15));
                      grid.add(label,0,20);
                      Timer timer = new Timer();
                      TimerTask delayedThreadStartTask = new TimerTask() {

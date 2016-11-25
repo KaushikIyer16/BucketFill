@@ -77,6 +77,8 @@ public class SubjectForm extends Application {
         setButton.setText("CONFIRM");
         grid.add(setButton,2,10);
         Label subjectNames = new Label("SUBJECTS:");
+         subjectNames.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 30));
+        subjectNames.setTextFill(Color.web("#ffffff"));
         setButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
