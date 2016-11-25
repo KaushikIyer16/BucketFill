@@ -33,6 +33,7 @@ public class Allot {
     public static int day=0;
     private int prevDay = -1;
     private int prevHour = -1;
+    private boolean writtenToExcel = false;
 
     //    1st index: number of classes, 2nd index: number of days, 3rd index: number of slots
     private TimeTableSlot[][][] TimeTable = new TimeTableSlot[6][6][NUMBER_OF_HOURS];
@@ -250,13 +251,17 @@ public class Allot {
         }
         
 //        TimeTableBean.printTimeTables();
-        ExcelWriter excelWriter = new ExcelWriter();
-        excelWriter.writeTimeTable();
+        if(!writtenToExcel){
+            ExcelWriter excelWriter = new ExcelWriter();
+            excelWriter.writeTimeTable();
+            writtenToExcel = true;
+        }
+        
     }
 
-    public static void main(String args[]) {
-        Allot test = new Allot();
-        test.getAllDetails();
-    }
+//    public static void main(String args[]) {
+//        Allot test = new Allot();
+//        test.getAllDetails();
+//    }
 
 }

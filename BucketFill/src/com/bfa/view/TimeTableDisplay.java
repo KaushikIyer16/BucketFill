@@ -28,6 +28,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -53,12 +54,16 @@ public class TimeTableDisplay extends Application {
         grid.setVgap(15);
         grid.setPadding(new Insets(25, 25, 25, 25));
         Text scenetitle1 = new Text("TIMETABLE");
-        scenetitle1.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
+        scenetitle1.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 60));
+        scenetitle1.setFill(Color.web("#ffffff"));
         Text scenetitle = new Text("YEAR "+yr);
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 30));
+        scenetitle.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 40));
+        scenetitle.setFill(Color.web("#ffffff"));
         grid.add(scenetitle1,0,0,4,1);
         grid.add(scenetitle, 0, 2, 4, 1);
         Label taList = new Label("SELECT SECTION FROM THE LIST:");
+        taList.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 20));
+        taList.setTextFill(Color.web("#ffffff"));
         grid.add(taList,0,3);
         Label [][][]slots;
         
@@ -71,8 +76,7 @@ public class TimeTableDisplay extends Application {
          ArrayList<Section> section = new ArrayList<>();
         section = Section.getSectionByYear(yr);
         System.out.println(section.size());
-        Allot alt = new Allot();
-        alt.getAllDetails();
+        
         for(int i =0; i<section.size(); i++){
             if(!sectionList.contains(section.get(i).getName())&&!Character.isDigit(section.get(i).getName().charAt(0)))
                 sectionList.add(section.get(i).getName());
@@ -156,9 +160,13 @@ public class TimeTableDisplay extends Application {
                     days[4]= new Label("FRIDAY");
                     days[5]= new Label("SATURDAY");
                     for(int i =0;i<6;i++){
+                        time[i].setTextFill(Color.web("#ffffff"));
+                        time[i].setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 20));
                         grid.add(time[i],i+1,7);
                     }
                     for(int i =0;i<6;i++){
+                        days[i].setTextFill(Color.web("#ffffff"));
+                        days[i].setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 20));
                         grid.add(days[i],0,num+i);
                     }
                     int sectionChar = tName.charAt(0)-'A';
@@ -179,8 +187,11 @@ public class TimeTableDisplay extends Application {
                           //slots[i][j] = new Label(finalTimeTable[i][j].getSubject());
                           
                               slots[sectionChar][i][j].setText(finalTimeTable[i][j].getSubject());
+                              slots[sectionChar][i][j].setTextFill(Color.web("#ffffff"));
+                              slots[sectionChar][i][j].setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 15));
+                              slots[sectionChar][i][j].setPrefWidth(120);
                               slots[sectionChar][i][j].setVisible(true);
-                              slots[sectionChar][i][j].setPrefWidth(100);
+                              
                          
                       }
                   }

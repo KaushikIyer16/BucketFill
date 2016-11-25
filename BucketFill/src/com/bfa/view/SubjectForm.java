@@ -59,14 +59,20 @@ public class SubjectForm extends Application {
         grid.setVgap(15);
         grid.setPadding(new Insets(25, 25, 25, 25));
         Text scenetitle = new Text("YEAR "+set);
+        scenetitle.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 40));
+        scenetitle.setFill(Color.web("#ffffff"));
         Text sceneMainTitle = new Text("SUBJECT FORM");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 40));
-        sceneMainTitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 40));
+        sceneMainTitle.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 60));
+        sceneMainTitle.setFill(Color.web("#ffffff"));
+        //scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 40));
+        //sceneMainTitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 40));
         
         grid.add(scenetitle, 0, 9, 4, 1);
         grid.add(sceneMainTitle, 0, 3, 4, 1);
 
         Label subjectLabel = new Label("ENTER THE NUMBER OF SUBJECTS:");
+        subjectLabel.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 30));
+        subjectLabel.setTextFill(Color.web("#ffffff"));
         grid.add(subjectLabel, 0, 10);
 
         TextField noOfSubjects = new TextField();
@@ -75,6 +81,7 @@ public class SubjectForm extends Application {
         Button setButton = new Button();
         //setButton.setStyle("-fx-background-color: aquamarine");
         setButton.setText("CONFIRM");
+        setButton.setFont(Font.font("Quantico", FontWeight.NORMAL, 15));
         grid.add(setButton,2,10);
         Label subjectNames = new Label("SUBJECTS:");
          subjectNames.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 30));
@@ -105,26 +112,40 @@ public class SubjectForm extends Application {
                 }
                 else{ 
                 setButton.setVisible(false);
-                grid.add(subjectNames,0,11);
+                grid.add(subjectNames,0,12);
                 Label cCode = new Label("COURSE CODE");
                 cCode.setPrefWidth(140);
+                cCode.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 20));
+                cCode.setTextFill(Color.web("#ffffff"));
                 grid.add(cCode, 1, 12);
                 Label subName = new Label("SUBJECT");
                 subName.setPrefWidth(120);
+                subName.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 20));
+                subName.setTextFill(Color.web("#ffffff"));
                 grid.add(subName, 2, 12);
                 Label lecture = new Label("L");
                 lecture.setPrefWidth(80);
+                lecture.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 20));
+                lecture.setTextFill(Color.web("#ffffff"));
                 grid.add(lecture,3,12);
                 Label theory = new Label("T");
                 theory.setPrefWidth(80);
+                theory.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 20));
+                theory.setTextFill(Color.web("#ffffff"));
                 grid.add(theory,4,12);
                 Label practical = new Label("P");
                 practical.setPrefWidth(80);
+                practical.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 20));
+                practical.setTextFill(Color.web("#ffffff"));
                 grid.add(practical,5,12);
                 Label self = new Label("S");
                 self.setPrefWidth(80);
+                self.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 20));
+                self.setTextFill(Color.web("#ffffff"));
                 grid.add(self,6,12);
                 Label elective = new Label("ELECTIVE");
+                elective.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 20));
+                elective.setTextFill(Color.web("#ffffff"));
                 grid.add(elective, 7, 12);
                 int number = Integer.parseInt(noOfSubjects.getText().toString());
                 l = new TextField[number];
@@ -159,6 +180,7 @@ public class SubjectForm extends Application {
                     elect[i] = new ComboBox();
                     elect[i].getItems().addAll("YES", "NO");
                     elect[i].setValue("   ");
+                   
                     grid.add(courseCode[i],1,i+7+6);
                     grid.add(subjName[i],2,i+7+6);
                     grid.add(l[i],3,i+7+6);
@@ -169,6 +191,8 @@ public class SubjectForm extends Application {
                 }
                 Button submitButton = new Button();
                 submitButton.setText("SUBMIT");
+                submitButton.setFont(Font.font("Quantico", FontWeight.NORMAL, 15));
+                
                 grid.add(submitButton, 7, i+10+6);
                 g1=i+11+6;
                  submitButton.setOnAction(new EventHandler<ActionEvent>() {

@@ -54,7 +54,9 @@ public class TeacherForm extends Application {
         grid.setStyle("-fx-background-color: #2F63A3");
         grid.setPadding(new Insets(25, 25, 25, 25));
         Text scenetitle = new Text("TEACHER DETAILS");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
+        //scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
+        scenetitle.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 60));
+        scenetitle.setFill(Color.web("#ffffff"));
         grid.add(scenetitle, 0, 0, 2, 1);
 
         Label teacherName = new Label("TEACHER NAME:");
@@ -97,6 +99,8 @@ public class TeacherForm extends Application {
         grid.add(subBox, 0, 8);
         Button btn1 = new Button();
         btn1.setText("CONFIRM");
+        btn1.setFont(Font.font("Quantico", FontWeight.EXTRA_BOLD, 15));
+        //btn1.setTextFill(Color.web("#ffffff"));
         //TextField noofSub = new TextField();
         //grid.add(noofSub, 0, 8);
         //String s1=noofSub.getText();
