@@ -26,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -39,6 +40,7 @@ public class SubjectForm extends Application {
     
     TextField l[],t[],p[],s[], courseCode[],subjName[];
     ComboBox elect[];
+    int set=2;
     int l1[], t1[], p1[], ss[],g1=0;
     boolean flag1=true,flag2=true,flag3=true,flag4=true,flag5=true,flag6=true;
     String electiveSubject[];
@@ -50,24 +52,30 @@ public class SubjectForm extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SECTION FORM");
         GridPane grid = new GridPane();
+        grid.setId("pane");
         grid.setStyle("-fx-background-color: white");
-        grid.setAlignment(Pos.CENTER);
+        grid.setAlignment(Pos.TOP_CENTER);
         grid.setHgap(10);
         grid.setVgap(15);
         grid.setPadding(new Insets(25, 25, 25, 25));
-        Text scenetitle = new Text("YEAR 2");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 50));
-        grid.add(scenetitle, 0, 0, 4, 1);
+        Text scenetitle = new Text("YEAR "+set);
+        Text sceneMainTitle = new Text("SUBJECT FORM");
+        scenetitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 40));
+        sceneMainTitle.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 40));
+        
+        grid.add(scenetitle, 0, 9, 4, 1);
+        grid.add(sceneMainTitle, 0, 3, 4, 1);
 
         Label subjectLabel = new Label("ENTER THE NUMBER OF SUBJECTS:");
-        grid.add(subjectLabel, 0, 3);
+        grid.add(subjectLabel, 0, 10);
 
         TextField noOfSubjects = new TextField();
         noOfSubjects.setPrefWidth(80);
-        grid.add(noOfSubjects, 1, 3);
+        grid.add(noOfSubjects, 1, 10);
         Button setButton = new Button();
+        //setButton.setStyle("-fx-background-color: aquamarine");
         setButton.setText("CONFIRM");
-        grid.add(setButton,2,3);
+        grid.add(setButton,2,10);
         Label subjectNames = new Label("SUBJECTS:");
         setButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -78,7 +86,7 @@ public class SubjectForm extends Application {
                 System.out.println(noOfSubjects.getText());
                 if(noOfSubjects.getText().length()==0||!Character.isDigit(noOfSubjects.getText().charAt(0))){
                     Label label = new Label("ENTER A VALID NUMBER");
-                     grid.add(label,0,20);
+                     grid.add(label,0,30);
                      Timer timer = new Timer();
                      TimerTask delayedThreadStartTask = new TimerTask() {
                      @Override
@@ -91,31 +99,31 @@ public class SubjectForm extends Application {
                         }).start();
                     }
                 };
-                timer.schedule(delayedThreadStartTask,6000);  
+                timer.schedule(delayedThreadStartTask,3000);  
                 }
                 else{ 
                 setButton.setVisible(false);
-                grid.add(subjectNames,0,5);
+                grid.add(subjectNames,0,11);
                 Label cCode = new Label("COURSE CODE");
                 cCode.setPrefWidth(140);
-                grid.add(cCode, 1, 6);
+                grid.add(cCode, 1, 12);
                 Label subName = new Label("SUBJECT");
                 subName.setPrefWidth(120);
-                grid.add(subName, 2, 6);
+                grid.add(subName, 2, 12);
                 Label lecture = new Label("L");
                 lecture.setPrefWidth(80);
-                grid.add(lecture,3,6);
+                grid.add(lecture,3,12);
                 Label theory = new Label("T");
                 theory.setPrefWidth(80);
-                grid.add(theory,4,6);
+                grid.add(theory,4,12);
                 Label practical = new Label("P");
                 practical.setPrefWidth(80);
-                grid.add(practical,5,6);
+                grid.add(practical,5,12);
                 Label self = new Label("S");
                 self.setPrefWidth(80);
-                grid.add(self,6,6);
+                grid.add(self,6,12);
                 Label elective = new Label("ELECTIVE");
-                grid.add(elective, 7, 6);
+                grid.add(elective, 7, 12);
                 int number = Integer.parseInt(noOfSubjects.getText().toString());
                 l = new TextField[number];
                 t = new TextField[number];
@@ -149,22 +157,23 @@ public class SubjectForm extends Application {
                     elect[i] = new ComboBox();
                     elect[i].getItems().addAll("YES", "NO");
                     elect[i].setValue("   ");
-                    grid.add(courseCode[i],1,i+7);
-                    grid.add(subjName[i],2,i+7);
-                    grid.add(l[i],3,i+7);
-                    grid.add(t[i],4,i+7);
-                    grid.add(p[i],5,i+7);
-                    grid.add(s[i],6,i+7);
-                    grid.add(elect[i], 7, i+7);
+                    grid.add(courseCode[i],1,i+7+6);
+                    grid.add(subjName[i],2,i+7+6);
+                    grid.add(l[i],3,i+7+6);
+                    grid.add(t[i],4,i+7+6);
+                    grid.add(p[i],5,i+7+6);
+                    grid.add(s[i],6,i+7+6);
+                    grid.add(elect[i], 7, i+7+6);
                 }
                 Button submitButton = new Button();
                 submitButton.setText("SUBMIT");
-                grid.add(submitButton, 7, i+10);
-                g1=i+11;
+                grid.add(submitButton, 7, i+10+6);
+                g1=i+11+6;
                  submitButton.setOnAction(new EventHandler<ActionEvent>() {
-
+                     
                     @Override
                     public void handle(ActionEvent event) {
+                    flag1=true;flag2=true;flag3=true;flag4=true;    
                     for(int i = 0; i<number;i++){
                         if(subjName[i].getText().equals("")||isValidName(subjName[i].getText())&&flag2){
                             Label nvn = new Label("ENTER A VALID SUBJECT NAME");
@@ -181,7 +190,7 @@ public class SubjectForm extends Application {
                                     }).start();
                                 }
                             };
-                            timer.schedule(delayedThreadStartTask,6000);  
+                            timer.schedule(delayedThreadStartTask,3000);  
                             flag2 = false;
                             
                         }
@@ -201,7 +210,7 @@ public class SubjectForm extends Application {
                                     }).start();
                                 }
                             };
-                            timer.schedule(delayedThreadStartTask,6000);  
+                            timer.schedule(delayedThreadStartTask,3000);  
                             flag1 = false;
                             
                         }
@@ -220,7 +229,7 @@ public class SubjectForm extends Application {
                                     }).start();
                                 }
                             };
-                            timer.schedule(delayedThreadStartTask,6000);  
+                            timer.schedule(delayedThreadStartTask,3000);  
                             flag3 = false;
                        }
                        if(elect[i].getValue().toString().equals("   ")&&flag4){
@@ -238,7 +247,7 @@ public class SubjectForm extends Application {
                                     }).start();
                                 }
                             };
-                            timer.schedule(delayedThreadStartTask,6000);  
+                            timer.schedule(delayedThreadStartTask,3000);  
                             flag4 = false;
                        }
                         
@@ -257,8 +266,14 @@ public class SubjectForm extends Application {
                     
                //Subject.insertDetails(cc, sn, l1, t1, p1, ss, electiveSubject);
                 System.out.println("BOOYAH! IT'S DONE!");
+                set++;
+                if(set<5){
+                    start(primaryStage);
+                }
+                else{    
                 TeacherForm tf = new TeacherForm();
                 tf.start(primaryStage);
+                        }
                     }
                 }}); 
         
@@ -268,10 +283,11 @@ public class SubjectForm extends Application {
        }}); 
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 16);
-        Scene scene = new Scene(grid);
-        //scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
+        Scene scene = new Scene(grid,Color.BLACK);
+        scene.setFill(Color.BLACK);
         primaryStage.setScene(scene);
         primaryStage.setFullScreen(true);
+       // scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());  
         primaryStage.show();
     }
      public boolean isValidCourseCode(String n){
