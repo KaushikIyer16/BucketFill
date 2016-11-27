@@ -49,11 +49,13 @@ public class ExcelWriter {
                     Row secondRow = mySheet.createRow(rowNum++);
                     row = mySheet.createRow(rowNum++);
                     for(TimeTableSlot p : a){
-                        int timeSlot = 0;
-                        cell = row.createCell(cellNum);
-                        Cell secondCell = secondRow.createCell(cellNum++);
-                        secondCell.setCellValue(times[timeSlot++]);
-                        cell.setCellValue(p.getSubject());
+                        if(p!=null){
+                            int timeSlot = 0;
+                            cell = row.createCell(cellNum);
+                            Cell secondCell = secondRow.createCell(cellNum++);
+                            secondCell.setCellValue(times[timeSlot++]);
+                            cell.setCellValue(p.getSubject());
+                        }
                         //System.out.println(p.subjectName+"----"+p.teacherName);
                     }
                     cellNum = 0;

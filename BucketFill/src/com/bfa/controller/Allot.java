@@ -141,6 +141,7 @@ public class Allot {
             while(electiveLtps[0]!=0 || electiveLtps[1]!=0 || electiveLtps[2]!=0 || electiveLtps[3]!=0 ){
                 int randLtps;
                 int currDay;
+                int currHour;
                 do{
                     randLtps = random.nextInt(3);
                 }while(electiveLtps[randLtps] == 0);
@@ -148,7 +149,9 @@ public class Allot {
                 do {                    
                     currDay = random.nextInt(5);
                 } while (currDay==prevDay);
-                    int currHour = random.nextInt(5);
+                do{
+                     currHour = random.nextInt(5);
+                }while(randLtps!=0 && currHour%2 == 1);
                 // now we have the ltps day and hour we will add this detail to all the sections and reduce it from ltps
                 if (!Occupancy.areElectiveTeachersOccupied(year, currDay, currHour, randLtps) && !electiveHours.contains(new ElectiveCombination(currDay, currHour))) {
                     System.out.println("Value of currDay and currHour is "+currDay+"    =     "+currHour);
@@ -164,6 +167,8 @@ public class Allot {
                             currTimeTable[currDay][currHour+1] = new TimeTableSlot();
                             currTimeTable[currDay][currHour+1].setSubject("ELECTIVE");
                             currTimeTable[currDay][currHour+1].setIsOccupied(true);
+                            electiveHours.add(new ElectiveCombination(currDay, currHour));
+                            electiveHours.add(new ElectiveCombination(currDay, currHour+1));
                             
                             Occupancy.updateOccupancyForElective(year,currDay,currHour,randLtps);
                         }else{
@@ -171,10 +176,11 @@ public class Allot {
                             currTimeTable[currDay][currHour].setSubject("ELECTIVE");
                             currTimeTable[currDay][currHour].setIsOccupied(true);
                             Occupancy.updateOccupancyForElective(year,currDay,currHour,randLtps);
+                            electiveHours.add(new ElectiveCombination(currDay, currHour));
                         }
                     }
                     
-                    electiveHours.add(new ElectiveCombination(currDay, currHour));
+                    
                 }
                 
             }
@@ -203,7 +209,8 @@ public class Allot {
 //                 now below get the graph for that class and get a room from the occupancy matrix and then fill them in the timetable variable and then remove them from the pool
                 int hour = 1;
                 while(hour <= 6){
-                    if (currTimeTable[day][hour-1] != null && currTimeTable[day][hour-1].isIsOccupied()) {
+                    
+                    if ( currTimeTable[day][hour-1] != null && currTimeTable[day][hour-1].isIsOccupied()) {
                         
                         if(hour<6 && currTimeTable[day][hour] != null &&currTimeTable[day][hour].isIsOccupied() ){
                             Graph.setLtps(1);
